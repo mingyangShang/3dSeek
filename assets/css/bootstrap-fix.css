@@ -1,0 +1,30 @@
+/*radio按钮与文字居中对齐*/
+.radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+	position: relative;
+}
+#model-classes-treeview .list-group-item{
+	padding: 2px 15px;
+}
+/*badge居中*/
+.list-group-item > .badge {
+    float: right;
+    margin-top: 6px;
+}
+
+#models-list .model-col {
+	margin-bottom: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+#models-list .model-col:hover{
+	border: 1px solid #A8A8A8;
+}
+
+
+#models-list .model-tag{
+	margin-left: 10px;
+}
+#models-list .btn-download {
+	float: right;
+	font-size: 12px;
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>3D Seek</title>
+    <!-- BOOTSTRAP CORE STYLE CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FONTAWESOME STYLE CSS -->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- TreeView SYTLE CSS -->
+    <link href="assets/css/bootstrap-treeview.css" rel="stylesheet">
+    <!-- CUSTOM STYLE CSS -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/bootstrap-fix.css" rel="stylesheet" />
+</head>
+<body > 
+        <div class="navbar navbar-inverse navbar-fixed-top " >
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" ><strong style="">3D Seek</strong></a>
+            </div>
+            <div class="navbar-collapse collapse move-me">
+                <ul class="nav navbar-nav navbar-right set-links">
+                     <li><a href="index.html" class="active-menu-item">主页</a></li>
+                     <li><a href="middle_result.html">中间结果</a></li>
+                     <li><a href="experiment_result.html">实验结果</a></li>
+                     <li><a href="team.html">任务分工</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--HOME SECTION END-->
+    <div class="fh5co-bg-section">
+        <section id="search-domain">
+            <div class="container">
+                <div class="row text-center" id="search-row">
+    				<div class="col-md-12 text-center col-md-offset-1 input-group">
+    				    <input type="text" class="form-control input-cls search-query"  placeholder="请输入查询类名或上传模型检索"  />
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger" type="button">
+                                <span class="glyphicon glyphicon-camera"></span>
+                            </button>
+                        </span>
+                        <div class="col-md-1 text-center">
+                            <input type="button" id="search" class="btn btn-primary btn-lg btn-set"  value="检索" />
+                        </div>
+    				</div>
+                </div>
+                <div class="row">
+                	<div class="col-md-9 text-center col-md-offset-1">
+                		<label class="radio-inline">
+      						<input type="radio" name="inlineRadioOptions" id="method1Radio" value="method_wxy" checked> 王曦阳
+    					</label>
+    					<label class="radio-inline">
+      						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_smy"> 商明阳
+    					</label>
+    					<label class="radio-inline">
+      						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_lhl"> 陆洪磊
+    					</label>
+    				</div>
+            </div>
+        </section>
+     <!--SEARCH SECTION END-->
+        <section id="model-scan">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="panel panel-default" id="classes-nav-panel">
+                            <div class="panel-heading"></div>
+                            <div class="panel-body">
+                                <div id="model-classes-treeview" class="nav-left"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"></div>
+                            <div class="panel-body">
+                                <div id="models-list" class="row-fluid nav-right">
+                                    <div class="col-md-3 model-col">
+                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                                        <div class="">
+                                            <span class="model-tag label label-default">airplane</span>
+                                            <button class="btn btn-primary btn-md btn-download">下载</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-3 model-col">
+                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                                        <span class="model-tag label label-default">
+                                            airplane
+                                        </span>
+                                        <button class="btn btn-primary btn-md btn-download"> 下载
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 model-col">
+                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                                        <span class="model-tag label label-default">
+                                            airplane
+                                        </span>
+                                        <button class="btn btn-primary btn-md btn-download"> 下载
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 model-col">
+                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                                        <span class="model-tag label label-default">
+                                            airplane
+                                        </span>
+                                        <button class="btn btn-primary btn-md btn-download"> 下载
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 model-col">
+                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                                        <span class="model-tag label label-default">
+                                            airplane
+                                        </span>
+                                        <button class="btn btn-primary btn-md btn-download"> 下载
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="models-nav" class="row-fluid text-center">
+                                    <div class="col-md-12">
+                                        <ul class="pagination" id="models-pagination">
+                                           <!--  <li class="disabled"><a href="#">&laquo;</a></li>
+                                            <li class="active"><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">4</a></li>
+                                            <li><a href="#">5</a></li>
+                                            <li><a href="#">&raquo;</a></li> -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+   
+    
+     <!--FOOTER SECTION END-->
+    <!-- <div class="copy-txt">
+         <div class="container">
+            <div class="row">
+                <div class="col-md-12 set-foot" >
+                    &copy 2017 your domain | All rights reserved |  More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a> 
+                </div>
+            </div>
+        </div>
+    </div> -->
+     <!-- COPY TEXT SECTION END-->
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY  -->
+    <script src="assets/js/jquery-1.11.1.js"></script>
+    <!-- BOOTSTRAP SCRIPTS  -->
+    <script src="assets/js/bootstrap.js"></script>
+    <!-- Treeview SCRIPTS -->
+    <script src="assets/js/bootstrap-treeview.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.simplePagination.js"></script>
+    <!-- CUSTOM SCRIPTS  -->
+    <script src="assets/js/home.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            
+            $("#search").click(function(){
+                window.location.href = "search_result.html";
+            });
+        });
+    </script>
+</body>
+</html>

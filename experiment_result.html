@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>3D Seek</title>
+    <!-- BOOTSTRAP CORE STYLE CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FONTAWESOME STYLE CSS -->
+     <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE CSS -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/experiment.css" rel="stylesheet">
+</head>
+<body > 
+   
+        <div class="navbar navbar-inverse navbar-fixed-top " >
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" ><strong style="">3D Seek</strong></a>
+            </div>
+            <div class="navbar-collapse collapse move-me">
+                <ul class="nav navbar-nav navbar-right set-links">
+                     <li><a href="index.html">主页</a></li>
+                     <li><a href="middle_result.html">中间结果</a></li>
+                     <li><a href="experiment_result.html" class="active-menu-item">实验结果</a></li>
+                     <li><a href="team.html" >任务分工</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <section id="experiment_section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel panel-primary">
+              <div class="panel-heading">Metrics</div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-4"> 
+                    <div class="panel panel-default"> 
+                      <div class="panel-heading"><b>Accuracy</b></div>
+                      <div class="panel-body">
+                        <table class="table table-hover table-bordered table-striped">
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th><a href="http://modelnet.cs.princeton.edu/">modelnet40</a></th>
+                              <th><a href="http://modelnet.cs.princeton.edu/">modelnet10</a></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><a href="http://people.cs.umass.edu/~kalo/papers/viewbasedcnn/index.html">MVCNN</a></td>
+                              <td>90.1%</td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td><a href="https://arxiv.org/abs/1704.01222">Klokov and Lempitsky</a></td>
+                              <td>91.8%</td>
+                              <td>94.0%</td>
+                            </tr>
+                            <tr>
+                              <td>王曦阳</td>
+                              <td>93.31%</td>
+                              <td>94.71%</td>
+                            </tr>
+                            <tr>
+                              <td>商明阳</td>
+                              <td>93.31%</td>
+                              <td>94.71%</td>
+                            </tr>
+                            <tr>
+                              <td>陆洪磊</td>
+                              <td>93.31%</td>
+                              <td>94.71%</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="panel panel-default">
+                      <div class="panel-heading"><b>mAP</b></div>
+                      <div class="panel-body">
+                        <table class="table table-hover table-bordered table-striped">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th><a href="http://modelnet.cs.princeton.edu/">modelnet40</a></th>
+                              <th><a href="http://modelnet.cs.princeton.edu/">modelnet10</a></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><a href="http://people.cs.umass.edu/~kalo/papers/viewbasedcnn/index.html">MVCNN</a></td>
+                              <td>79.5%</td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td><a href="https://sites.google.com/site/songbaihust/">GIFT</a></td>
+                              <td>81.94%</td>
+                              <td>91.12%</td>
+                            </tr>
+                            <tr>
+                              <td>王曦阳</td>
+                              <td>88.54%</td>
+                              <td>94.71%</td>
+                            </tr>
+                            <tr>
+                              <td>商明阳</td>
+                              <td>88.54%</td>
+                              <td>94.71%</td>
+                            </tr>
+                            <tr>
+                              <td>陆洪磊</td>
+                              <td>88.54%</td>
+                              <td>94.71%</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4"> 
+                    <div class="panel panel-default">
+                      <div class="panel-heading"><b>PR-Curve</b></div>
+                      <div class="panel-body">
+                        PR curve
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>  
+     <!-- COPY TEXT SECTION END-->
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY  -->
+    <script src="assets/js/jquery-1.11.1.js"></script>
+    <!-- BOOTSTRAP SCRIPTS  -->
+    <script src="assets/js/bootstrap.js"></script>
+    <!-- CUSTOM SCRIPTS  -->
+    <script src="assets/js/custom.js"></script>
+</body>
+</html>
