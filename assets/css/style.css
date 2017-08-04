@@ -157,6 +157,10 @@ color:#fff;
     -webkit-border-radius:0px;
     -moz-border-radius:0px;
 }
+#search{
+    margin-left: -1px;
+    border: 1px solid #428bca;
+}
 #search-row button {
         border: 0;
         background: none;
@@ -164,7 +168,7 @@ color:#fff;
         padding: 2px 5px;
         margin-top: 2px;
         position: relative;
-        left: -40px;
+        left: -115px;
         /* IE7-8 doesn't have border-radius, so don't indent the padding */
         margin-bottom: 0;
         -webkit-border-radius: 3px;
@@ -183,7 +187,7 @@ color:#fff;
  ============================================================ */
 
 /*classes navigator*/
-.nav-left, .nav-right{
+.nav-left, .nav-right, .nav-result, .nav-upload-model{
     max-height: 800px;
     overflow: auto;
 }
@@ -194,6 +198,9 @@ color:#fff;
 #services-sec {
     background-color:#202020;
     color:#fff;
+}
+.nav-result .loading, .nav-result, .loading{
+    background:url("../img/loading.gif") no-repeat center center;
 }
 
 /*models list*/

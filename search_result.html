@@ -20,6 +20,7 @@
     <!-- CONTROLS STYLE CSS -->
     <link href="assets/css/controls.css" rel="stylesheet" />
     <link href="assets/css/bootstrap-fix.css" rel="stylesheet" />
+    <link href="assets/css/result-fix.css" rel="stylesheet" />
 </head>
 <body > 
         <div class="navbar navbar-inverse navbar-fixed-top " >
@@ -43,191 +44,184 @@
 
         </div>
     </div>
-    <!--HOME SECTION END-->
-    <section id="search-domain">
-        <div class="container">
-            <div class="row text-center" id="search-row">
-				<div class="col-md-12 text-center col-md-offset-1 input-group">
-				    <input type="text" class="form-control input-cls search-query"  placeholder="请输入查询类名或上传模型检索"  />
-                    <span class="input-group-btn">
-                        <button class="btn btn-danger" type="button">
-                            <span class="glyphicon glyphicon-camera"></span>
+    <div class="fh5co-bg-section">
+      <section id="search-domain">
+          <div class="container-fluid">
+              <div class="row-fluid text-center" id="search-row">
+      				<div class="col-md-9 text-center input-group">
+      				    <input type="text" class="form-control input-cls search-query"  placeholder="请输入查询类名或上传模型检索"  id="search-key-input"/>
+                  <span class="input-group-btn">
+                      <input type="button" id="search" class="btn btn-primary btn-lg btn-set"  value="检索" />
+                      <button class="btn btn-danger" type="button" id="upload-model-btn">
+                          <span class="glyphicon glyphicon-camera"></span>
+                      </button>
+                  </span>
+                  <input type="file" id="model-file-input" style="display:none">
+      				</div>
+              </div>
+              <div class="row">
+              	<div class="col-md-9 text-center col-md-offset-1">
+              		<label class="radio-inline">
+    						<input type="radio" name="inlineRadioOptions" id="method1Radio" value="method_wxy" checked> 王曦阳
+  					</label>
+  					<label class="radio-inline">
+    						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_smy"> 商明阳
+  					</label>
+  					<label class="radio-inline">
+    						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_lhl"> 陆洪磊
+  					</label>
+  				</div>
+          </div>
+      </section>
+       <!--SEARCH SECTION END-->
+      <section id="search-result-section">
+        <div class="container-fluid result-div">
+          <div class="row-fluid">
+            <!-- 检索结果 -->
+            <div class="col-md-9">
+              <div class="panel panel-default">
+                <div class="panel-heading">检索结果
+                  <!-- <img src="assets/img/loading.gif" width="32" height="32" /> -->
+                </div>
+                <div class="panel-body nav-result">
+                  <div id="models-list" class="row-fluid">
+                    <div class="col-md-3 model-col">
+                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                        <span class="model-tag label label-default">
+                            airplane
+                        </span>
+                        <button class="btn btn-primary btn-md btn-download"> 下载
                         </button>
-                    </span>
-                    <div class="col-md-1 text-center">
-                        <input type="button" class="btn btn-primary btn-lg btn-set"  value="检索" />
                     </div>
-				</div>
+                    <div class="col-md-3 model-col">
+                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                        <span class="model-tag label label-default">
+                            airplane
+                        </span>
+                        <button class="btn btn-primary btn-md btn-download"> 下载
+                        </button>
+                    </div>
+                    <div class="col-md-3 model-col">
+                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                        <span class="model-tag label label-default">
+                            airplane
+                        </span>
+                        <button class="btn btn-primary btn-md btn-download"> 下载
+                        </button>
+                    </div>
+                    <div class="col-md-3 model-col">
+                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                        <span class="model-tag label label-default">
+                            airplane
+                        </span>
+                        <button class="btn btn-primary btn-md btn-download"> 下载
+                        </button>
+                    </div>
+                    <div class="col-md-3 model-col">
+                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                        <span class="model-tag label label-default">
+                            airplane
+                        </span>
+                        <button class="btn btn-primary btn-md btn-download"> 下载
+                        </button>
+                    </div>
+                  </div>
+                  <div id="models-nav" class="row-fluid text-center">
+                    <div class="col-md-12">
+                        <ul class="pagination" id="models-pagination"></ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="row">
-            	<div class="col-md-9 text-center col-md-offset-1">
-            		<label class="radio-inline">
-  						<input type="radio" name="inlineRadioOptions" id="method1Radio" value="method_wxy" checked> 王曦阳
-					</label>
-					<label class="radio-inline">
-  						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_smy"> 商明阳
-					</label>
-					<label class="radio-inline">
-  						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_lhl"> 陆洪磊
-					</label>
-				</div>
-        </div>
-    </section>
-     <!--SEARCH SECTION END-->
-    <section id="search-result-section">
-      <div class="container-fluid">
-        <div class="row-fluid">
-          <div class="col-md-3">
-            <div class="panel panel-primary">
-              <div class="panel-heading">上传模型信息</div>
-              <div class="panel-body">
-                <section id="upload-model-section">
-                  <div class="container-fluid">
-                    <div class="row-fluid">
-                      <div class="col-md-12">
-                        <div class="panel panel-default">
-                          <div class="panel-heading">3D浏览</div>
-                          <div class="panel-body text-center">
-                            <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+            <div class="col-md-3">
+              <div class="panel panel-default">
+                <div class="panel-heading">上传模型信息</div>
+                <div class="panel-body nav-upload-model">
+                  <section id="upload-model-section">
+                    <div class="container-fluid">
+                      <div class="row-fluid">
+                        <div class="col-md-12">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">3D浏览</div>
+                            <div class="panel-body text-center">
+                              <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row-fluid">
-                      <div class="col-md-12">
-                        <div class="panel panel-default">
-                          <div class="panel-heading">多角度视图</div>
-                          <div class="panel-body text-center">
-                            <div class="carousel slide media-carousel" id="media">
-                              <div class="carousel-inner">
-                                <div class="item  active">
-                                  <div class="row">
-                                    <div class="col-md-4">
-                                      <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-                                    </div>          
-                                    <div class="col-md-4">
-                                      <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                      <div class="row-fluid">
+                        <div class="col-md-12">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">多角度视图</div>
+                            <div class="panel-body text-center">
+                              <div class="carousel slide media-carousel" id="media">
+                                <div class="carousel-inner">
+                                  <div class="item  active">
+                                    <div class="row">
+                                      <div class="col-md-4">
+                                        <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                                      </div>          
+                                      <div class="col-md-4">
+                                        <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                                      </div>
+                                      <div class="col-md-4">
+                                        <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                                      </div>        
                                     </div>
-                                    <div class="col-md-4">
-                                      <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-                                    </div>        
+                                  </div>
+                                  <div class="item">
+                                    <div class="row">
+                                      <div class="col-md-4">
+                                        <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                                      </div>          
+                                      <div class="col-md-4">
+                                        <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                                      </div>
+                                      <div class="col-md-4">
+                                        <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                                      </div>        
+                                    </div>
+                                  </div>
+                                  <div class="item">
+                                    <div class="row">
+                                      <div class="col-md-4">
+                                        <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                                      </div>          
+                                      <div class="col-md-4">
+                                        <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                                      </div>
+                                      <div class="col-md-4">
+                                        <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
+                                      </div>      
+                                    </div>
                                   </div>
                                 </div>
-                                <div class="item">
-                                  <div class="row">
-                                    <div class="col-md-4">
-                                      <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-                                    </div>          
-                                    <div class="col-md-4">
-                                      <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-                                    </div>        
-                                  </div>
-                                </div>
-                                <div class="item">
-                                  <div class="row">
-                                    <div class="col-md-4">
-                                      <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-                                    </div>          
-                                    <div class="col-md-4">
-                                      <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <a class="thumbnail" href="#"><img alt="" src="http://placehold.it/150x150"></a>
-                                    </div>      
-                                  </div>
-                                </div>
+                                <a data-slide="prev" href="#media" class="left carousel-control">‹</a>
+                                <a data-slide="next" href="#media" class="right carousel-control">›</a>
                               </div>
-                              <a data-slide="prev" href="#media" class="left carousel-control">‹</a>
-                              <a data-slide="next" href="#media" class="right carousel-control">›</a>
                             </div>
-                          </div>
+                        </div>
+                      </div>
+                      <div class="row-fluid">
+                        <div class="col-md-12">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">可视化特征</div>
+                            <div class="panel-body text-center">
+                              <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                            </div>
+                          </div>                        
+                        </div>
                       </div>
                     </div>
-                    <div class="row-fluid">
-                      <div class="col-md-12">
-                        <div class="panel panel-default">
-                          <div class="panel-heading">可视化特征</div>
-                          <div class="panel-body text-center">
-                            <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                          </div>
-                        </div>                        
-                      </div>
-                    </div>
-                  </div>
-              </section>
-              </div>
-            </div>
-          </div>
-          <!-- 检索结果 -->
-          <div class="col-md-9">
-            <div class="panel panel-primary">
-              <div class="panel-heading">检索结果</div>
-              <div class="panel-body">
-                <div id="models-list" class="row-fluid">
-                  <div class="col-md-3">
-                      <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                      <span class="model-tag label label-default">
-                          airplane
-                      </span>
-                      <button class="btn btn-primary btn-md btn-download"> 下载
-                      </button>
-                  </div>
-                  <div class="col-md-3">
-                      <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                      <span class="model-tag label label-default">
-                          airplane
-                      </span>
-                      <button class="btn btn-primary btn-md btn-download"> 下载
-                      </button>
-                  </div>
-                  <div class="col-md-3">
-                      <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                      <span class="model-tag label label-default">
-                          airplane
-                      </span>
-                      <button class="btn btn-primary btn-md btn-download"> 下载
-                      </button>
-                  </div>
-                  <div class="col-md-3">
-                      <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                      <span class="model-tag label label-default">
-                          airplane
-                      </span>
-                      <button class="btn btn-primary btn-md btn-download"> 下载
-                      </button>
-                  </div>
-                  <div class="col-md-3">
-                      <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                      <span class="model-tag label label-default">
-                          airplane
-                      </span>
-                      <button class="btn btn-primary btn-md btn-download"> 下载
-                      </button>
-                  </div>
-                </div>
-                <div id="models-nav" class="row-fluid text-center">
-                  <div class="col-md-12">
-                      <ul class="pagination">
-                          <li class="disabled"><a href="#">&laquo;</a></li>
-                          <li class="active"><a href="#">1</a></li>
-                          <li><a href="#">2</a></li>
-                          <li><a href="#">3</a></li>
-                          <li><a href="#">4</a></li>
-                          <li><a href="#">5</a></li>
-                          <li><a href="#">&raquo;</a></li>
-                      </ul>
-                  </div>
+                </section>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-   
+      </section>
+    </div>
     
      <!--FOOTER SECTION END-->
     <!-- <div class="copy-txt">
@@ -247,140 +241,9 @@
     <script src="assets/js/bootstrap.js"></script>
     <!-- Treeview SCRIPTS -->
     <script src="assets/js/bootstrap-treeview.js"></script>
+    <script src="assets/js/jquery.simplePagination.js"></script>
     <!-- CUSTOM SCRIPTS  -->
     <script src="assets/js/custom.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            var classes_data = [
-              {
-                text: 'All',
-                href: '#all',
-                tags: ['4'],
-                nodes: [
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                ]
-              },
-              {
-                text: 'Parent 2',
-                href: '#parent2',
-                tags: ['0']
-              },
-              {
-                text: 'Parent 3',
-                href: '#parent3',
-                 tags: ['0']
-              },
-              {
-                text: 'Parent 4',
-                href: '#parent4',
-                tags: ['0']
-              },
-              {
-                text: 'Parent 5',
-                href: '#parent5'  ,
-                tags: ['0']
-              }
-            ];
-            $('#model-classes-treeview').treeview({
-              color: "#428bca",
-              showTags: true,
-              data: classes_data
-            });
-        });
-    </script>
+    <script src="assets/js/home.js"></script>
 </body>
 </html>

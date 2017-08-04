@@ -151,12 +151,13 @@
 	            // 向服务器请求第page页的数据
 	            console.log(""+page);
 	        }
-	    });
+	      });
 
-        $("#search").click(function(){
-            window.location.href = "search_result.html";
-        });
+        $("#search").click(searchModel);
+        $("#upload-model-btn").click(chooseModel);
+        $("#model-file-input").change(uploadModel);
 
+        $("#models-list .btn-download").click(downloadModel);
     });
 
 
@@ -167,6 +168,7 @@
     	//鼠标进入时轮流播放不同视角下的截图
     	modelImgsTimer = window.setInterval(function(){
     		modelImgsTimerCount += 1;
+        console.log(imgs[modelImgsTimerCount%imgs.length]);
     		$(event.target).find(".model-img").attr("src", imgs[modelImgsTimerCount%imgs.length]);
     	}, 1000);
     }
@@ -177,6 +179,105 @@
     		$(event.target).find(".model-img").attr("src", imgs[0]);
     	}
     	modelImgsTimer = null;
+      modelImgsTimerCount = 0;
     }
 
+    function searchModel(){
+      //先检查搜索框有没有输入，有的话按照文字匹配类别，再检查是否有上传的模型，有的话模型检索，否则提示
+      var inputKeyword = $("#search-key-input").val();
+      console.log(inputKeyword);
+      if(inputKeyword){
+        //匹配左侧文字类别
+
+      }else{
+          uploadModel();
+      }
+      window.location.href = "search_result.html";
+    }
+
+    function chooseModel(){
+      //弹出选择模型框
+      $("#model-file-input").trigger("click");
+      console.log("chooseModel");
+    }
+
+    function uploadModel(){
+      //存下来本地要能显示，然后将模型上传到服务器上
+      var filepath = $("#model-file-input").val();
+      $.ajax({
+        // Your server script to process the upload
+        url: 'upload.php',
+        type: 'POST',
+
+        // Form data
+        data: new FormData($('#model-file-input')),
+
+        // Tell jQuery not to process data or worry about content-type
+        // You *must* include these options!
+        cache: false,
+        contentType: false,
+        processData: false,
+
+        // Custom XMLHttpRequest
+        // xhr: function() {
+        //   var myXhr = $.ajaxSettings.xhr();
+        //   if (myXhr.upload) {
+        //       // For handling the progress of the upload
+        //       myXhr.upload.addEventListener('progress', function(e) {
+        //           if (e.lengthComputable) {
+        //               $('progress').attr({
+        //                   value: e.loaded,
+        //                   max: e.total,
+        //               });
+        //           }
+        //       } , false);
+        //   }
+        //   return myXhr;
+        // },
+        success: function(data, status, xhr){
+          console.log("success");
+        },
+        error: function(data, status, xhr){
+          console.log("error");
+        }
+      });
+    }
+
+    function downloadModel(){
+      console.log("downloadModel");
+    }
+
+    function refreshModelsList(modelsList){
+      //首先清空原来的模型信息
+      var modelsDiv = $("#models-list");
+      modelsDiv.empty();
+      for(model in modelsList){
+          modelsDiv.append(newModelDiv(model));
+      }
+
+    }
 }(jQuery));
+
+function newModelDiv(model){
+  var modelDiv = document.createElement("div");
+  $(modelDiv).addClass("col-md-3 model-col");
+    var modelImg = document.createElement("img");
+    $(modelImg).addClass("img-thumbnail model-img");
+    $(modelImg).attr("src", "https://www.w3schools.com/bootstrap/paris.jpg");
+    $(modelImg).attr("width", "304");
+    $(modelImg).attr("height", "236");
+    $(modelImg).attr("alt", "Model view");
+  $(modelDiv).append(modelImg);
+  $(modelDiv).append("<br />");
+    var infoDiv = document.createElement("div");
+      var tagSpan = document.createElement("span");
+      $(tagSpan).addClass("model-tag label label-default");
+      $(tagSpan).text("label");
+      var downloadBtn = document.createElement("button");
+      $(downloadBtn).addClass("btn btn-primary btn-md btn-download");
+      $(downloadBtn).text("下载");
+    $(infoDiv).append(tagSpan);
+    $(infoDiv).append(downloadBtn);
+  $(modelDiv).append(infoDiv);
+  return modelDiv;
+}
