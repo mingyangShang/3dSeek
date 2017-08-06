@@ -8,3 +8,9 @@
 	border:1px solid #cecece;
 	padding-top: 2px;
 }
+.small-font{
+	font-size: 12px;
+}
+#nums-result{
+	color: #3071a9;
+}

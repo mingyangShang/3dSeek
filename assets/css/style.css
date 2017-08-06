@@ -66,7 +66,7 @@ color: #FFF;
 font-size: 30px;
 letter-spacing: 5px;
 font-weight: 900;
-background-color:rgba(20, 152, 152, 1);
+background-color:#428bca;
 padding-bottom: 60px;
 line-height: 40px;
 }
@@ -90,10 +90,10 @@ background-color: #373737;
     font-weight:900;
 }
 .navbar-inverse .navbar-nav > li > a:hover {
-    color:rgba(20, 152, 152, 1);
+    color:#428bca;
 }
 .active-menu-item {
-    color:rgba(20, 152, 152, 1)!important;
+    color:#428bca!important;
 }
 .navbar-brand small {
     font-size:12px;
@@ -187,7 +187,7 @@ color:#fff;
  ============================================================ */
 
 /*classes navigator*/
-.nav-left, .nav-right, .nav-result, .nav-upload-model{
+.nav-left, .nav-right, .models, .nav-result, .nav-upload-model{
     max-height: 800px;
     overflow: auto;
 }
@@ -199,7 +199,7 @@ color:#fff;
     background-color:#202020;
     color:#fff;
 }
-.nav-result .loading, .nav-result, .loading{
+.nav-result .loading, .loading{
     background:url("../img/loading.gif") no-repeat center center;
 }
 

@@ -19,6 +19,7 @@
     <link href="assets/css/style.css" rel="stylesheet" />
     <!-- CONTROLS STYLE CSS -->
     <link href="assets/css/controls.css" rel="stylesheet" />
+    <link href="assets/css/viewer.css" rel="stylesheet" />
     <link href="assets/css/bootstrap-fix.css" rel="stylesheet" />
     <link href="assets/css/result-fix.css" rel="stylesheet" />
 </head>
@@ -44,7 +45,7 @@
 
         </div>
     </div>
-    <div class="fh5co-bg-section">
+    <div class="fh5co-bg-section page">
       <section id="search-domain">
           <div class="container-fluid">
               <div class="row-fluid text-center" id="search-row">
@@ -60,16 +61,19 @@
       				</div>
               </div>
               <div class="row">
-              	<div class="col-md-9 text-center col-md-offset-1">
+                <div class="col-md-2 has-error error">
+                    <span id="search-error-hint" class="small-font help-block">检索关键字不能为空</span>
+                </div>
+              	<div class="col-md-5 text-center">
               		<label class="radio-inline">
-    						<input type="radio" name="inlineRadioOptions" id="method1Radio" value="method_wxy" checked> 王曦阳
-  					</label>
-  					<label class="radio-inline">
-    						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_smy"> 商明阳
-  					</label>
-  					<label class="radio-inline">
-    						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_lhl"> 陆洪磊
-  					</label>
+        						<input type="radio" name="inlineRadioOptions" id="method1Radio" value="method_wxy" checked> 王曦阳
+        					</label>
+        					<label class="radio-inline">
+          						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_smy"> 商明阳
+        					</label>
+        					<label class="radio-inline">
+          						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_lhl"> 陆洪磊
+        					</label>
   				</div>
           </div>
       </section>
@@ -82,10 +86,13 @@
               <div class="panel panel-default">
                 <div class="panel-heading">检索结果
                   <!-- <img src="assets/img/loading.gif" width="32" height="32" /> -->
+                  <span class="small-font">共检索到</span>
+                  <span id="nums-result" class="small-font"><b>10</b></span>
+                  <span class="small-font">条结果</span>
                 </div>
-                <div class="panel-body nav-result">
-                  <div id="models-list" class="row-fluid">
-                    <div class="col-md-3 model-col">
+                <div class="panel-body">
+                  <div id="models-list" class="row-fluid loading models">
+                    <div class="col-md-2 model-col">
                         <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
                         <span class="model-tag label label-default">
                             airplane
@@ -93,7 +100,7 @@
                         <button class="btn btn-primary btn-md btn-download"> 下载
                         </button>
                     </div>
-                    <div class="col-md-3 model-col">
+                    <div class="col-md-2 model-col">
                         <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
                         <span class="model-tag label label-default">
                             airplane
@@ -101,7 +108,7 @@
                         <button class="btn btn-primary btn-md btn-download"> 下载
                         </button>
                     </div>
-                    <div class="col-md-3 model-col">
+                    <div class="col-md-2 model-col">
                         <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
                         <span class="model-tag label label-default">
                             airplane
@@ -109,7 +116,7 @@
                         <button class="btn btn-primary btn-md btn-download"> 下载
                         </button>
                     </div>
-                    <div class="col-md-3 model-col">
+                    <div class="col-md-2 model-col">
                         <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
                         <span class="model-tag label label-default">
                             airplane
@@ -117,7 +124,23 @@
                         <button class="btn btn-primary btn-md btn-download"> 下载
                         </button>
                     </div>
-                    <div class="col-md-3 model-col">
+                    <div class="col-md-2 model-col">
+                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                        <span class="model-tag label label-default">
+                            airplane
+                        </span>
+                        <button class="btn btn-primary btn-md btn-download"> 下载
+                        </button>
+                    </div>
+                    <div class="col-md-2 model-col">
+                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                        <span class="model-tag label label-default">
+                            airplane
+                        </span>
+                        <button class="btn btn-primary btn-md btn-download"> 下载
+                        </button>
+                    </div>
+                    <div class="col-md-2 model-col">
                         <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
                         <span class="model-tag label label-default">
                             airplane
@@ -218,6 +241,27 @@
                 </div>
               </div>
             </div>
+          </div>
+          <!-- Model View Modal-->
+          <div id="viewerModal" class="modal fade">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-body embed-responsive embed-responsive-16by9">
+                          <div id="viewerIframeOverlay" class="embed-responsive-item">
+                              <div class="pull-right" id="close-viewer">
+                                  <button type="button" data-dismiss="modal" class="btn btn-danger">
+                                      <span aria-hidden="true">×</span>
+                                      <span class="sr-only">Close</span>
+                                  </button>
+                              </div>
+                              <div class="text-center">
+                                  <button id="viewerSourceButton" class="btn btn-primary">新窗口查看</button>
+                              </div>
+                          </div>
+                          <iframe id="viewerIframe" class="embed-responsive-item"></iframe>
+                      </div>
+                  </div>
+              </div>
           </div>
         </div>
       </section>

@@ -15,8 +15,11 @@
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <!-- TreeView SYTLE CSS -->
     <link href="assets/css/bootstrap-treeview.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-select.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://csshake.surge.sh/csshake.min.css">
     <!-- CUSTOM STYLE CSS -->
     <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/viewer.css" rel="stylesheet" />
     <link href="assets/css/bootstrap-fix.css" rel="stylesheet" />
 </head>
 <body > 
@@ -57,15 +60,18 @@
     				</div>
                 </div>
                 <div class="row">
-                	<div class="col-md-9 text-center col-md-offset-1">
+                    <div class="col-md-2 has-error col-md-offset-1 error">
+                        <span id="search-error-hint" class="small-font help-block">检索关键字不能为空</span>
+                    </div>
+                	<div class="col-md-6 text-center">
                 		<label class="radio-inline">
-      						<input type="radio" name="inlineRadioOptions" id="method1Radio" value="method_wxy" checked> 王曦阳
+      						<input type="radio" name="inlineRadioOptions" id="wxyRadio" value="method_wxy" checked> 王曦阳
     					</label>
     					<label class="radio-inline">
-      						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_smy"> 商明阳
+      						<input type="radio" name="inlineRadioOptions" id="smyRadio" value="method_smy"> 商明阳
     					</label>
     					<label class="radio-inline">
-      						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_lhl"> 陆洪磊
+      						<input type="radio" name="inlineRadioOptions" id="lhlRadio" value="method_lhl"> 陆洪磊
     					</label>
     				</div>
             </div>
@@ -76,7 +82,19 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="panel panel-default" id="classes-nav-panel">
-                            <div class="panel-heading"></div>
+                            <div class="panel-heading">
+                                模型集合
+                                <select id="model-set-select" class="selectpicker">
+                                  <optgroup label="ModelNet">
+                                    <option>ModelNet10</option>
+                                    <option>ModelNet40</option>
+                                  </optgroup>
+                                  <optgroup label="ShapeNet">
+                                    <option disabled>ShapeNet Core</option>
+                                    <option disabled>ShapeNet Sem</option>
+                                  </optgroup>
+                                </select>
+                            </div>
                             <div class="panel-body">
                                 <div id="model-classes-treeview" class="nav-left"></div>
                             </div>
@@ -85,8 +103,8 @@
                     <div class="col-md-9">
                         <div class="panel panel-default">
                             <div class="panel-heading"></div>
-                            <div class="panel-body nav-right">
-                                <div id="models-list" class="row-fluid">
+                            <div class="panel-body">
+                                <div id="models-list" class="row-fluid nav-right">
                                     <div class="col-md-3 model-col">
                                         <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
                                         <div class="">
@@ -261,12 +279,33 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div> 
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Model View Modal-->
+      <div id="viewerModal" class="modal fade">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body embed-responsive embed-responsive-16by9">
+                      <div id="viewerIframeOverlay" class="embed-responsive-item">
+                          <div class="pull-right" id="close-viewer">
+                              <button type="button" data-dismiss="modal" class="btn btn-danger">
+                                  <span aria-hidden="true">×</span>
+                                  <span class="sr-only">Close</span>
+                              </button>
+                          </div>
+                          <div class="text-center">
+                              <button id="viewerSourceButton" class="btn btn-primary">新窗口查看</button>
+                          </div>
+                      </div>
+                      <iframe id="viewerIframe" class="embed-responsive-item"></iframe>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
    
     
@@ -286,18 +325,12 @@
     <script src="assets/js/jquery-1.11.1.js"></script>
     <!-- BOOTSTRAP SCRIPTS  -->
     <script src="assets/js/bootstrap.js"></script>
+
     <!-- Treeview SCRIPTS -->
     <script src="assets/js/bootstrap-treeview.js"></script>
-    <script type="text/javascript" src="assets/js/jquery.simplePagination.js"></script>
+    <script src="assets/js/bootstrap-select.js"></script>
+    <script src="assets/js/jquery.simplePagination.js"></script>
     <!-- CUSTOM SCRIPTS  -->
     <script src="assets/js/home.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            
-            $("#search").click(function(){
-                window.location.href = "search_result.html";
-            });
-        });
-    </script>
 </body>
 </html>

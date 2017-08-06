@@ -1,9 +1,103 @@
+var modelSets = {
+  "sets": ["ModelNet", "ShapeNet"],
+  "subsets":
+    {
+      "ModelNet":["ModelNet10", "ModelNet40"],
+      "ShapeNet":["ShapeNet-Core", "ShapeNet-Sem"]
+    },
+};
+var classesData = {
+  "ModelNet10": [
+     {
+        text: 'All',
+        href: '#all',
+        tags: ['4'],
+        nodes: [
+          {
+            text: 'modelnet10-1',
+            href: '#airplane',
+            tags: ['2'],
+          },
+          {
+            text: 'Car',
+            href: '#modelnet10-2',
+            tags: ['0']
+          },
+        ],
+      },
+      {
+        text: 'Parent 2',
+        href: '#parent2',
+        tags: ['0']
+      },
+  ],
+  "ModelNet40": [
+      {
+        text: 'All',
+        href: '#all',
+        tags: ['4'],
+        nodes: [
+          {
+            text: 'modelnet40-1',
+            href: '#airplane',
+            tags: ['2'],
+          },
+          {
+            text: 'Car',
+            href: '#modelnet40-2',
+            tags: ['0']
+          },
+        ],
+      },
+      {
+        text: 'Parent 2',
+        href: '#parent2',
+        tags: ['0']
+      },
+      {
+        text: 'Parent 3',
+        href: "#parent3",
+        tags: ['1']
+      },
+  ],
+  "ShapeNet-Core": [
+      {
+          text: 'All',
+          href: '#all',
+          tags: ['4'],
+          nodes: [
+            {
+              text: 'ShapeNet-Core-1',
+              href: '#airplane',
+              tags: ['2'],
+            },
+            {
+              text: 'Car',
+              href: '#ShapeNetCore-2',
+              tags: ['0']
+            },
+          ],
+        },
+        {
+          text: 'Parent 2',
+          href: '#parent2',
+          tags: ['0']
+        },
+  ],
+  "ShapeNet-Sem": [
+  ]
+};
 (function ($) {
 
     $(document).ready(function () {
         
         $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
         //分类导航
+        $("#model-set-select").change(function(event){
+          refreshClasses($(event.target).val());
+        });
+        $("#search-error-hint").css("display", "none");
+        refreshModelSetsSelect(modelSets);
         var classes_data = [
               {
                 text: 'All',
@@ -157,6 +251,12 @@
         $("#upload-model-btn").click(chooseModel);
         $("#model-file-input").change(uploadModel);
 
+        $("#models-list .model-col").click(openModelViewer);
+        $("#close-viewer").click(closeModelViewer);
+        $("#viewerSourceButton").click(function(){
+          //在新窗口中打开
+          window.location.href = "view-model.html";
+        });
         $("#models-list .btn-download").click(downloadModel);
     });
 
@@ -186,18 +286,24 @@
       //先检查搜索框有没有输入，有的话按照文字匹配类别，再检查是否有上传的模型，有的话模型检索，否则提示
       var inputKeyword = $("#search-key-input").val();
       console.log(inputKeyword);
-      if(inputKeyword){
+      if(inputKeyword!=""){
         //匹配左侧文字类别
-
+        $("#search-error-hint").css("display", "none");
       }else{
-          uploadModel();
+          $("#search-error-hint").css("display", "inline");
       }
-      window.location.href = "search_result.html";
+      
+    }
+
+    function searchByModel(){
+      var methodVal = $("input[type=radio]:checked").val();
+      console.log(methodVal);
     }
 
     function chooseModel(){
       //弹出选择模型框
       $("#model-file-input").trigger("click");
+      window.location.href = "search_result.html";
       console.log("chooseModel");
     }
 
@@ -243,20 +349,22 @@
       });
     }
 
-    function downloadModel(){
-      console.log("downloadModel");
-    }
+    
 
-    function refreshModelsList(modelsList){
-      //首先清空原来的模型信息
-      var modelsDiv = $("#models-list");
-      modelsDiv.empty();
-      for(model in modelsList){
-          modelsDiv.append(newModelDiv(model));
-      }
-
-    }
 }(jQuery));
+
+function downloadModel(){
+  console.log("downloadModel");
+}
+
+function refreshModelsList(modelsList){
+  //首先清空原来的模型信息
+  var modelsDiv = $("#models-list");
+  modelsDiv.empty();
+  for(model in modelsList){
+      modelsDiv.append(newModelDiv(model));
+  }
+}
 
 function newModelDiv(model){
   var modelDiv = document.createElement("div");
@@ -280,4 +388,51 @@ function newModelDiv(model){
     $(infoDiv).append(downloadBtn);
   $(modelDiv).append(infoDiv);
   return modelDiv;
+}
+
+function refreshModelSetsSelect(sets){
+  var setsSelect = $("#model-set-select");
+  setsSelect.empty();
+  var parentSets = sets["sets"];
+  for(i in parentSets){
+    var group = document.createElement("optgroup");
+    $(group).attr("label", parentSets[i]);
+    var subSets = sets["subsets"][parentSets[i]];
+    for(j in subSets){
+      //TODO 暂时不使用ShapeNet
+      if(subSets[j].indexOf("ShapeNet") != -1){
+        $(group).append("<option disabled>"+subSets[j]+"</option>");
+      }else{
+        $(group).append("<option>"+subSets[j]+"</option>");
+      }
+    }
+    setsSelect.append(group);
+  }
+}
+
+//弹出窗口展示模型信息
+function openModelViewer(event){
+  // var modelInfo = $(event.target).data("model");
+  //弹出窗口
+  $("#viewerModal").css("display", "block");
+  $("#viewerModal").addClass("in");
+  $("#viewerIframe").attr("src", "view-model.html");
+}
+
+//关闭展示模型的窗口i 
+function closeModelViewer(event){
+  $("#viewerModal").css("display", "none");
+  $("#viewerModal").removeClass("in");
+}
+
+function refreshClasses(modelsetName){
+  $('#model-classes-treeview').treeview({
+    color: "#428bca",
+    showTags: true,
+    data: classesData[modelsetName],
+    onNodeSelected: function(event, data){
+      console.log(data);
+    }
+  });
+  $('#model-classes-treeview').addClass("loading");//进度条
 }

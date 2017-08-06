@@ -15,10 +15,11 @@
      <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <!-- CUSTOM STYLE CSS -->
     <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/experiment.css" rel="stylesheet">
+    <link href="assets/css/build.css" rel="stylesheet" />
+    <link rel=”stylesheet” href=”//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css”>
+    <link href="assets/css/experiment.css" rel="stylesheet" />
 </head>
-<body > 
-   
+<body class="fh5co-bg-section"> 
         <div class="navbar navbar-inverse navbar-fixed-top " >
         <div class="container">
             <div class="navbar-header">
@@ -39,122 +40,135 @@
             </div>
         </div>
     </div>
-    <section id="experiment_section">
+    <section id="experiment_section" class="fh5co-bg-section">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading">Metrics</div>
-              <div class="panel-body">
-                <div class="row">
-                  <div class="col-md-4"> 
-                    <div class="panel panel-default"> 
-                      <div class="panel-heading"><b>Accuracy</b></div>
-                      <div class="panel-body">
-                        <table class="table table-hover table-bordered table-striped">
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th><a href="http://modelnet.cs.princeton.edu/">modelnet40</a></th>
-                              <th><a href="http://modelnet.cs.princeton.edu/">modelnet10</a></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><a href="http://people.cs.umass.edu/~kalo/papers/viewbasedcnn/index.html">MVCNN</a></td>
-                              <td>90.1%</td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td><a href="https://arxiv.org/abs/1704.01222">Klokov and Lempitsky</a></td>
-                              <td>91.8%</td>
-                              <td>94.0%</td>
-                            </tr>
-                            <tr>
-                              <td>王曦阳</td>
-                              <td>93.31%</td>
-                              <td>94.71%</td>
-                            </tr>
-                            <tr>
-                              <td>商明阳</td>
-                              <td>93.31%</td>
-                              <td>94.71%</td>
-                            </tr>
-                            <tr>
-                              <td>陆洪磊</td>
-                              <td>93.31%</td>
-                              <td>94.71%</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="panel panel-default">
-                      <div class="panel-heading"><b>mAP</b></div>
-                      <div class="panel-body">
-                        <table class="table table-hover table-bordered table-striped">
-                          <thead>
-                            <tr>
-                              <th>#</th>
-                              <th><a href="http://modelnet.cs.princeton.edu/">modelnet40</a></th>
-                              <th><a href="http://modelnet.cs.princeton.edu/">modelnet10</a></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><a href="http://people.cs.umass.edu/~kalo/papers/viewbasedcnn/index.html">MVCNN</a></td>
-                              <td>79.5%</td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td><a href="https://sites.google.com/site/songbaihust/">GIFT</a></td>
-                              <td>81.94%</td>
-                              <td>91.12%</td>
-                            </tr>
-                            <tr>
-                              <td>王曦阳</td>
-                              <td>88.54%</td>
-                              <td>94.71%</td>
-                            </tr>
-                            <tr>
-                              <td>商明阳</td>
-                              <td>88.54%</td>
-                              <td>94.71%</td>
-                            </tr>
-                            <tr>
-                              <td>陆洪磊</td>
-                              <td>88.54%</td>
-                              <td>94.71%</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4"> 
-                    <div class="panel panel-default">
-                      <div class="panel-heading"><b>PR-Curve</b></div>
-                      <div class="panel-body">
-                        PR curve
-                      </div>
-                    </div>
+            <div class="panel-group">
+                <div class="panel panel-default"> 
+                  <div class="panel-heading"><b><a href="https://en.wikipedia.org/wiki/Accuracy_and_precision">Accuracy</a></b></div>
+                  <div class="panel-body">
+                    <table class="table table-hover table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th><a href="http://modelnet.cs.princeton.edu/">modelnet40</a></th>
+                          <th><a href="http://modelnet.cs.princeton.edu/">modelnet10</a></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><a href="http://people.cs.umass.edu/~kalo/papers/viewbasedcnn/index.html">MVCNN</a></td>
+                          <td>90.1%</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td><a href="https://arxiv.org/abs/1704.01222">Klokov and Lempitsky</a></td>
+                          <td>91.8%</td>
+                          <td>94.0%</td>
+                        </tr>
+                        <tr>
+                          <td>王曦阳</td>
+                          <td>93.31%</td>
+                          <td>94.71%</td>
+                        </tr>
+                        <tr>
+                          <td>商明阳</td>
+                          <td>93.31%</td>
+                          <td>94.71%</td>
+                        </tr>
+                        <tr>
+                          <td>陆洪磊</td>
+                          <td>93.31%</td>
+                          <td>94.71%</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-              </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading"><b><a href="https://en.wikipedia.org/wiki/Information_retrieval#Mean_average_precision">mAP</a></b></div>
+                  <div class="panel-body">
+                    <table class="table table-hover table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th><a href="http://modelnet.cs.princeton.edu/">modelnet40</a></th>
+                          <th><a href="http://modelnet.cs.princeton.edu/">modelnet10</a></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><a href="http://people.cs.umass.edu/~kalo/papers/viewbasedcnn/index.html">MVCNN</a></td>
+                          <td>79.5%</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td><a href="https://sites.google.com/site/songbaihust/">GIFT</a></td>
+                          <td>81.94%</td>
+                          <td>91.12%</td>
+                        </tr>
+                        <tr>
+                          <td>王曦阳</td>
+                          <td>88.54%</td>
+                          <td>94.71%</td>
+                        </tr>
+                        <tr>
+                          <td>商明阳</td>
+                          <td>88.54%</td>
+                          <td>94.71%</td>
+                        </tr>
+                        <tr>
+                          <td>陆洪磊</td>
+                          <td>88.54%</td>
+                          <td>94.71%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <b><a href="https://en.wikipedia.org/wiki/Precision_and_recall">PR-Curve</a></b>
+                    <div id="show-area-div" class="[ form-group ]">
+                      <input type="checkbox" name="fancy-checkbox-primary-custom-icons" id="fancy-checkbox-primary-custom-icons" autocomplete="off" />
+                      <div class="[ form-group ]">
+                        <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary" autocomplete="off" checked/>
+                        <div class="[ btn-group ]">
+                            <label for="fancy-checkbox-primary" class="[ btn btn-primary ]">
+                                <span class="[ glyphicon glyphicon-ok ]"></span>
+                                <span> </span>
+                            </label>
+                            <label for="fancy-checkbox-primary" class="[ btn btn-default active ]">
+                                显示区域
+                            </label>
+                        </div>
+                    </div>
+                    <!-- <div class="checkbox checkbox-primary">
+                        <input id="check3" class="styled" type="checkbox" checked>
+                        <label for="check3">
+                            Style 3
+                        </label>
+                    </div> -->
+                  </div>
+                  </div>
+                  <div class="panel-body">
+                    <canvas id="prChart" width="400" height="400"></canvas>
+                  </div>
+                </div>
             </div>
           </div>
         </div>
       </div>
-    </section>  
+    </section> 
      <!-- COPY TEXT SECTION END-->
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
     <!-- CORE JQUERY  -->
     <script src="assets/js/jquery-1.11.1.js"></script>
     <!-- BOOTSTRAP SCRIPTS  -->
     <script src="assets/js/bootstrap.js"></script>
+    <script src="assets/js/chart.min.js"></script>
     <!-- CUSTOM SCRIPTS  -->
-    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/experiment.js"></script>
 </body>
 </html>
