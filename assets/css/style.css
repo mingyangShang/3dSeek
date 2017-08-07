@@ -187,10 +187,16 @@ color:#fff;
  ============================================================ */
 
 /*classes navigator*/
-.nav-left, .nav-right, .models, .nav-result, .nav-upload-model{
-    max-height: 800px;
+.nav-left, .nav-right, .models{
+    max-height: 500px;
     overflow: auto;
 }
+
+.nav-rsult, .nav-upload-model{
+    overflow: auto;
+    max-height: 700px;
+}
+
 .nav-left{
     max-width: 500px;
 }
