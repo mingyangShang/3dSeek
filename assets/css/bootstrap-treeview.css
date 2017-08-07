@@ -17,6 +17,12 @@
  * limitations under the License.
  * ========================================================= */
 
+
+.treeview .node-selected {
+	background-color: #428bca;
+	color: #FFFFFF;
+}
+
 .treeview .list-group-item {
 	cursor: pointer;
 }
@@ -35,3 +41,4 @@
 	color: silver;
 	cursor: not-allowed;
 }
+

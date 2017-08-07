@@ -21,9 +21,10 @@
     height: 80%;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 20px;
 }
 #viewerModal {
-    margin-top: 160px;
+    margin-top: 100px;
     padding-top: 100px;
 }
 .modal.fade .modal-dialog {

@@ -226,6 +226,7 @@ var classesData = {
           color: "#428bca",
           showTags: true,
           data: classes_data,
+          multiSelect: false,
           onNodeSelected: function(event, data){
             console.log(data);
           }
@@ -261,7 +262,7 @@ var classesData = {
     });
 
 
-    var imgs = ["https://www.w3schools.com/bootstrap/paris.jpg", "https://www.w3schools.com/bootstrap/sanfran.jpg", "https://www.w3schools.com/bootstrap/cinqueterre.jpg"];
+    var imgs = ["https://www.w3schools.com/bootstrap/paris.jpg", "https://www.w3schools.com/bootstrap/sanfran.jpg"];
     var modelImgsTimer;
     var modelImgsTimerCount = 0;
     function hoverInModel(event){
@@ -289,6 +290,7 @@ var classesData = {
       if(inputKeyword!=""){
         //匹配左侧文字类别
         $("#search-error-hint").css("display", "none");
+        searchByKey(inputKeyword);
       }else{
           $("#search-error-hint").css("display", "inline");
       }
@@ -299,6 +301,14 @@ var classesData = {
       var methodVal = $("input[type=radio]:checked").val();
       console.log(methodVal);
     }
+    function searchByKey(key){
+      //从现在的分类列表中查找包含关键词的分类
+      var selectableNodes = findSelectableNodes(key);
+      $("#model-classes-treeview").treeview('selectNode', [selectableNodes[0], { silent: false }]);
+    }
+    function findSelectableNodes(key) {
+      return $("#model-classes-treeview").treeview('search', [ key, { ignoreCase: true, exactMatch: false } ]);
+    };
 
     function chooseModel(){
       //弹出选择模型框
@@ -430,6 +440,7 @@ function refreshClasses(modelsetName){
     color: "#428bca",
     showTags: true,
     data: classesData[modelsetName],
+    multiSelect: false,
     onNodeSelected: function(event, data){
       console.log(data);
     }

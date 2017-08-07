@@ -47,7 +47,7 @@
 		onhoverColor: '#F5F5F5',
 		selectedColor: '#FFFFFF',
 		selectedBackColor: '#428bca',
-		searchResultColor: '#D9534F',
+		searchResultColor: undefined,
 		searchResultBackColor: undefined, //'#FFFFFF',
 
 		enableLinks: false,
