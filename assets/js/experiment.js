@@ -72,6 +72,7 @@ $(document).ready(function () {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
                 title:{
                     display:true,
                     text:'PR-curve'
