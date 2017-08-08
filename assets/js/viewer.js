@@ -5,6 +5,7 @@ function showModel(modelPath, container) {
     var camera, controls, scene, renderer;
     init();
     animate();
+    // return controls;
 
     function init() {
 
@@ -23,7 +24,7 @@ function showModel(modelPath, container) {
         controls.staticMoving = true;
         controls.dynamicDampingFactor = 0.3;
         window.controls = controls;
-        controls.enabled = false;
+        controls.enabled = true;
 
         scene = new THREE.Scene();
 
@@ -39,10 +40,18 @@ function showModel(modelPath, container) {
 
         var material = new THREE.MeshLambertMaterial( { color: 0xffffff, side: THREE.DoubleSide } );
 
-        var loader = new THREE.VTKLoader();
-//                    var offPath = "models/vtk/airplane.off";
-		offPath = modelPath;
-        loader.load( offPath, function ( geometry ) {
+        var extension = modelPath.split('.')[1].toLowerCase();
+        var loader;
+        if (extension == 'off') {
+            loader = new THREE.OFFLoader();
+        } else if (extension == 'obj') {
+            loader = new THREE.OBJLoader();
+        } else if (extension == 'vtk') {
+            loader = new THREE.VTKLoader();
+        } else {
+            return;
+        }
+        loader.load( modelPath, function ( geometry ) {
             geometry.center();
             geometry.computeVertexNormals();
             geometry.computeBoundingBox();
@@ -75,7 +84,7 @@ function showModel(modelPath, container) {
 
         window.addEventListener( 'resize', onWindowResize, false );
 
-    }
+    } 
 
     function onWindowResize() {
 

@@ -261,6 +261,7 @@ var classesData = {
         $("#models-list .btn-download").click(downloadModel);
         //检索结果中展示3维模型
         showModel("three-vtk/models/vtk/airplane.off", $("#canvas"));
+        window.controls.enabled = false;
         $(".views img").click(function(event){
             $("#bigImgModal").css("display", "block");
             $("#big-img").attr("src", $(event.target).attr("src"));
@@ -277,7 +278,7 @@ var classesData = {
         $("#bigImgModal .close").click(function(event){
             $("#bigImgModal").css("display", "none");
         });
-        refreshFeatureChart();
+        window.featureChart = refreshFeatureChart("featureChart", [], []);
     });
 
 
@@ -465,69 +466,4 @@ function refreshClasses(modelsetName){
     }
   });
   $('#model-classes-treeview').addClass("loading");//进度条
-}
-
-function refreshFeatureChart(){
-  var featureCtx = document.getElementById("featureChart").getContext('2d');
-  var config = {
-            type: 'line',
-            data: {
-                labels: ["0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0"],
-                datasets: [{
-                    label: "检索模型",
-                    fill: false,
-                    backgroundColor: "#428bca",
-                    borderColor: "#428bca",
-                    data: [
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor()
-                        1.0, 0.98, 0.95, 0.88, 0.81, 0.75, 0.72, 0.65, 0.62, 0.55, 0.51
-                    ],
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                title:{
-                    display:false,
-                    text:'PR-curve'
-                },
-                tooltips: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                hover: {
-                    mode: 'nearest',
-                    intersect: true
-                },
-                legend: {
-                    display: false,
-                },
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Dimension'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Value'
-                        }
-                    }]
-                }
-            }
-        };
-        window.featureChart = new Chart(featureCtx, config);
 }
