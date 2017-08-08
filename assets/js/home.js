@@ -261,6 +261,13 @@ var classesData = {
         $("#models-list .btn-download").click(downloadModel);
         //检索结果中展示3维模型
         showModel("three-vtk/models/vtk/airplane.off", $("#canvas"));
+        $(".views img").click(function(event){
+            $("#bigImgModal").css("display", "block");
+            $("#big-img").attr("src", $(event.target).attr("src"));
+        });
+        $("#bigImgModal .close").click(function(event){
+            $("#bigImgModal").css("display", "none");
+        });
     });
 
 
