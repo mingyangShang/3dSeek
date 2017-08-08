@@ -6,6 +6,7 @@
 // modelViewer.redisplay();
 
 // Make instructions tab toggleable
+var featureChart;
 $(document).ready(function(){
 	$('#images').on('shown.bs.collapse', function () {
 	  modelViewer.modelImagesPanel.onResize();
@@ -13,6 +14,7 @@ $(document).ready(function(){
 	$('#instructions').hide();
 	$('#instructionsPanel').click(function () { $('#instructions').toggle(); });
 	showModel("three-vtk/models/vtk/airplane.off", $("#canvas"));
+    featureChart = refreshFeatureChart("featureChart", [], []); //特征可视化
 });
 
 

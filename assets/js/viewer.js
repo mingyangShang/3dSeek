@@ -22,6 +22,8 @@ function showModel(modelPath, container) {
 
         controls.staticMoving = true;
         controls.dynamicDampingFactor = 0.3;
+        window.controls = controls;
+        controls.enabled = false;
 
         scene = new THREE.Scene();
 

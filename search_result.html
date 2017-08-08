@@ -233,7 +233,8 @@
                           <div class="panel panel-default">
                             <div class="panel-heading">可视化特征</div>
                             <div class="panel-body text-center">
-                              <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
+                              <canvas id="featureChart" style="height:300px !important"></canvas>
+                              <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
                             </div>
                           </div>                        
                         </div>
@@ -266,7 +267,7 @@
               </div>
           </div>
           <!-- Big Image Viewer Modal -->
-          <div id="bigImgModal" class="modal">
+          <div id="bigImgModal" class="modal animated bounce infinite">
             <span class="close img-circle text-center">&times;</span>
             <img class="big-img" id="big-img">
           </div>
@@ -295,6 +296,7 @@
     <script src="assets/js/bootstrap-treeview.js"></script>
     <script src="assets/js/jquery.simplePagination.js"></script>
     <script src='assets/js/libs/inflate.min.js'></script>
+    <script src="assets/js/chart.min.js"></script>
     <script src="assets/js/three.js"></script>
 
     <script src="assets/js/controls/TrackballControls.js"></script>
@@ -304,7 +306,7 @@
     <script src="assets/js/Detector.js"></script>
     <script src="assets/js/viewer.js"></script>
     <!-- CUSTOM SCRIPTS  -->
-    <script src="assets/js/custom.js"></script>s
+    <script src="assets/js/custom.js"></script>
     <script src="assets/js/home.js"></script>
     <audio controls="controls" style="display: none;"></audio>
 
