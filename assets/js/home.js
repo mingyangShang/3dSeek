@@ -259,6 +259,8 @@ var classesData = {
           window.location.href = "view-model.html";
         });
         $("#models-list .btn-download").click(downloadModel);
+        //检索结果中展示3维模型
+        showModel("three-vtk/models/vtk/airplane.off", $("#canvas"));
     });
 
 

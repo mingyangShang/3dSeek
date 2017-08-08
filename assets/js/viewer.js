@@ -1,21 +1,3 @@
-
-// var SimpleModelViewerWithControls = STK.SimpleModelViewerWithControls;
-
-// var canvas = document.getElementById('canvas');
-// var modelViewer = new SimpleModelViewerWithControls(canvas);
-// modelViewer.redisplay();
-
-// Make instructions tab toggleable
-$(document).ready(function(){
-	$('#images').on('shown.bs.collapse', function () {
-	  modelViewer.modelImagesPanel.onResize();
-	});
-	$('#instructions').hide();
-	$('#instructionsPanel').click(function () { $('#instructions').toggle(); });
-	showModel("three-vtk/models/vtk/airplane.off", $("#canvas"));
-});
-
-
 function showModel(modelPath, container) {
 
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
@@ -88,7 +70,6 @@ function showModel(modelPath, container) {
 //                    document.body.appendChild( container );
 		// div2.appendChild( container);
         container.append( renderer.domElement );
-        $("#canvas canvas").css("margin-top", "60px");
 
         window.addEventListener( 'resize', onWindowResize, false );
 
