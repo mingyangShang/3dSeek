@@ -56,30 +56,19 @@ function showModel(modelPath, container) {
             geometry.computeVertexNormals();
             geometry.computeBoundingBox();
             var meshSize = geometry.boundingBox.size();
-            console.log(meshSize, meshSize.x, meshSize.y, meshSize.z);
-//                        var arr = [meshSize.x, meshSize.y, meshSize.z];
             var scalar = 1000 / Math.max(Math.max( meshSize.x, meshSize.y), meshSize.z);
-            console.log(scalar);
             var mesh = new THREE.Mesh( geometry, material );
-
 
             mesh.position.set( - 0.075, 0.005, 0 );
             mesh.scale.multiplyScalar( 0.2 * scalar);
-//                        mesh.scale.set(2,2,2);
             scene.add( mesh );
-
         } );
 
         // renderer
-
         renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
-//                    renderer.setSize( window.innerWidth, window.innerHeight);
-		renderer.setSize($("#canvas").width(), $("#canvas").height()-60);
-
-        // container = document.createElement( 'div' );
-//                    document.body.appendChild( container );
-		// div2.appendChild( container);
+        console.log("in viewer:"+$("#canvas").width());
+		renderer.setSize($("#canvas").width(), Math.max(150, $("#canvas").height()-60));
         container.append( renderer.domElement );
 
         window.addEventListener( 'resize', onWindowResize, false );

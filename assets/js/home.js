@@ -292,12 +292,12 @@ var classesData = {
         $("#bigImgModal .close").click(function(event){
           $("#bigImgModal").css("display", "none");
         });
+
         if($("#featureChart").length > 0){
           window.featureChart = refreshFeatureChart("featureChart", [], []);
         }
         //文件检索
         //找好位置
-
         $("#fileSearchDiv").css("top", $("#search-row").offset().top);
         $("#fileSearchDiv").css("width", $("#search-row").width());
         $(".nav-tabs a").click(function(){
