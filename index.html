@@ -77,6 +77,55 @@
                 </div>
             </div>
         </section>
+        <!-- 图像或模型的搜索框 -->
+        <div class="container modal" id="fileSearchDiv" style="background-color: white;height: 200px;"> 
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-md-2">
+                    <span style="font-size:16px;font-weight:bold;">上传模型检索</span>
+                </div>
+                <div class="col-md-1 col-md-offset-9">
+                    <span style="font-size:30px;cursor:pointer" id="closeFileSearchDiv">&times;</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="radio-inline" style="font-size: 12px;">
+                        <input type="radio" name="inlineRadioOptions_file" id="wxyRadio_file" value="method_wxy_file" checked> 王曦阳
+                    </label>
+                    <label class="radio-inline" style="font-size: 12px;">
+                        <input type="radio" name="inlineRadioOptions_file" id="smyRadio_file" value="method_smy_file"> 商明阳
+                    </label>
+                    <label class="radio-inline" style="font-size: 12px;">
+                        <input type="radio" name="inlineRadioOptions_file" id="lhlRadio_file" value="method_lhl_file"> 陆洪磊
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a id="urlLink" data-toggle="tab">URL</a></li>
+                    <li><a id="fileLink" data-toggle="tab">上传文件</a></li>
+                </ul>
+            </div>
+            <div class="row tab-content" style="background: #DDDDDD; height: 100px;">
+                    <div id="urlSearchPane" class="tab-pane fade in active" style="margin-left: 10px; margin-top: 20px;">
+                        <div class="col-md-9" >
+                            <input type="text" class="form-control input-cls"  placeholder="图片或模型URL"  id="search-url-input" style="font-size: 14px;" /> 
+                        </div>
+                        <div class="col-md-2" >
+                            <input type="button" id="search_url" class="btn btn-primary btn-lg btn-set"  value="检索" style="font-size: 14px;" />
+                        </div>
+                    </div>
+                    <div id="fileSearchPane" class="tab-pane fade in active" style="display: none; margin-top: 20px; margin-left: 20px; font-size: 14px;">
+                        <input type="button" id="searchFile" class="btn btn-primary btn-lg btn-set col-md-1" value="上传" style="font-size: 14px;" />
+                        <span style="margin-left: 10px; margin-right: 10px;vertical-align: sub;" id="searchFileName">未选择文件</span>
+                        <div id="uploadingFile" class="text-center" style="display: inline-block;">
+                            <img src="assets/img/loading.gif" style="width: 40px;height: 40px;">
+                            <span style="color:#428bca">正在上传……</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
      <!--SEARCH SECTION END-->
         <section id="model-scan">
             <div class="container">

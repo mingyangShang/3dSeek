@@ -90,6 +90,7 @@ var classesData = {
 (function ($) {
 
     $(document).ready(function () {
+        window.server = "http://166.111.81.123:8610/";
         
         $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
         //分类导航
@@ -97,6 +98,14 @@ var classesData = {
           refreshClasses($(event.target).val());
         });
         $("#search-error-hint").css("display", "none");
+        //加载类别信息
+        $.get(window.server + "api/set-names", function(data, status){
+          console.log(status);
+          consolo.log(data);
+          if(status){
+            refreshModelSetsSelect(data);
+          }
+        });
         refreshModelSetsSelect(modelSets);
         var classes_data = [
               {
@@ -249,7 +258,9 @@ var classesData = {
 	      });
 
         $("#search").click(searchModel);
-        $("#upload-model-btn").click(chooseModel);
+        $("#upload-model-btn").click(function(){
+          $("#fileSearchDiv").css("display", "block");
+        });
         $("#model-file-input").change(uploadModel);
 
         $("#models-list .model-col").click(openModelViewer);
@@ -260,8 +271,11 @@ var classesData = {
         });
         $("#models-list .btn-download").click(downloadModel);
         //检索结果中展示3维模型
-        showModel("three-vtk/models/vtk/airplane.off", $("#canvas"));
-        window.controls.enabled = false;
+        if($("#canvas").length > 0){
+          showModel("three-vtk/models/vtk/airplane.off", $("#canvas"));
+          window.controls.enabled = false;
+        }
+        
         $(".views img").click(function(event){
             $("#bigImgModal").css("display", "block");
             $("#big-img").attr("src", $(event.target).attr("src"));
@@ -276,9 +290,30 @@ var classesData = {
           }
         });
         $("#bigImgModal .close").click(function(event){
-            $("#bigImgModal").css("display", "none");
+          $("#bigImgModal").css("display", "none");
         });
-        window.featureChart = refreshFeatureChart("featureChart", [], []);
+        if($("#featureChart").length > 0){
+          window.featureChart = refreshFeatureChart("featureChart", [], []);
+        }
+        //文件检索
+        //找好位置
+
+        $("#fileSearchDiv").css("top", $("#search-row").offset().top);
+        $("#fileSearchDiv").css("width", $("#search-row").width());
+        $(".nav-tabs a").click(function(){
+          if($(this).attr("id") == "urlLink"){
+            $("#urlSearchPane").css("display", "block");
+            $("#fileSearchPane").css("display", "none");
+          }else{
+            $("#urlSearchPane").css("display", "none");
+            $("#fileSearchPane").css("display", "block");
+          }
+        });
+        $("#closeFileSearchDiv").click(function(){
+            $("#fileSearchDiv").css("display", "none");
+            //停止上传相关的操作
+        });
+        $("#searchFile").click(chooseModel);
     });
 
 
@@ -333,13 +368,23 @@ var classesData = {
     function chooseModel(){
       //弹出选择模型框
       $("#model-file-input").trigger("click");
-      window.location.href = "search_result.html";
+      // window.location.href = "search_result.html";
       console.log("chooseModel");
     }
 
     function uploadModel(){
       //存下来本地要能显示，然后将模型上传到服务器上
       var filepath = $("#model-file-input").val();
+      console.log(filepath);
+      if(filepath == ""){
+        $("#uploadingFile").css("display", "none");
+        $("#searchFileName").text("未选择文件");
+        return;
+      }
+
+      $("#searchFileName").text(filepath);
+      $("#uploadingFile").css("display", "inline-block");
+
       $.ajax({
         // Your server script to process the upload
         url: 'upload.php',
