@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, send_from_directory
+from flask import Flask, render_template, request, url_for, send_from_directory, send_file
 from utils.process_file import random_str, get_file_type, get_file_extensions
 from utils.search_engineer import search_by_feature, search_by_text
 import os
@@ -11,6 +11,16 @@ app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 db_utils.root_dir = app.root_path
+
+
+@app.route('/download')
+def download_file():
+    dataset = request.args.get('dataset')
+    model_name = request.args.get('model_name')
+    class_name = model_name.split('_')[0]
+    dataset = dataset.lower()
+    model_folder = os.path.join(app.root_path, 'static', 'database', dataset, 'models', class_name, 'train')
+    return send_file(os.path.join(model_folder, model_name + '.off'), as_attachment=True)
 
 
 @app.route('/uploads/<filename>')
