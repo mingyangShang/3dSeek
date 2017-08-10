@@ -1,97 +1,7 @@
-var modelSets = {
-  "sets": ["ModelNet", "ShapeNet"],
-  "subsets":
-    {
-      "ModelNet":["ModelNet10", "ModelNet40"],
-      "ShapeNet":["ShapeNet-Core", "ShapeNet-Sem"]
-    },
-};
-var classesData = {
-  "ModelNet10": [
-     {
-        text: 'All',
-        href: '#all',
-        tags: ['4'],
-        nodes: [
-          {
-            text: 'modelnet10-1',
-            href: '#airplane',
-            tags: ['2'],
-          },
-          {
-            text: 'Car',
-            href: '#modelnet10-2',
-            tags: ['0']
-          },
-        ],
-      },
-      {
-        text: 'Parent 2',
-        href: '#parent2',
-        tags: ['0']
-      },
-  ],
-  "ModelNet40": [
-      {
-        text: 'All',
-        href: '#all',
-        tags: ['4'],
-        nodes: [
-          {
-            text: 'modelnet40-1',
-            href: '#airplane',
-            tags: ['2'],
-          },
-          {
-            text: 'Car',
-            href: '#modelnet40-2',
-            tags: ['0']
-          },
-        ],
-      },
-      {
-        text: 'Parent 2',
-        href: '#parent2',
-        tags: ['0']
-      },
-      {
-        text: 'Parent 3',
-        href: "#parent3",
-        tags: ['1']
-      },
-  ],
-  "ShapeNet-Core": [
-      {
-          text: 'All',
-          href: '#all',
-          tags: ['4'],
-          nodes: [
-            {
-              text: 'ShapeNet-Core-1',
-              href: '#airplane',
-              tags: ['2'],
-            },
-            {
-              text: 'Car',
-              href: '#ShapeNetCore-2',
-              tags: ['0']
-            },
-          ],
-        },
-        {
-          text: 'Parent 2',
-          href: '#parent2',
-          tags: ['0']
-        },
-  ],
-  "ShapeNet-Sem": [
-  ]
-};
+var setsData, classesData;
 (function ($) {
 
     $(document).ready(function () {
-        window.server = "http://166.111.81.123:8610/";
-        
         $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
         //分类导航
         $("#model-set-select").change(function(event){
@@ -99,146 +9,15 @@ var classesData = {
         });
         $("#search-error-hint").css("display", "none");
         //加载类别信息
-        $.get(window.server + "api/set-names", function(data, status){
-          console.log(status);
-          consolo.log(data);
-          if(status){
+        $.getJSON("/api/set/names", function(data, status){
+            setsData = data;
+            console.log(setsData);
             refreshModelSetsSelect(data);
-          }
         });
-        refreshModelSetsSelect(modelSets);
-        var classes_data = [
-              {
-                text: 'All',
-                href: '#all',
-                tags: ['4'],
-                nodes: [
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                  {
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },{
-                    text: 'airplane',
-                    href: '#airplane',
-                    tags: ['2'],
-                  },
-                  {
-                    text: 'Car',
-                    href: '#car',
-                    tags: ['0']
-                  },
-                ]
-              },
-              {
-                text: 'Parent 2',
-                href: '#parent2',
-                tags: ['0']
-              },
-              {
-                text: 'Parent 3',
-                href: '#parent3',
-                 tags: ['0']
-              },
-              {
-                text: 'Parent 4',
-                href: '#parent4',
-                tags: ['0']
-              },
-              {
-                text: 'Parent 5',
-                href: '#parent5'  ,
-                tags: ['0']
-              }
-            ];
-        $('#model-classes-treeview').treeview({
-          color: "#428bca",
-          showTags: true,
-          data: classes_data,
-          multiSelect: false,
-          onNodeSelected: function(event, data){
-            console.log(data);
-          }
+        $.getJSON("/api/set/classes", function (data, status) {
+            classesData = data;
+            console.log(classesData);
+            refreshClasses("ModelNet10"); //TODO use modelnet10 as default
         });
         //分页浏览
         window.pagObj = $('#models-pagination').pagination({
@@ -510,5 +289,5 @@ function refreshClasses(modelsetName){
       console.log(data);
     }
   });
-  $('#model-classes-treeview').addClass("loading");//进度条
+  // $('#model-classes-treeview').addClass("loading");//进度条
 }

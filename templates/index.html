@@ -10,17 +10,15 @@
         <![endif]-->
     <title>3D Seek</title>
     <!-- BOOTSTRAP CORE STYLE CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap.css") }}" rel="stylesheet" />
      <!-- FONTAWESOME STYLE CSS -->
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/font-awesome.css") }}" rel="stylesheet" />
     <!-- TreeView SYTLE CSS -->
-    <link href="assets/css/bootstrap-treeview.css" rel="stylesheet" />
-    <link href="assets/css/bootstrap-select.min.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="http://csshake.surge.sh/csshake.min.css" />
-    <!-- CUSTOM STYLE CSS -->
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/viewer.css" rel="stylesheet" />
-    <link href="assets/css/bootstrap-fix.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap-treeview.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap-select.min.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/style.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/viewer.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap-fix.css") }}" rel="stylesheet" />
 </head>
 <body class="fh5co-bg-section"> 
         <div class="navbar navbar-inverse navbar-fixed-top " >
@@ -119,7 +117,7 @@
                         <input type="button" id="searchFile" class="btn btn-primary btn-lg btn-set col-md-1" value="上传" style="font-size: 14px;" />
                         <span style="margin-left: 10px; margin-right: 10px;vertical-align: sub;" id="searchFileName">未选择文件</span>
                         <div id="uploadingFile" class="text-center" style="display: inline-block;">
-                            <img src="assets/img/loading.gif" style="width: 40px;height: 40px;">
+                            <img src="{{ url_for('static', filename="img/loading.gif") }}" style="width: 40px;height: 40px;">
                             <span style="color:#428bca">正在上传……</span>
                         </div>
                     </div>
@@ -372,15 +370,11 @@
      <!-- COPY TEXT SECTION END-->
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
     <!-- CORE JQUERY  -->
-    <script src="assets/js/jquery-1.11.1.js"></script>
-    <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="assets/js/bootstrap.js"></script>
-
-    <!-- Treeview SCRIPTS -->
-    <script src="assets/js/bootstrap-treeview.js"></script>
-    <script src="assets/js/bootstrap-select.js"></script>
-    <script src="assets/js/jquery.simplePagination.js"></script>
-    <!-- CUSTOM SCRIPTS  -->
-    <script src="assets/js/home.js"></script>
+    <script src="{{ url_for('static', filename="js/jquery-1.11.1.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/bootstrap.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/bootstrap-treeview.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/bootstrap-select.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/jquery.simplePagination.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/home.js") }}"></script>
 </body>
 </html>
