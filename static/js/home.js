@@ -230,8 +230,7 @@ function newModelDiv(model){
   $(modelDiv).addClass("col-md-3 model-col");
     var modelImg = document.createElement("img");
     $(modelImg).addClass("img-thumbnail model-img");
-    $(modelImg).attr("src", "https://www.w3schools.com/bootstrap/paris.jpg");
-    $(modelImg).attr("width", "304");
+    $(modelImg).attr("src", model.view_urls[0]);
     $(modelImg).attr("height", "236");
     $(modelImg).attr("alt", "Model view");
   $(modelDiv).append(modelImg);
@@ -239,13 +238,16 @@ function newModelDiv(model){
     var infoDiv = document.createElement("div");
       var tagSpan = document.createElement("span");
       $(tagSpan).addClass("model-tag label label-default");
-      $(tagSpan).text("label");
+      $(tagSpan).text(model.class_name);
       var downloadBtn = document.createElement("button");
       $(downloadBtn).addClass("btn btn-primary btn-md btn-download");
       $(downloadBtn).text("下载");
+      $(downloadBtn).attr("href", model.download_url);
     $(infoDiv).append(tagSpan);
     $(infoDiv).append(downloadBtn);
   $(modelDiv).append(infoDiv);
+  //绑定数据
+    $(modelDiv).data("info", model);
   return modelDiv;
 }
 
@@ -291,8 +293,19 @@ function refreshClasses(modelsetName){
     data: classesData[modelsetName],
     multiSelect: false,
     onNodeSelected: function(event, data){
-      console.log(data);
+        //获取该类下的数据
+        getModels(data.href);
     }
   });
   // $('#model-classes-treeview').addClass("loading");//进度条
+}
+
+function getModels(url){
+    $.getJSON(url, function(resp, status){
+        console.log("status:" + status);
+        console.log(resp);
+        if(status == "success") {
+            refreshModelsList(resp);
+        }
+    });
 }
