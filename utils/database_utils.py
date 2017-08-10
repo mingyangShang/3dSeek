@@ -17,15 +17,20 @@ def get_set_info(db_name):
 
 
 def get_model_url(dataset, model_name):
-    pass
+    class_name = model_name.split('_')[0]
+    return "/static/database/%s/models/%s/train/%s.off" % (dataset, class_name, model_name)
 
 
-def get_view_path(dataset, model_name):
-    pass
+def get_view_urls(dataset, model_name):
+    # class_name = model_name.split('_')[0]
+    urls = []
+    for i in range(12):
+        urls.append("/static/database/%s/views/train/%s_%03d.jpg" % (dataset, model_name, i + 1))
+    return urls
 
 
-def get_view_url(dataset, model_name):
-    pass
+def get_model_feature(dataset, model_name):
+    return '***************'
 
 
 def get_set_info_from_dict(json_dict):
@@ -69,7 +74,39 @@ def get_set_names_json():
     return json.dumps(info_dic)
 
 
-def get_class_detail(dataset_name, class_name, start, size):
+def get_class_detail(dataset_name, class_name, start=0, size=100):
     set_info = get_set_info(dataset_name)
     class_info = set_info[class_name.lower()]
-    return json.dumps(class_info)
+    model_names = [key for key in class_info.keys()]
+    model_names.sort()
+    models = []
+    for model_name in model_names:
+        info_dic = class_info[model_name]
+        info_dic['name'] = model_name
+        info_dic['model_url'] = get_model_url(dataset_name, model_name)
+        info_dic['view_urls'] = get_view_urls(dataset_name, model_name)
+        models.append(info_dic)
+    return json.dumps(models)
+
+
+def get_search_result_detail(dataset_name, model_list, start=0, size=100):
+    set_info = get_set_info(dataset_name)
+    models = []
+    for model_name in model_list:
+        class_name = model_list.split('_')[0]
+        info_dic = set_info[class_name][model_name]
+        info_dic['name'] = model_name
+        info_dic['model_url'] = get_model_url(dataset_name, model_name)
+        info_dic['view_urls'] = get_view_urls(dataset_name, model_name)
+        models.append(info_dic)
+    return json.dumps(models)
+
+
+
+    class_info = set_info[class_name.lower()]
+
+if __name__ == '__main__':
+    res = get_model_url('modelnet10', 'airplane_0001')
+    print(res)
+    res = get_view_urls('modelnet10', 'toilet_0358')
+    print(res)
