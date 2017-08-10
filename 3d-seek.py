@@ -41,6 +41,9 @@ def get_class_details():
     size = 10
     return db_utils.get_class_detail(dataset, class_name, start, size)
 
+@app.route('/search-result')
+def search_result():
+    return render_template("search_result.html")
 
 @app.route('/search', methods=['POST'])
 def search():
