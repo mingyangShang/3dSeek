@@ -90,6 +90,7 @@ def get_class_detail(dataset_name, class_name, start=0, size=100):
     for model_name in model_names:
         info_dic = {}
         info_dic['name'] = model_name
+        info_dic['class_name'] = class_info[model_name]['class_name']
         info_dic['model_url'] = get_model_url(dataset_name, model_name)
         info_dic['view_urls'] = get_view_urls(dataset_name, model_name)
         info_dic['vertice_num'] = int(class_info[model_name]['vertice_num'])
