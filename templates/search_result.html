@@ -9,19 +9,13 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
     <title>3D Seek</title>
-    <!-- BOOTSTRAP CORE STYLE CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-     <!-- FONTAWESOME STYLE CSS -->
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <!-- TreeView SYTLE CSS -->
-    <link href="assets/css/bootstrap-treeview.css" rel="stylesheet">
-    <!-- CUSTOM STYLE CSS -->
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <!-- CONTROLS STYLE CSS -->
-    <link href="assets/css/controls.css" rel="stylesheet" />
-    <link href="assets/css/viewer.css" rel="stylesheet" />
-    <link href="assets/css/bootstrap-fix.css" rel="stylesheet" />
-    <link href="assets/css/result-fix.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/font-awesome.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/style.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/viewer.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/controls.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap-fix.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/result-fix.css") }}" rel="stylesheet" />
 </head>
 <body class="fh5co-bg-section"> 
         <div class="navbar navbar-inverse navbar-fixed-top " >
@@ -32,14 +26,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html" ><strong style="">3D Seek</strong></a>
+                <a class="navbar-brand" href="/" ><strong style="">3D Seek</strong></a>
             </div>
             <div class="navbar-collapse collapse move-me">
                 <ul class="nav navbar-nav navbar-right set-links">
-                     <li><a href="index.html" class="active-menu-item">主页</a></li>
-                     <li><a href="middle_result.html">中间结果</a></li>
-                     <li><a href="experiment_result.html">实验结果</a></li>
-                     <li><a href="team.html">任务分工</a></li>
+                     <li><a href="/" class="active-menu-item">主页</a></li>
+                     <li><a href="/middle-result">中间结果</a></li>
+                     <li><a href="/experiment-result">实验结果</a></li>
+                     <li><a href="/team">任务分工</a></li>
                 </ul>
             </div>
 
@@ -119,7 +113,7 @@
                       <input type="button" id="searchFile" class="btn btn-primary btn-lg btn-set col-md-1" value="上传" style="font-size: 14px;" />
                       <span style="margin-left: 10px; margin-right: 10px;vertical-align: sub;" id="searchFileName">未选择文件</span>
                       <div id="uploadingFile" class="text-center" style="display: inline-block;">
-                          <img src="assets/img/loading.gif" style="width: 40px;height: 40px;">
+                          <img src="{{ url_for('static', filename="img/loading.gif") }}" style="width: 40px;height: 40px;">
                           <span style="color:#428bca">正在上传……</span>
                       </div>
                   </div>
@@ -335,31 +329,21 @@
             </div>
         </div>
     </div> -->
-     <!-- COPY TEXT SECTION END-->
-    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
-    <!-- CORE JQUERY  -->
-    <script src="assets/js/jquery-1.11.1.js"></script>
-    <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="assets/js/bootstrap.js"></script>
-    <!-- Treeview SCRIPTS -->
-    <script src="assets/js/bootstrap-treeview.js"></script>
-    <script src="assets/js/jquery.simplePagination.js"></script>
-    <script src='assets/js/libs/inflate.min.js'></script>
-    <script src="assets/js/chart.min.js"></script>
-    <script src="assets/js/three.js"></script>
-    <script src="assets/js/chart-ext.js"></script>
-
-    <script src="assets/js/controls/TrackballControls.js"></script>
-
-    <script src="assets/js/loaders/OFFLoader.js"></script>
-    <script src="assets/js/loaders/OBJLoader.js"></script>
-    <script src="assets/js/loaders/VTKLoader.js"></script>
-
-    <script src="assets/js/Detector.js"></script>
-    <script src="assets/js/viewer.js"></script>
-    <!-- CUSTOM SCRIPTS  -->
-    <script src="assets/js/custom.js"></script>
-    <script src="assets/js/home.js"></script>
+    <script src="{{ url_for('static', filename="js/jquery-1.11.1.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/bootstrap.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/jquery.simplePagination.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/libs/inflate.min.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/chart.min.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/three.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/chart-ext.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/controls/TrackballControls.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/loaders/OFFLoader.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/loaders/OBJLoader.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/loaders/VTKLoader.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/Detector.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/viewer.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/custom.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/home.js") }}"></script>
     <audio controls="controls" style="display: none;"></audio>
 
 </body>

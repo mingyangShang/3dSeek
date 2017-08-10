@@ -6,19 +6,28 @@ var setsData, classesData;
         //分类导航
         $("#model-set-select").change(function(event){
           refreshClasses($(event.target).val());
+          searchByKey("All");
         });
         $("#search-error-hint").css("display", "none");
-        //加载类别信息
-        $.getJSON("/api/set/names", function(data, status){
-            setsData = data;
-            console.log(setsData);
-            refreshModelSetsSelect(data);
-        });
-        $.getJSON("/api/set/classes", function (data, status) {
-            classesData = data;
-            console.log(classesData);
-            refreshClasses("ModelNet10"); //TODO use modelnet10 as default
-        });
+        //说明是搜索结果页面
+        if($("#model-classes-treeview").length > 0){
+                $.getJSON("/api/set/names", function(data, status){
+                setsData = data;
+                console.log(setsData);
+                refreshModelSetsSelect(data);
+            });
+            $.getJSON("/api/set/classes", function (data, status) {
+                classesData = data;
+                console.log(classesData);
+                refreshClasses("ModelNet10"); //TODO use modelnet10 as default
+                //默认选择第一个节点
+                if(classesData["ModelNet10"].length > 0){
+                    searchByKey("All");
+                    // $("#model-classes-treeview").treeview('selectNode', [$("#model-classes-treeview ul li:first"), { silent: false }]);
+                }
+            });
+        }
+
         //分页浏览
         window.pagObj = $('#models-pagination').pagination({
 	        items: 20,
@@ -51,7 +60,7 @@ var setsData, classesData;
         $("#models-list .btn-download").click(downloadModel);
         //检索结果中展示3维模型
         if($("#canvas").length > 0){
-          showModel("three-vtk/models/vtk/airplane.off", $("#canvas"));
+          showModel("static/three-vtk/models/vtk/airplane.off", $("#canvas"));
           window.controls.enabled = false;
         }
         
@@ -103,7 +112,6 @@ var setsData, classesData;
     	//鼠标进入时轮流播放不同视角下的截图
     	modelImgsTimer = window.setInterval(function(){
     		modelImgsTimerCount += 1;
-        console.log(imgs[modelImgsTimerCount%imgs.length]);
     		$(event.target).find(".model-img").attr("src", imgs[modelImgsTimerCount%imgs.length]);
     	}, 1000);
     }
@@ -120,7 +128,6 @@ var setsData, classesData;
     function searchModel(){
       //先检查搜索框有没有输入，有的话按照文字匹配类别，再检查是否有上传的模型，有的话模型检索，否则提示
       var inputKeyword = $("#search-key-input").val();
-      console.log(inputKeyword);
       if(inputKeyword!=""){
         //匹配左侧文字类别
         $("#search-error-hint").css("display", "none");
@@ -148,13 +155,11 @@ var setsData, classesData;
       //弹出选择模型框
       $("#model-file-input").trigger("click");
       // window.location.href = "search_result.html";
-      console.log("chooseModel");
     }
 
     function uploadModel(){
       //存下来本地要能显示，然后将模型上传到服务器上
       var filepath = $("#model-file-input").val();
-      console.log(filepath);
       if(filepath == ""){
         $("#uploadingFile").css("display", "none");
         $("#searchFileName").text("未选择文件");

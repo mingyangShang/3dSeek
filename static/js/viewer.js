@@ -67,7 +67,6 @@ function showModel(modelPath, container) {
         // renderer
         renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
-        console.log("in viewer:"+$("#canvas").width());
 		renderer.setSize($("#canvas").width(), Math.max(150, $("#canvas").height()-60));
         container.append( renderer.domElement );
 
