@@ -1,14 +1,18 @@
 var setsData, classesData;
+var isHomePage = true;
+var homePageSize = 20, searchPageSize = 30;
+var modelImgsTimer;
+var modelImgsTimerCount = 0;
+var views;
 (function ($) {
 
     $(document).ready(function () {
-        $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
         //分类导航
         $("#model-set-select").change(function(event){
           refreshClasses($(event.target).val());
           searchByKey("All");
         });
-        $("#search-error-hint").css("display", "none");
+        // $("#search-error-hint").css("display", "none");
         //说明是搜索结果页面
         if($("#model-classes-treeview").length > 0){
                 $.getJSON("/api/set/names", function(data, status){
@@ -26,6 +30,8 @@ var setsData, classesData;
                     // $("#model-classes-treeview").treeview('selectNode', [$("#model-classes-treeview ul li:first"), { silent: false }]);
                 }
             });
+        }else{
+            isHomePage = false;
         }
 
         //分页浏览
@@ -41,7 +47,11 @@ var setsData, classesData;
 	        },
 	        onPageClick: function (page, evt) {
 	            // 向服务器请求第page页的数据
-	            console.log(""+page);
+                if(isHomePage){
+                    getModels($("#model-classes-treeview").treeview("getSelected")[0].href + "&page=" + page);
+                }else{
+                    getModels();
+                }
 	        }
 	      });
 
@@ -49,9 +59,8 @@ var setsData, classesData;
         $("#upload-model-btn").click(function(){
           $("#fileSearchDiv").css("display", "block");
         });
-        $("#model-file-input").change(uploadModel);
+        $("#model-file-input").change(searchByModel);
 
-        $("#models-list .model-col").click(openModelViewer);
         $("#close-viewer").click(closeModelViewer);
         $("#viewerSourceButton").click(function(){
           //在新窗口中打开
@@ -101,114 +110,9 @@ var setsData, classesData;
             $("#fileSearchDiv").css("display", "none");
             //停止上传相关的操作
         });
+        $("#search_url").click(searchByUrl);
         $("#searchFile").click(chooseModel);
     });
-
-
-    var imgs = ["https://www.w3schools.com/bootstrap/paris.jpg", "https://www.w3schools.com/bootstrap/sanfran.jpg"];
-    var modelImgsTimer;
-    var modelImgsTimerCount = 0;
-    function hoverInModel(event){
-    	//鼠标进入时轮流播放不同视角下的截图
-    	modelImgsTimer = window.setInterval(function(){
-    		modelImgsTimerCount += 1;
-    		$(event.target).find(".model-img").attr("src", imgs[modelImgsTimerCount%imgs.length]);
-    	}, 1000);
-    }
-    function hoverOutModel(event){
-    	//鼠标离开时取消定时器，然后图像恢复默认值
-    	if(modelImgsTimer){
-    		window.clearInterval(modelImgsTimer);
-    		$(event.target).find(".model-img").attr("src", imgs[0]);
-    	}
-    	modelImgsTimer = null;
-      modelImgsTimerCount = 0;
-    }
-
-    function searchModel(){
-      //先检查搜索框有没有输入，有的话按照文字匹配类别，再检查是否有上传的模型，有的话模型检索，否则提示
-      var inputKeyword = $("#search-key-input").val();
-      if(inputKeyword!=""){
-        //匹配左侧文字类别
-        $("#search-error-hint").css("display", "none");
-        searchByKey(inputKeyword);
-      }else{
-          $("#search-error-hint").css("display", "inline");
-      }
-      
-    }
-
-    function searchByModel(){
-      var methodVal = $("input[type=radio]:checked").val();
-      console.log(methodVal);
-    }
-    function searchByKey(key){
-      //从现在的分类列表中查找包含关键词的分类
-      var selectableNodes = findSelectableNodes(key);
-      $("#model-classes-treeview").treeview('selectNode', [selectableNodes[0], { silent: false }]);
-    }
-    function findSelectableNodes(key) {
-      return $("#model-classes-treeview").treeview('search', [ key, { ignoreCase: true, exactMatch: false } ]);
-    };
-
-    function chooseModel(){
-      //弹出选择模型框
-      $("#model-file-input").trigger("click");
-      // window.location.href = "search_result.html";
-    }
-
-    function uploadModel(){
-      //存下来本地要能显示，然后将模型上传到服务器上
-      var filepath = $("#model-file-input").val();
-      if(filepath == ""){
-        $("#uploadingFile").css("display", "none");
-        $("#searchFileName").text("未选择文件");
-        return;
-      }
-
-      $("#searchFileName").text(filepath);
-      $("#uploadingFile").css("display", "inline-block");
-
-      $.ajax({
-        // Your server script to process the upload
-        url: 'upload.php',
-        type: 'POST',
-
-        // Form data
-        data: new FormData($('#model-file-input')),
-
-        // Tell jQuery not to process data or worry about content-type
-        // You *must* include these options!
-        cache: false,
-        contentType: false,
-        processData: false,
-
-        // Custom XMLHttpRequest
-        // xhr: function() {
-        //   var myXhr = $.ajaxSettings.xhr();
-        //   if (myXhr.upload) {
-        //       // For handling the progress of the upload
-        //       myXhr.upload.addEventListener('progress', function(e) {
-        //           if (e.lengthComputable) {
-        //               $('progress').attr({
-        //                   value: e.loaded,
-        //                   max: e.total,
-        //               });
-        //           }
-        //       } , false);
-        //   }
-        //   return myXhr;
-        // },
-        success: function(data, status, xhr){
-          console.log("success");
-        },
-        error: function(data, status, xhr){
-          console.log("error");
-        }
-      });
-    }
-
-    
 
 }(jQuery));
 
@@ -220,9 +124,12 @@ function refreshModelsList(modelsList){
   //首先清空原来的模型信息
   var modelsDiv = $("#models-list");
   modelsDiv.empty();
-  for(model in modelsList){
-      modelsDiv.append(newModelDiv(model));
+  for(i in modelsList){
+      modelsDiv.append(newModelDiv(modelsList[i]));
   }
+  $("#models-list .model-col").click(openModelViewer);
+  $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
+
 }
 
 function newModelDiv(model){
@@ -302,10 +209,137 @@ function refreshClasses(modelsetName){
 
 function getModels(url){
     $.getJSON(url, function(resp, status){
-        console.log("status:" + status);
-        console.log(resp);
         if(status == "success") {
             refreshModelsList(resp);
         }
     });
+}
+
+function hoverInModel(event){
+    views = $(this).data("info").view_urls;
+    //鼠标进入时轮流播放不同视角下的截图
+    modelImgsTimer = window.setInterval(function(){
+        modelImgsTimerCount += 1;
+        if(views.length > 0){
+            $(event.target).find(".model-img").attr("src", views[modelImgsTimerCount%views.length]);
+        }
+    }, 1000);
+}
+function hoverOutModel(event){
+    //鼠标离开时取消定时器，然后图像恢复默认值
+    if(modelImgsTimer){
+        window.clearInterval(modelImgsTimer);
+        if(views.length > 0) {
+            $(event.target).find(".model-img").attr("src", views[0]);
+        }
+    }
+    modelImgsTimer = null;
+    modelImgsTimerCount = 0;
+}
+
+function searchModel(){
+  //先检查搜索框有没有输入，有的话按照文字匹配类别，再检查是否有上传的模型，有的话模型检索，否则提示
+  var inputKeyword = $("#search-key-input").val();
+  if(inputKeyword!=""){
+    //匹配左侧文字类别
+    $("#search-error-hint").addClass("hide");
+    searchByKey(inputKeyword);
+  }else{
+      $("#search-error-hint").removeClass("hide");
+  }
+}
+
+function searchByUrl(){
+    var url = $("#search-url-input").val();
+    if(url != ""){
+        //检查URL是否合法
+        if((/\.(gif|jpg|jpeg|tiff|png|off|)$/i).test(url))
+        {
+            search("url", url, null);
+        }
+    }else{
+
+    }
+}
+
+function search(type, url, file){
+    var method = $("#fileSearchDiv input[type=radio]:checked").val();
+    var formData = new FormData();
+    formData.append("method", method);
+    if(type == "url"){
+        formData.append("url", url);
+    }else if(type == "file"){
+        formData.append("file", file);
+        formData.append("name", file.name);
+    }
+    $.ajax({
+        // Your server script to process the upload
+        url: 'upload.php',
+        type: 'POST',
+
+        // Form data
+        data: formData,
+
+        // Tell jQuery not to process data or worry about content-type
+        // You *must* include these options!
+        cache: false,
+        contentType: false,
+        processData: false,
+
+        // Custom XMLHttpRequest
+        // xhr: function() {
+        //   var myXhr = $.ajaxSettings.xhr();
+        //   if (myXhr.upload) {
+        //       // For handling the progress of the upload
+        //       myXhr.upload.addEventListener('progress', function(e) {
+        //           if (e.lengthComputable) {
+        //               $('progress').attr({
+        //                   value: e.loaded,
+        //                   max: e.total,
+        //               });
+        //           }
+        //       } , false);
+        //   }
+        //   return myXhr;
+        // },
+        success: function(data, status, xhr){
+          console.log("success");
+        },
+        error: function(data, status, xhr){
+          console.log("error");
+        }
+    });
+}
+
+function searchByKey(key){
+  //从现在的分类列表中查找包含关键词的分类
+  var selectableNodes = findSelectableNodes(key);
+  $("#model-classes-treeview").treeview('selectNode', [selectableNodes[0], { silent: false }]);
+}
+
+function findSelectableNodes(key) {
+  return $("#model-classes-treeview").treeview('search', [ key, { ignoreCase: true, exactMatch: false } ]);
+};
+
+function chooseModel(){
+  //弹出选择模型框
+  $("#model-file-input").trigger("click");
+}
+
+function searchByModel(){
+  //存下来本地要能显示，然后将模型上传到服务器上
+  var filepath = $("#model-file-input").val();
+  if(filepath == ""){
+    $("#uploadingFile").css("display", "none");
+    $("#searchFileName").text("未选择文件");
+    return;
+  }
+  var file = $("#model-file-input")[0].files[0];
+  if((/\.(off|obj)$/i).test(file.name)){
+      $("#searchFileName").text(filepath);
+      $("#uploadingFile").css("display", "inline-block");
+      search("file", "", filepath);
+  }else{
+      $("#searchFileName").text("模型格式错误");
+  }
 }

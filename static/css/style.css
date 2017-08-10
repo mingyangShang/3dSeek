@@ -161,6 +161,9 @@ color:#fff;
     margin-left: -1px;
     border: 1px solid #428bca;
 }
+.hide{
+    display: none;
+}
 #search-row button {
         border: 0;
         background: none;
