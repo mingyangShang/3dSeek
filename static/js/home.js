@@ -6,6 +6,7 @@ var setsData, classesData;
         //分类导航
         $("#model-set-select").change(function(event){
           refreshClasses($(event.target).val());
+          searchByKey("All");
         });
         $("#search-error-hint").css("display", "none");
         //说明是搜索结果页面
@@ -19,6 +20,11 @@ var setsData, classesData;
                 classesData = data;
                 console.log(classesData);
                 refreshClasses("ModelNet10"); //TODO use modelnet10 as default
+                //默认选择第一个节点
+                if(classesData["ModelNet10"].length > 0){
+                    searchByKey("All");
+                    // $("#model-classes-treeview").treeview('selectNode', [$("#model-classes-treeview ul li:first"), { silent: false }]);
+                }
             });
         }
 
