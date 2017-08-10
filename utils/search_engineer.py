@@ -22,9 +22,6 @@ def search_by_feature(search_feature, method_name='wxy', data_set='modelnet40'):
     """
     pass
 
-"""
-检索算法使用K-D树进行匹配
-"""
 def k_d_tree_test():
 
     X = np.load(r'D:\Workspace\pyworkspace\deep-3d\data\saved-data\test-data.npy')
