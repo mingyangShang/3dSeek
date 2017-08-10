@@ -9,13 +9,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
     <title>3D Seek</title>
-    <!-- BOOTSTRAP CORE STYLE CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-     <!-- FONTAWESOME STYLE CSS -->
-     <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <!-- CUSTOM STYLE CSS -->
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/team.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/font-awesome.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/style.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/team.css") }}" rel="stylesheet" />
 </head>
 <body class="fh5co-bg-section"> 
     <div class="navbar navbar-inverse navbar-fixed-top " >
@@ -26,14 +23,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" ><strong style="">3D Seek</strong></a>
+                <a class="navbar-brand" href="/" ><strong style="">3D Seek</strong></a>
             </div>
             <div class="navbar-collapse collapse move-me">
                 <ul class="nav navbar-nav navbar-right set-links">
-                     <li><a href="index.html">主页</a></li>
-                     <li><a href="middle_result.html">中间结果</a></li>
-                     <li><a href="experiment_result.html">实验结果</a></li>
-                     <li><a href="team.html" class="active-menu-item">任务分工</a></li>
+                     <li><a href="/">主页</a></li>
+                     <li><a href="/middle-result">中间结果</a></li>
+                     <li><a href="/experiment-result">实验结果</a></li>
+                     <li><a href="/team" class="active-menu-item">任务分工</a></li>
                 </ul>
             </div>
         </div>
@@ -99,12 +96,8 @@
         </div>
     </section>
 
-     <!-- COPY TEXT SECTION END-->
-    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
-    <!-- CORE JQUERY  -->
-    <script src="assets/js/jquery-1.11.1.js"></script>
-    <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="assets/js/bootstrap.js"></script>
-    
+    <script src="{{ url_for("static", filename="js/jquery-1.11.1.js") }}"></script>
+    <script src="{{ url_for("static", filename="js/bootstrap.js") }}"></script>
+
 </body>
 </html>
