@@ -2,6 +2,7 @@ import os
 import json
 
 root_dir = '..'
+server_address = 'http://166.111.80.54:8610'
 
 
 def get_db_root_dir(db_name):
@@ -26,7 +27,7 @@ def get_view_urls(dataset, model_name):
     # class_name = model_name.split('_')[0]
     urls = []
     for i in range(12):
-        urls.append("/static/database/%s/views/train/%s_%03d.jpg" % (dataset, model_name, i + 1))
+        urls.append(server_address + "/static/database/%s/views/train/%s_%03d.jpg" % (dataset, model_name, i + 1))
     return urls
 
 
@@ -34,21 +35,21 @@ def get_model_feature(dataset, model_name):
     return '***************'
 
 
-def get_set_info_from_dict(json_dict):
-    info_dic = json_dict
+def get_set_info_from_dbname(dataset_name):
+    info_dic = get_set_info(dataset_name)
     nodes = []
     counter = 0
     for key in info_dic.keys():
         class_dic = {}
         class_dic['text'] = key
-        class_dic['href'] = '#' + key
+        class_dic['href'] = '/api/class/detail?dataset=%s&class_name=%s' % (dataset_name, key)
         model_num = len(info_dic[key].keys())
         counter += model_num
         class_dic['tags'] = [str(model_num)]
         nodes.append(class_dic)
     set_info = {'nodes': nodes}
     set_info['text'] = 'All'
-    set_info['href'] = '#all'
+    set_info['href'] = '/api/class/detail?dataset=%s&class_name=%s' % (dataset_name, 'all')
     set_info['tags'] = [str(counter)]
     return set_info
 
@@ -57,10 +58,10 @@ def get_set_info_json():
     set_info = {}
     # parent_info = {'text': 'Parent 2', 'href': '#parent2', 'tags': ['0']}
 
-    modelnet10_info = [get_set_info_from_dict(get_set_info('modelnet10'))]
+    modelnet10_info = [get_set_info_from_dbname('modelnet10')]
     set_info['ModelNet10'] = modelnet10_info
 
-    modelnet40_info = [get_set_info_from_dict(get_set_info('modelnet40'))]
+    modelnet40_info = [get_set_info_from_dbname('modelnet40')]
     set_info['ModelNet40'] = modelnet40_info
     return json.dumps(set_info)
 
@@ -87,10 +88,13 @@ def get_class_detail(dataset_name, class_name, start=0, size=100):
     model_names.sort()
     models = []
     for model_name in model_names:
-        info_dic = class_info[model_name]
+        info_dic = {}
         info_dic['name'] = model_name
         info_dic['model_url'] = get_model_url(dataset_name, model_name)
         info_dic['view_urls'] = get_view_urls(dataset_name, model_name)
+        info_dic['vertice_num'] = int(class_info[model_name]['vertice_num'])
+        info_dic['edge_num'] = int(class_info[model_name]['edge_num'])
+        info_dic['download_url'] = '/download?dataset=%s&model_name=%s' % (dataset_name, model_name)
         models.append(info_dic)
     return json.dumps(models)
 
@@ -106,6 +110,7 @@ def get_search_result_detail(dataset_name, model_list, start=0, size=100):
         info_dic['view_urls'] = get_view_urls(dataset_name, model_name)
         models.append(info_dic)
     return json.dumps(models)
+
 
 if __name__ == '__main__':
     res = get_model_url('modelnet10', 'airplane_0001')
