@@ -3,11 +3,14 @@ from utils.process_file import random_str, get_file_type, get_file_extensions
 from utils.search_engineer import search_by_feature, search_by_text
 import os
 from flask import json
+import utils.database_utils as db_utils
 
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+db_utils.root_dir = app.root_path
 
 
 @app.route('/uploads/<filename>')
@@ -16,45 +19,27 @@ def uploaded_file(filename):
                                filename)
 
 
-@app.route('/api/set-names', methods=['GET'])
-def get_set_infos():
-    sets = ["ModelNet", "ShapeNet"]
-    info_dic = {"sets": sets}
-    sub_dic = {"ModelNet": ["ModelNet10", "ModelNet40"], "ShapeNet": ["ShapeNet-Core", "ShapeNet-Sem"]}
-    info_dic['subsets'] = sub_dic
-    return json.dumps(info_dic)
+@app.route('/api/set/names', methods=['GET'])
+def get_set_names():
+    return db_utils.get_set_names_json()
 
 
-@app.route('/api/set-classes', methods=['GET'])
+@app.route('/api/set/classes', methods=['GET'])
 def get_set_classes():
-    modelnet10_dic = {}
-    modelnet10_dic['text'] = 'all'
-    modelnet10_dic['href'] = '#' + modelnet10_dic['text']
-    modelnet10_dic['tags'] = '10'
-    nodes = []
-    for i in range(4):
-        node = {}
-        node['text'] = 'modelnet-' + str(i + 1)
-        node['href'] = '#' + node['text']
-        node['tags'] = str(i + 1)
-        nodes.append(node)
-    modelnet10_dic['nodes'] = nodes
+    return db_utils.get_set_info_json()
 
-    modelnet40_dic = {}
-    modelnet40_dic['text'] = 'all'
-    modelnet40_dic['href'] = '#' + modelnet40_dic['text']
-    modelnet40_dic['tags'] = '15'
-    nodes = []
-    for i in range(5):
-        node = {}
-        node['text'] = 'modelnet-' + str(i + 1)
-        node['href'] = '#' + node['text']
-        node['tags'] = str(i + 1)
-        nodes.append(node)
-    modelnet40_dic['nodes'] = nodes
 
-    total = {"ModelNet10": modelnet10_dic, "ModelNet40": modelnet40_dic}
-    return json.dumps(total)
+@app.route('/api/class/detail')
+def get_class_details():
+    # dataset = request.args.get('dataset')
+    # class_name = request.args.get('class_name')
+    # start = request.args.get('start')
+    # size = request.args.get('size')
+    dataset = 'modelnet10'
+    class_name = 'toilet'
+    start = 0
+    size = 10
+    return db_utils.get_class_detail(dataset, class_name, start, size)
 
 
 @app.route('/search', methods=['POST'])

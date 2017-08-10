@@ -1,7 +1,10 @@
 import random, string
+import json
 
 IMG_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
 SHAPE_EXTENSIONS = ['off', 'obj']
+
+root_dir = '..'
 
 
 def get_file_extensions(filename):
@@ -22,3 +25,10 @@ def get_file_type(filename):
 
 def random_str(length=8):
     return ''.join([random.choice(string.ascii_letters) for i in range(length)])
+
+
+
+
+
+if __name__ == '__main__':
+    pass
