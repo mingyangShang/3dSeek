@@ -1,5 +1,9 @@
-#pycharm files
+# pycharm files
 .idea/
+
+# database files
+static/database/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

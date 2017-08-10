@@ -29,14 +29,20 @@ def get_set_classes():
     return db_utils.get_set_info_json()
 
 
-@app.route('/api/class/detail')
+@app.route('/api/class/detail', methods=['GET'])
 def get_class_details():
-    # dataset = request.args.get('dataset')
-    # class_name = request.args.get('class_name')
+    """
+    GET parameters:
+    -- dataset: dataset name
+    -- class_name: can be 'All' or other class names
+    :return: 
+    """
+    dataset = request.args.get('dataset')
+    class_name = request.args.get('class_name')
     # start = request.args.get('start')
     # size = request.args.get('size')
-    dataset = 'modelnet10'
-    class_name = 'toilet'
+    # dataset = 'modelnet10'
+    # class_name = 'All'
     start = 0
     size = 10
     return db_utils.get_class_detail(dataset, class_name, start, size)
