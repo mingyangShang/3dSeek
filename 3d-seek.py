@@ -47,17 +47,22 @@ def get_class_details():
     -- dataset: dataset name
     -- class_name: can be 'All' or other class names
     -- page: the show page
+    -- page_size: size of one page
     :return: 
     """
     dataset = request.args.get('dataset')
     class_name = request.args.get('class_name')
     page = request.args.get('page')
+    page_size = request.args.get('page_size')
     if page is None:
         page = 1
     else:
         page = int(page)
-    size = 30
-    return db_utils.get_class_detail(dataset, class_name, page, size)
+    if page_size is None:
+        page_size = 48
+    else:
+        page_size = int(page_size)
+    return db_utils.get_class_detail(dataset, class_name, page, page_size)
 
 
 @app.route('/search-result')

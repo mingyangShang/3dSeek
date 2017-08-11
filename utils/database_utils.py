@@ -1,6 +1,6 @@
 import os
 import json
-import urllib.request
+# import urllib.request
 from utils.process_file import random_str, get_file_type
 
 root_dir = '..'
@@ -160,13 +160,13 @@ def get_search_result_detail(dataset_name, model_list, start=0, size=100):
     return json.dumps(models)
 
 
-def download_file(url):
-    file_name = url.split('/')[-1]
-    file_type = get_file_type(file_name)
-    if not file_type in ['IMG', 'SHAPE']:
-        return None
-
-    urllib.request.urlretrieve(url, )
+# def download_file(url):
+#     file_name = url.split('/')[-1]
+#     file_type = get_file_type(file_name)
+#     if not file_type in ['IMG', 'SHAPE']:
+#         return None
+#
+#     urllib.request.urlretrieve(url, )
 
 
 if __name__ == '__main__':
