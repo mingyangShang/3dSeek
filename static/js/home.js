@@ -253,17 +253,27 @@ function searchByUrl(){
     var url = $("#search-url-input").val();
     if(url != ""){
         //检查URL是否合法
-        if((/\.(gif|jpg|jpeg|tiff|png|off|)$/i).test(url))
-        {
+        if((/\.(gif|jpg|jpeg|tiff|png|off|)$/i).test(url)) {
+            $("#url-error").addClass("hide");
             search("url", url, null);
+        }else{
+            $("#url-error").removeClass("hide").text("url不合法");
         }
     }else{
-
+        $("#url-error").removeClass("hide").text("url不能为空");
     }
 }
 
 function search(type, url, file){
     var method = $("#fileSearchDiv input[type=radio]:checked").val();
+    if(method.indexOf("smy") != -1){
+        method = "smy";
+    }else if(method.indexOf("wxy") != -1){
+        method = "wxy";
+    }else if(method.indexOf("lhl") != -1){
+        method = "lhl";
+    }
+
     var formData = new FormData();
     formData.append("method", method);
     if(type == "url"){
