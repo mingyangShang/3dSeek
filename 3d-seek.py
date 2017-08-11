@@ -75,32 +75,31 @@ def search():
     dataset = "modelnet40"
     result_json = {}
     print(search_type)
-    # if search_type == 'file':
-    #     upload_file = request.files['file']
-    #     file_type = get_file_type(upload_file.filename)
-    #     filename = random_str() + '.' + get_file_extensions(upload_file.filename)
-    #     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    #     upload_file.save(file_path)
-    # if search_type == 'url':
-    #     file_url = request.form.get('url')
-    #     filename = db_utils.download_file(file_url, app.config['UPLOAD_FOLDER'])
-    #     file_type = get_file_extensions(filename)
-    #     if filename is None:
-    #         result_json['success'] = False
-    #         result_json['info'] = "Invalid url"
-    #         return json.dumps(result_json)
-    #     else:
-    #         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    # try:
-    #     feature = get_feature(file_path, file_type, search_method, dataset)
-    # except Exception:
-    #     result_json['success'] = False
-    #     result_json['info'] = "feature error"
-    #     return json.dumps(result_json)
-    # result_list = search_by_feature(feature, search_method, dataset)
-    # search_key = filename.split('.')[0]
-    search_key = "paris"
-    result_list = search_by_feature("", search_method, dataset)
+    if search_type == 'file':
+        upload_file = request.files['file']
+        file_type = get_file_type(upload_file.filename)
+        filename = random_str() + '.' + get_file_extensions(upload_file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        upload_file.save(file_path)
+    if search_type == 'url':
+        file_url = request.form.get('url')
+        filename = db_utils.download_file(file_url, app.config['UPLOAD_FOLDER'])
+        file_type = get_file_extensions(filename)
+        if filename is None:
+            result_json['success'] = False
+            result_json['info'] = "Invalid url"
+            return json.dumps(result_json)
+        else:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file_type = get_file_extensions(filename)
+    try:
+        feature = get_feature(file_path, file_type, search_method, dataset)
+    except Exception:
+        result_json['success'] = False
+        result_json['info'] = "feature error"
+        return json.dumps(result_json)
+    result_list = search_by_feature(feature, search_method, dataset)
+    search_key = filename.split('.')[0]
     app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_path': ""}
 
     result_json['success'] = True
