@@ -106,7 +106,8 @@ def get_class_detail(dataset_name, class_name, page=1, size=30):
         for model_name in model_names:
             info_dic = {}
             info_dic['dataset'] = dataset_name
-            info_dic['size'] = "4,445KB"
+            # info_dic['size'] = "4,445KB"
+            info_dic['size'] = class_info[model_name]['file_size']
             info_dic['name'] = model_name
             info_dic['class_name'] = class_info[model_name]['class_name']
             info_dic['model_url'] = get_model_url(dataset_name, model_name)
@@ -142,7 +143,8 @@ def get_model_info(dataset_name, class_name, model_name):
     class_info = set_info[class_name]
     info_dic = {}
     info_dic['dataset'] = dataset_name
-    info_dic['size'] = "4,445KB"
+    # info_dic['size'] = "4,445KB"
+    info_dic['size'] = class_info[model_name]['file_size']
     info_dic['name'] = model_name
     info_dic['class_name'] = class_info[model_name]['class_name']
     info_dic['model_url'] = get_model_url(dataset_name, model_name)
@@ -162,7 +164,8 @@ def get_search_result_detail(dataset_name, model_list, page=1, size=100):
         # print(class_info)
         info_dic = {}
         info_dic['dataset'] = dataset_name
-        info_dic['size'] = "4,445KB"
+        # info_dic['size'] = "4,445KB"
+        info_dic['size'] = class_info[model_name]['file_size']
         info_dic['name'] = model_name
         info_dic['class_name'] = class_info[model_name]['class_name']
         info_dic['model_url'] = get_model_url(dataset_name, model_name)

@@ -105,6 +105,7 @@ def search():
 
     result_json['success'] = True
     result_json['result_url'] = '/search-result?key=%s' % search_key
+    print(result_json)
     return json.dumps(result_json)
 
 
