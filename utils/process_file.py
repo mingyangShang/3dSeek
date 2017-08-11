@@ -23,7 +23,7 @@ def get_file_type(filename):
     return 'NONE'
 
 
-def random_str(length=8):
+def random_str(length=9):
     return ''.join([random.choice(string.ascii_letters) for i in range(length)])
 
 

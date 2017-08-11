@@ -5,7 +5,6 @@ from utils.feature_extract import get_feature
 import os
 import json
 import utils.database_utils as db_utils
-import base64
 
 app = Flask(__name__)
 
@@ -70,9 +69,9 @@ def get_class_details():
 
 @app.route('/search', methods=['POST'])
 def search():
-    search_type = request.form['type']
-    search_method = request.form['method']
-    dataset = request.form['dataset']
+    search_type = request.form.get('type')
+    search_method = request.form.get('method')
+    dataset = request.form.get('dataset')
     result_json = {}
     print(search_type)
     if search_type == 'file':
@@ -82,7 +81,7 @@ def search():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         upload_file.save(file_path)
     if search_type == 'url':
-        file_url = request.form['url']
+        file_url = request.form.get('url')
         filename = db_utils.download_file(file_url, app.config['UPLOAD_FOLDER'])
         file_type = get_file_extensions(filename)
         if filename is None:
@@ -98,11 +97,11 @@ def search():
         result_json['info'] = "feature error"
         return json.dumps(result_json)
     result_list = search_by_feature(feature, search_method, dataset)
-    search_key = base64.urlsafe_b64decode(filename)
+    # search_key = base64.urlsafe_b64decode(filename)
+    search_key = filename.split('.')[0]
     app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_path': file_path}
     result_json['success'] = True
     result_json['result_url'] = '/search-result?key=%s' % search_key
-    # result_json['search_key'] = search_key
     return json.dumps(result_json)
 
 

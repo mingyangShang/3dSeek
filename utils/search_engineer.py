@@ -20,7 +20,7 @@ def search_by_feature(search_feature, method_name='wxy', data_set='modelnet40'):
     :param search_feature: 
     :return search result
     """
-    return ['bathtub_000000001' for i in range(50)]
+    return ['bathtub_0007' for i in range(50)]
 
 def k_d_tree_test():
 

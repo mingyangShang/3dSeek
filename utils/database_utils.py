@@ -157,8 +157,9 @@ def get_search_result_detail(dataset_name, model_list, page=1, size=100):
     set_info = get_set_info(dataset_name)
     models = []
     for model_name in model_list:
-        class_name = model_list.split('_')[0]
+        class_name = model_name.split('_')[0]
         class_info = set_info[class_name]
+        # print(class_info)
         info_dic = {}
         info_dic['dataset'] = dataset_name
         info_dic['size'] = "4,445KB"

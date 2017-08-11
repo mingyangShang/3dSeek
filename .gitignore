@@ -4,6 +4,8 @@
 # database files
 static/database/
 
+# upload files
+uploads/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
