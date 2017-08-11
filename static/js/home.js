@@ -1,6 +1,6 @@
 var setsData, classesData;
 var isHomePage = true;
-var homePageSize = 20, searchPageSize = 30;
+var homePageSize = 48, searchPageSize = 48;
 var modelImgsTimer;
 var modelImgsTimerCount = 0;
 var views;
@@ -33,27 +33,6 @@ var views;
         }else{
             isHomePage = false;
         }
-
-        //分页浏览
-        window.pagObj = $('#models-pagination').pagination({
-	        items: 20,
-	        itemOnPage: 8,
-	        currentPage: 1,
-	        cssStyle: '',
-	        prevText: '<span aria-hidden="true">&laquo;</span>',
-	        nextText: '<span aria-hidden="true">&raquo;</span>',
-	        onInit: function () {
-	            // fire first page loading
-	        },
-	        onPageClick: function (page, evt) {
-	            // 向服务器请求第page页的数据
-                if(isHomePage){
-                    getModels($("#model-classes-treeview").treeview("getSelected")[0].href + "&page=" + page);
-                }else{
-                    getModels();
-                }
-	        }
-	      });
 
         $("#search").click(searchModel);
         $("#upload-model-btn").click(function(){
@@ -129,7 +108,29 @@ function refreshModelsList(modelsList){
   }
   $("#models-list .model-col").click(openModelViewer);
   $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
+}
 
+function refreshPageNav(pageInfo){
+     //分页浏览
+    $('#models-pagination').pagination({
+        items: pageInfo.total_count,
+        itemOnPage: pageInfo.curr_count,
+        currentPage: pageInfo.curr_page,
+        cssStyle: '',
+        prevText: '<span aria-hidden="true">&laquo;</span>',
+        nextText: '<span aria-hidden="true">&raquo;</span>',
+        onInit: function () {
+            // fire first page loading
+        },
+        onPageClick: function (page, evt) {
+            // 向服务器请求第page页的数据
+            if(isHomePage){
+                getModels($("#model-classes-treeview").treeview("getSelected")[0].href + "&page=" + page);
+            }else{
+                getModels();
+            }
+        }
+      });
 }
 
 function newModelDiv(model){
@@ -180,11 +181,12 @@ function refreshModelSetsSelect(sets){
 
 //弹出窗口展示模型信息
 function openModelViewer(event){
-  // var modelInfo = $(event.target).data("model");
+  var modelInfo = $(this).data("info");
+  console.log(modelInfo);
   //弹出窗口
   $("#viewerModal").css("display", "block");
   $("#viewerModal").addClass("in");
-  $("#viewerIframe").attr("src", "view-model.html");
+  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name);
 }
 
 //关闭展示模型的窗口i 
@@ -201,7 +203,7 @@ function refreshClasses(modelsetName){
     multiSelect: false,
     onNodeSelected: function(event, data){
         //获取该类下的数据
-        getModels(data.href);
+        getModels(data.href, true);
     }
   });
   // $('#model-classes-treeview').addClass("loading");//进度条
@@ -210,7 +212,9 @@ function refreshClasses(modelsetName){
 function getModels(url){
     $.getJSON(url, function(resp, status){
         if(status == "success") {
-            refreshModelsList(resp);
+            console.log(resp);
+            refreshModelsList(resp["models"]);
+            refreshPageNav(resp); //重新布局页面导航
         }
     });
 }
@@ -253,7 +257,7 @@ function searchByUrl(){
     var url = $("#search-url-input").val();
     if(url != ""){
         //检查URL是否合法
-        if((/\.(gif|jpg|jpeg|tiff|png|off|)$/i).test(url)) {
+        if((/\.(gif|jpg|jpeg|tiff|png|off)$/i).test(url)) {
             $("#url-error").addClass("hide");
             search("url", url, null);
         }else{
@@ -275,6 +279,7 @@ function search(type, url, file){
     }
 
     var formData = new FormData();
+    formData.append("type", type);
     formData.append("method", method);
     if(type == "url"){
         formData.append("url", url);
@@ -284,7 +289,7 @@ function search(type, url, file){
     }
     $.ajax({
         // Your server script to process the upload
-        url: 'upload.php',
+        url: '/search',
         type: 'POST',
 
         // Form data
@@ -314,6 +319,7 @@ function search(type, url, file){
         // },
         success: function(data, status, xhr){
           console.log("success");
+          console.log(data);
         },
         error: function(data, status, xhr){
           console.log("error");
@@ -345,7 +351,7 @@ function searchByModel(){
     return;
   }
   var file = $("#model-file-input")[0].files[0];
-  if((/\.(off|obj)$/i).test(file.name)){
+  if((/\.(off|obj|jpg|jpeg|png)$/i).test(file.name)){
       $("#searchFileName").text(filepath);
       $("#uploadingFile").css("display", "inline-block");
       search("file", "", filepath);
