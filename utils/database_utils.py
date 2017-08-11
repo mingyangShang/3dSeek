@@ -4,6 +4,8 @@ import json
 root_dir = '..'
 server_address = 'http://166.111.80.54:8610'
 
+cache_dict = {}
+
 
 def get_db_root_dir(db_name):
     db_name = db_name.lower()
@@ -74,30 +76,51 @@ def get_set_names_json():
     return json.dumps(info_dic)
 
 
-def get_class_detail(dataset_name, class_name, start=0, size=100):
+def get_class_detail(dataset_name, class_name, page=1, size=30):
     dataset_name = dataset_name.lower()
-    set_info = get_set_info(dataset_name)
-    if class_name.lower() == 'all':
-        class_info = {}
-        for key in set_info.keys():
-            for key2 in set_info[key]:
-                class_info[key2] = set_info[key][key2]
+    if (dataset_name + class_name) in cache_dict.keys():
+        models = cache_dict[dataset_name+class_name]
     else:
-        class_info = set_info[class_name.lower()]
-    model_names = [key for key in class_info.keys()]
-    model_names.sort()
-    models = []
-    for model_name in model_names:
-        info_dic = {}
-        info_dic['name'] = model_name
-        info_dic['class_name'] = class_info[model_name]['class_name']
-        info_dic['model_url'] = get_model_url(dataset_name, model_name)
-        info_dic['view_urls'] = get_view_urls(dataset_name, model_name)
-        info_dic['vertice_num'] = int(class_info[model_name]['vertice_num'])
-        info_dic['edge_num'] = int(class_info[model_name]['edge_num'])
-        info_dic['download_url'] = '/download?dataset=%s&model_name=%s' % (dataset_name, model_name)
-        models.append(info_dic)
-    return json.dumps(models)
+        set_info = get_set_info(dataset_name)
+        if class_name.lower() == 'all':
+            class_info = {}
+            for key in set_info.keys():
+                for key2 in set_info[key]:
+                    class_info[key2] = set_info[key][key2]
+        else:
+            class_info = set_info[class_name.lower()]
+        model_names = [key for key in class_info.keys()]
+        model_names.sort()
+        models = []
+        for model_name in model_names:
+            info_dic = {}
+            info_dic['name'] = model_name
+            info_dic['class_name'] = class_info[model_name]['class_name']
+            info_dic['model_url'] = get_model_url(dataset_name, model_name)
+            info_dic['view_urls'] = get_view_urls(dataset_name, model_name)
+            info_dic['vertice_num'] = int(class_info[model_name]['vertice_num'])
+            info_dic['edge_num'] = int(class_info[model_name]['edge_num'])
+            info_dic['download_url'] = '/download?dataset=%s&model_name=%s' % (dataset_name, model_name)
+            models.append(info_dic)
+
+    cache_dict[dataset_name + class_name] = models
+
+    detail_json = {}
+    total_count = len(models)
+    detail_json['total_count'] = total_count
+    detail_json['curr_page'] = page
+    start = (page - 1) * size
+    if start > total_count:
+        detail_json['models'] = []
+        detail_json['curr_count'] = 0
+    elif start + size > total_count:
+        detail_json['models'] = models[start:]
+        detail_json['curr_count'] = total_count - start
+    else:
+        detail_json['models'] = models[start:start + size]
+        detail_json['curr_count'] = size
+
+    return json.dumps(detail_json)
 
 
 def get_search_result_detail(dataset_name, model_list, start=0, size=100):
