@@ -45,17 +45,18 @@ def get_class_details():
     GET parameters:
     -- dataset: dataset name
     -- class_name: can be 'All' or other class names
+    -- page: the show page
     :return: 
     """
     dataset = request.args.get('dataset')
     class_name = request.args.get('class_name')
-    # start = request.args.get('start')
-    # size = request.args.get('size')
-    # dataset = 'modelnet10'
-    # class_name = 'All'
-    start = 0
-    size = 10
-    return db_utils.get_class_detail(dataset, class_name, start, size)
+    page = request.args.get('page')
+    if page is None:
+        page = 1
+    else:
+        page = int(page)
+    size = 30
+    return db_utils.get_class_detail(dataset, class_name, page, size)
 
 @app.route('/search-result')
 def search_result():
