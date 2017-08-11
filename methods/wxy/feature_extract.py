@@ -7,7 +7,7 @@ get_feature_from_image(img_path)
 """
 
 
-def get_feature_from_model(model_path):
+def get_feature_from_model(model_path, dataset):
     """
     根据传入的3D模型提取相应的特征
     :param model_path: 文件路径
@@ -16,7 +16,7 @@ def get_feature_from_model(model_path):
     pass
 
 
-def get_feature_from_image(img_path):
+def get_feature_from_image(img_path, dataset):
     """
     根据传入的图片提取相应的特征
     :param img_path: 文件路径

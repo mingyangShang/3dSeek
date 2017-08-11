@@ -20,7 +20,7 @@ def get_file_type(filename):
         return 'IMG'
     if file_extension in SHAPE_EXTENSIONS:
         return 'SHAPE'
-    return 'TEXT'
+    return 'NONE'
 
 
 def random_str(length=8):
