@@ -164,6 +164,9 @@ color:#fff;
 .hide{
     display: none;
 }
+.error-hint{
+    color: #a94442;
+}
 #search-row button {
         border: 0;
         background: none;
