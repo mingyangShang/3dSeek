@@ -76,6 +76,7 @@ def search():
     result_json = {}
     print(search_type)
     if search_type == 'file':
+        print(request.files)
         upload_file = request.files['file']
         file_type = get_file_type(upload_file.filename)
         filename = random_str() + '.' + get_file_extensions(upload_file.filename)
@@ -83,13 +84,15 @@ def search():
         upload_file.save(file_path)
     if search_type == 'url':
         file_url = request.form.get('url')
+        print('downloading')
         filename = db_utils.download_file(file_url, app.config['UPLOAD_FOLDER'])
-        file_type = get_file_extensions(filename)
+        print('downloaded')
         if filename is None:
             result_json['success'] = False
             result_json['info'] = "Invalid url"
             return json.dumps(result_json)
         else:
+            file_type = get_file_extensions(filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     try:
         feature = get_feature(file_path, file_type, search_method, dataset)
@@ -103,6 +106,7 @@ def search():
     app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_path': file_path}
     result_json['success'] = True
     result_json['result_url'] = '/search-result?key=%s' % search_key
+    print(result_json)
     return json.dumps(result_json)
 
 
