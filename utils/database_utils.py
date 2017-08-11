@@ -1,7 +1,13 @@
 import os
 import json
-import urllib.request
-from utils.process_file import random_str, get_file_type
+
+# import urllib.request
+try:
+    from urllib import urlretrieve
+except Exception as ex:
+    from urllib.request import urlretrieve
+
+from utils.process_file import random_str, get_file_type, get_file_extensions
 
 root_dir = '..'
 server_address = 'http://166.111.80.54:8610'
@@ -147,30 +153,57 @@ def get_model_info(dataset_name, class_name, model_name):
     return info_dic
 
 
-def get_search_result_detail(dataset_name, model_list, start=0, size=100):
+def get_search_result_detail(dataset_name, model_list, page=1, size=100):
     set_info = get_set_info(dataset_name)
     models = []
     for model_name in model_list:
         class_name = model_list.split('_')[0]
-        info_dic = set_info[class_name][model_name]
+        class_info = set_info[class_name]
+        info_dic = {}
+        info_dic['dataset'] = dataset_name
+        info_dic['size'] = "4,445KB"
         info_dic['name'] = model_name
+        info_dic['class_name'] = class_info[model_name]['class_name']
         info_dic['model_url'] = get_model_url(dataset_name, model_name)
         info_dic['view_urls'] = get_view_urls(dataset_name, model_name)
+        info_dic['vertice_num'] = int(class_info[model_name]['vertice_num'])
+        info_dic['edge_num'] = int(class_info[model_name]['edge_num'])
+        info_dic['download_url'] = '/download?dataset=%s&model_name=%s' % (dataset_name, model_name)
         models.append(info_dic)
-    return json.dumps(models)
+    detail_json = {}
+    total_count = len(models)
+    detail_json['total_count'] = total_count
+    detail_json['curr_page'] = page
+    start = (page - 1) * size
+    if start > total_count:
+        detail_json['models'] = []
+        detail_json['curr_count'] = 0
+    elif start + size > total_count:
+        detail_json['models'] = models[start:]
+        detail_json['curr_count'] = total_count - start
+    else:
+        detail_json['models'] = models[start:start + size]
+        detail_json['curr_count'] = size
+    return json.dumps(detail_json)
 
 
-def download_file(url):
+def download_file(url, dst_dir):
     file_name = url.split('/')[-1]
     file_type = get_file_type(file_name)
     if not file_type in ['IMG', 'SHAPE']:
         return None
-
-    urllib.request.urlretrieve(url, )
+    file_name = random_str() + '.' + get_file_extensions(file_name)
+    try:
+        urlretrieve(url, os.path.join(dst_dir, file_name))
+    except Exception:
+        return None
+    return file_name
 
 
 if __name__ == '__main__':
-    res = get_model_url('modelnet10', 'airplane_0001')
-    print(res)
-    res = get_view_urls('modelnet10', 'toilet_0358')
-    print(res)
+    pass
+    # res = get_model_url('modelnet10', 'airplane_0001')
+    # print(res)
+    # res = get_view_urls('modelnet10', 'toilet_0358')
+    # print(res)
+    # download_file('123.aaaa')
