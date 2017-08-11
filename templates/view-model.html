@@ -125,8 +125,8 @@
     <script src="{{ url_for('static', filename="js/bootstrap.js") }}"></script>
     <script src="{{ url_for('static', filename="js/chart.min.js") }}"></script>
 
-      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
+{#      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>#}
+{#      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>#}
       <script src="{{ url_for('static', filename="js/chart-ext.js") }}"></script>
       <script src="{{ url_for('static', filename="js/three.js") }}"></script>
       <script src="{{ url_for('static', filename="js/libs/inflate.min.js") }}"></script>
@@ -136,7 +136,34 @@
       <script src="{{ url_for('static', filename="js/loaders/VTKLoader.js") }}"></script>
       <script src="{{ url_for('static', filename="js/viewer.js") }}"></script>
       <script src="{{ url_for('static', filename="js/Detector.js") }}"></script>
-      <script src="{{ url_for('static', filename="js/view-model.js") }}"></script>
+{#      <script src="{{ url_for('static', filename="js/view-model.js") }}"></script>#}
       <audio controls="controls" style="display: none;"></audio>
+        <script>
+            var featureChart;
+            var controls;
+            $(document).ready(function(){
+                // $.getJSON('/viewer', function(resp, status){
+                // 	if(status == "success"){
+                // 		refreshModelInfo();
+                // 	}
+                // });
+                $('#images').on('shown.bs.collapse', function () {
+                  // modelViewer.modelImagesPanel.onResize();
+                });
+                $('#instructions').hide();
+                $('#instructionsPanel').click(function () { $('#instructions').toggle(); });
+                showModel("{{model.model_url}}", $("#canvas"));
+                featureChart = refreshFeatureChart("featureChart", [], []); //特征可视化
+
+                // controls.enabled = true;
+                window.controls.enabled = true;
+                $("#canvas canvas").css("margin-top", "60px");
+            });
+
+            function refreshModelInfo(info){
+                featureChart = refreshFeatureChart("featureChart", info.x, info.y);
+                // featureChart
+            }
+        </script>
    </body>
 </html>
