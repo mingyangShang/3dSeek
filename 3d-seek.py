@@ -5,6 +5,7 @@ from utils.feature_extract import get_feature
 import os
 import json
 import utils.database_utils as db_utils
+import base64
 
 app = Flask(__name__)
 
@@ -12,6 +13,8 @@ app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 db_utils.root_dir = app.root_path
+
+app.cache_dic = {}
 
 
 @app.route('/download')
@@ -65,16 +68,13 @@ def get_class_details():
     return db_utils.get_class_detail(dataset, class_name, page, page_size)
 
 
-@app.route('/search-result')
-def search_result():
-    return render_template("search_result.html")
-
-
 @app.route('/search', methods=['POST'])
 def search():
     search_type = request.form['type']
     search_method = request.form['method']
     dataset = request.form['dataset']
+    result_json = {}
+    print(search_type)
     if search_type == 'file':
         upload_file = request.files['file']
         file_type = get_file_type(upload_file.filename)
@@ -83,18 +83,50 @@ def search():
         upload_file.save(file_path)
     if search_type == 'url':
         file_url = request.form['url']
-        pass
+        filename = db_utils.download_file(file_url, app.config['UPLOAD_FOLDER'])
+        file_type = get_file_extensions(filename)
+        if filename is None:
+            result_json['success'] = False
+            result_json['info'] = "Invalid url"
+            return json.dumps(result_json)
+        else:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    try:
+        feature = get_feature(file_path, file_type, search_method, dataset)
+    except Exception:
+        result_json['success'] = False
+        result_json['info'] = "feature error"
+        return json.dumps(result_json)
+    result_list = search_by_feature(feature, search_method, dataset)
+    search_key = base64.urlsafe_b64decode(filename)
+    app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_path': file_path}
+    result_json['success'] = True
+    result_json['result_url'] = '/search-result?key=%s' % search_key
+    # result_json['search_key'] = search_key
+    return json.dumps(result_json)
 
-    feature = get_feature(file_path, file_type, search_method, dataset)
-    # search_text = request.form['search_text']
-    # data_set = request.form['data_set']
 
-    print(search_method)
-    filename = random_str() + '.' + get_file_extensions(upload_file.filename)
-    upload_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    file_url = url_for('uploaded_file', filename=filename)
-    print(file_url)
-    return render_template('index.html')
+@app.route('/search-result')
+def search_result():
+    return render_template('search_result.html')
+
+
+@app.route('/api/search/detail')
+def search_detail():
+    search_key = request.args.get('search_key')
+    page = request.args.get('page')
+    page_size = request.args.get('page_size')
+    if page is None:
+        page = 1
+    else:
+        page = int(page)
+    if page_size is None:
+        page_size = 48
+    else:
+        page_size = int(page_size)
+    search_result = app.cache_dic[search_key]
+    return db_utils.get_search_result_detail(search_result['dataset'], search_result['result_list'], page, page_size)
+
 
 
 @app.route('/')
