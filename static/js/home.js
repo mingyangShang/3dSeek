@@ -257,7 +257,7 @@ function searchByUrl(){
     var url = $("#search-url-input").val();
     if(url != ""){
         //检查URL是否合法
-        if((/\.(gif|jpg|jpeg|tiff|png|off|)$/i).test(url)) {
+        if((/\.(gif|jpg|jpeg|tiff|png|off)$/i).test(url)) {
             $("#url-error").addClass("hide");
             search("url", url, null);
         }else{
@@ -279,6 +279,7 @@ function search(type, url, file){
     }
 
     var formData = new FormData();
+    formData.append("type", type);
     formData.append("method", method);
     if(type == "url"){
         formData.append("url", url);
@@ -318,6 +319,7 @@ function search(type, url, file){
         // },
         success: function(data, status, xhr){
           console.log("success");
+          console.log(data);
         },
         error: function(data, status, xhr){
           console.log("error");
@@ -349,7 +351,7 @@ function searchByModel(){
     return;
   }
   var file = $("#model-file-input")[0].files[0];
-  if((/\.(off|obj)$/i).test(file.name)){
+  if((/\.(off|obj|jpg|jpeg|png)$/i).test(file.name)){
       $("#searchFileName").text(filepath);
       $("#uploadingFile").css("display", "inline-block");
       search("file", "", filepath);
