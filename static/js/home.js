@@ -1,6 +1,6 @@
 var setsData, classesData;
 var isHomePage = true;
-var homePageSize = 20, searchPageSize = 30;
+var homePageSize = 48, searchPageSize = 48;
 var modelImgsTimer;
 var modelImgsTimerCount = 0;
 var views;
@@ -33,27 +33,6 @@ var views;
         }else{
             isHomePage = false;
         }
-
-        //分页浏览
-        window.pagObj = $('#models-pagination').pagination({
-	        items: 20,
-	        itemOnPage: 8,
-	        currentPage: 1,
-	        cssStyle: '',
-	        prevText: '<span aria-hidden="true">&laquo;</span>',
-	        nextText: '<span aria-hidden="true">&raquo;</span>',
-	        onInit: function () {
-	            // fire first page loading
-	        },
-	        onPageClick: function (page, evt) {
-	            // 向服务器请求第page页的数据
-                if(isHomePage){
-                    getModels($("#model-classes-treeview").treeview("getSelected")[0].href + "&page=" + page);
-                }else{
-                    getModels();
-                }
-	        }
-	      });
 
         $("#search").click(searchModel);
         $("#upload-model-btn").click(function(){
@@ -129,7 +108,29 @@ function refreshModelsList(modelsList){
   }
   $("#models-list .model-col").click(openModelViewer);
   $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
+}
 
+function refreshPageNav(pageInfo){
+     //分页浏览
+    $('#models-pagination').pagination({
+        items: pageInfo.total_count,
+        itemOnPage: pageInfo.curr_count,
+        currentPage: pageInfo.curr_page,
+        cssStyle: '',
+        prevText: '<span aria-hidden="true">&laquo;</span>',
+        nextText: '<span aria-hidden="true">&raquo;</span>',
+        onInit: function () {
+            // fire first page loading
+        },
+        onPageClick: function (page, evt) {
+            // 向服务器请求第page页的数据
+            if(isHomePage){
+                getModels($("#model-classes-treeview").treeview("getSelected")[0].href + "&page=" + page);
+            }else{
+                getModels();
+            }
+        }
+      });
 }
 
 function newModelDiv(model){
@@ -180,11 +181,12 @@ function refreshModelSetsSelect(sets){
 
 //弹出窗口展示模型信息
 function openModelViewer(event){
-  // var modelInfo = $(event.target).data("model");
+  var modelInfo = $(this).data("info");
+  console.log(modelInfo);
   //弹出窗口
   $("#viewerModal").css("display", "block");
   $("#viewerModal").addClass("in");
-  $("#viewerIframe").attr("src", "view-model.html");
+  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name);
 }
 
 //关闭展示模型的窗口i 
@@ -201,7 +203,7 @@ function refreshClasses(modelsetName){
     multiSelect: false,
     onNodeSelected: function(event, data){
         //获取该类下的数据
-        getModels(data.href);
+        getModels(data.href, true);
     }
   });
   // $('#model-classes-treeview').addClass("loading");//进度条
@@ -210,7 +212,9 @@ function refreshClasses(modelsetName){
 function getModels(url){
     $.getJSON(url, function(resp, status){
         if(status == "success") {
-            refreshModelsList(resp);
+            console.log(resp);
+            refreshModelsList(resp["models"]);
+            refreshPageNav(resp); //重新布局页面导航
         }
     });
 }
