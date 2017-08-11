@@ -71,7 +71,8 @@ def get_class_details():
 def search():
     search_type = request.form.get('type')
     search_method = request.form.get('method')
-    dataset = request.form.get('dataset')
+    # dataset = request.form.get('dataset')
+    dataset = 'modelnet40'
     result_json = {}
     print(search_type)
     if search_type == 'file':
