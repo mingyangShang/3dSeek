@@ -47,7 +47,7 @@ var views;
         $("#models-list .btn-download").click(downloadModel);
         //检索结果中展示3维模型
         if($("#canvas").length > 0){
-          showModel("static/airplane.off", $("#canvas"));
+          showModel("/static/airplane.off", $("#canvas"));
           window.controls.enabled = false;
         }
         
@@ -391,10 +391,11 @@ function searchByModel(){
     return;
   }
   var file = $("#model-file-input")[0].files[0];
+  console.log(file);
   if((/\.(off|obj|jpg|jpeg|png)$/i).test(file.name)){
       $("#searchFileName").text(filepath);
       $("#uploadingFile").css("display", "inline-block");
-      search("file", "", filepath);
+      search("file", "", file);
   }else{
       $("#searchFileName").text("模型格式错误");
   }
