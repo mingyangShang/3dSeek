@@ -288,7 +288,7 @@ function search(type, url, file){
     }
     $.ajax({
         // Your server script to process the upload
-        url: 'upload.php',
+        url: '/search',
         type: 'POST',
 
         // Form data

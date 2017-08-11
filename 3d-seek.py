@@ -153,7 +153,7 @@ def model_view():
     model_info = db_utils.get_model_info(dataset, class_name, model_name)
     print(model_info)
 
-    return render_template('view-model.html')
+    return render_template('view-model.html', model=model_info)
 
 
 @app.route('/team')
