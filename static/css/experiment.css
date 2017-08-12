@@ -43,6 +43,6 @@
 #middleDiv .panel-group{
     margin-top: 20px;
 }
-#smy .col-md-6 img{
+#smy .col-md-6 img, #lhl .col-md-6 img{
     width: 100%;
 }

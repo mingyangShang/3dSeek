@@ -38,7 +38,7 @@ $(document).ready(function () {
                     backgroundColor: window.chartColors.blue,
                     borderColor: window.chartColors.blue,
                     data: [
-                        1.0, 0.9212, 0.116, 0.894, 0.8559, 0.8343, 0.8157, 0.8016, 0.7883, 0.7302, 0.0376
+                        1.0, 0.9212, 0.916, 0.894, 0.8559, 0.8343, 0.8157, 0.8016, 0.7883, 0.7302, 0.0376
                     ],
                 }, {
                 	label: "陆宏磊",

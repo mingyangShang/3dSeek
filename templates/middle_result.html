@@ -44,7 +44,7 @@
                     <ul class="nav nav-tabs">
                       <li class="active"><a href="#wxy" data-toggle="tab">王曦阳</a></li>
                       <li><a href="#smy" data-toggle="tab">商明阳</a></li>
-                      <li><a href="#lhl" data-toggle="tab">陆洪磊</a></li>
+                      <li><a href="#lhl" data-toggle="tab">陆宏磊</a></li>
                     </ul>
                     <div class="tab-content">
                         <div id="wxy" class="tab-pane fade in active">
@@ -75,10 +75,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="lhl" class="tab-pane fade">
+                        <div id="lhl" class="tab-pane fade lhl">
                             <div class="row">
                                 <div class="col-md-12">
-                                    LHL
+                                    <div class="panel-group">
+                                        <div class="panel panel-default">
+                                          <div class="panel-heading">类特征相似度矩阵</div>
+                                          <div class="panel-body">
+                                              <div class="row">
+                                                  <div class="col-md-6">
+                                                      <img src="{{ url_for('static', filename="img/lhl/class-sim-cos.png") }}">
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <img src="{{ url_for('static', filename="img/lhl/class-sim-euc.png") }}">
+                                                  </div>
+                                              </div>
+                                          </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
