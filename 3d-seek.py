@@ -73,10 +73,11 @@ def get_class_details():
     return db_utils.get_class_detail(dataset, class_name, page, page_size)
 
 @app.route('/api/shape-test')
-def search_test():
-    search_method = request.form.get('method')
+def search_shape_test():
+    search_method = request.args.get('method')
     if search_method is None:
         search_method = 'smy'
+    print(search_method)
     image_list = [app.config.root_path + "/static/img/bathtub_view.jpg" for i in range(12)]
     print(image_list)
     feature = get_feature(image_list, "SHAPE", search_method, 'modelnet40')
@@ -84,10 +85,11 @@ def search_test():
     return "Hello world!"
 
 @app.route('/api/image-test')
-def search_test():
-    search_method = request.form.get('method')
+def search_img_test():
+    search_method = request.args.get('method')
     if search_method is None:
         search_method = 'smy'
+    print(search_method)
     image_list = [app.config.root_path + "/static/img/bathtub_view.jpg"]
     print(image_list)
     feature = get_feature(image_list, "IMG", search_method, 'modelnet40')
