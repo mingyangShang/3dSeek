@@ -396,7 +396,7 @@ function searchByModel(){
   var file = $("#model-file-input")[0].files[0];
   console.log(file);
   if((/\.(off|obj|jpg|jpeg|png)$/i).test(file.name)){
-      $("#searchFileName").text(filepath);
+      $("#searchFileName").text(file.name);
       $("#uploadingFile").css("display", "inline-block");
       search("file", "", file);
   }else{
