@@ -19,7 +19,7 @@ $(document).ready(function(){
 	});
 	$('#instructions').hide();
 	$('#instructionsPanel').click(function () { $('#instructions').toggle(); });
-	showModel('/static/airplane.off', $("#canvas"));
+	// showModel('/static/bathtub_0007.off', $("#canvas"));
     featureChart = refreshFeatureChart("featureChart", [], []); //特征可视化
 
     // controls.enabled = true;

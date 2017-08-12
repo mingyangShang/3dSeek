@@ -49,7 +49,7 @@ var views;
         $("#models-list").addClass("loading");
         //检索结果中展示3维模型
         if($("#canvas").length > 0){
-          showModel("/static/airplane.off", $("#canvas"));
+
           window.controls.enabled = false;
         }
         
