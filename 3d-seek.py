@@ -175,7 +175,7 @@ def model_view():
         model_info['view_urls'] = file_info['view_urls']
         model_info['vertice_num'] = file_info['vertice_num']
         model_info['edge_num'] = file_info['edge_num']
-        model_info['featrue'], model_info['feature_dim'] = file_info['feature'], file_info['feature_dim']
+        model_info['feature'], model_info['feature_dim'] = file_info['feature'], file_info['feature_dim']
     else:
         dataset = request.args.get('dataset')
         class_name = request.args.get('class_name')
