@@ -45,7 +45,7 @@ def get_model_info(model_path):
 
 
 def get_file_type(filename):
-    file_extension = get_file_extensions(filename)
+    file_extension = get_file_extensions(filename).lower()
     if file_extension in IMG_EXTENSIONS:
         return 'IMG'
     if file_extension in SHAPE_EXTENSIONS:
