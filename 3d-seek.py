@@ -85,14 +85,13 @@ def search():
     if search_type == 'url':
         file_url = request.form.get('url')
         filename = db_utils.download_file(file_url, app.config['UPLOAD_FOLDER'])
-        file_type = get_file_extensions(filename)
         if filename is None:
             result_json['success'] = False
             result_json['info'] = "Invalid url"
             return json.dumps(result_json)
         else:
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file_type = get_file_extensions(filename)
+            file_type = get_file_type(filename)
     # try:
     #     feature = get_feature(file_path, file_type, search_method, dataset)
     # except Exception:
