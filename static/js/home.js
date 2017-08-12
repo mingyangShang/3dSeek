@@ -45,6 +45,7 @@ var views;
           window.location.href = "view-model.html";
         });
         $("#models-list .btn-download").click(downloadModel);
+        $("#models-list").addClass("loading");
         //检索结果中展示3维模型
         if($("#canvas").length > 0){
           showModel("/static/airplane.off", $("#canvas"));
@@ -133,6 +134,7 @@ function refreshModelsList(modelsList){
   }
   $("#models-list .model-col").click(openModelViewer);
   $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
+  $("#models-list").removeClass("loading");
 }
 
 function refreshPageNav(pageInfo){
@@ -289,11 +291,14 @@ function searchByUrl(){
         //检查URL是否合法
         if((/\.(gif|jpg|jpeg|tiff|png|off)$/i).test(url)) {
             $("#url-error").addClass("hide");
+            $("#searchingUrl").removeClass("hide");
             search("url", url, null);
         }else{
+            $("#searchingUrl").addClass("hide");
             $("#url-error").removeClass("hide").text("url不合法");
         }
     }else{
+        $("#searchingUrl").removeClass("hide");
         $("#url-error").removeClass("hide").text("url不能为空");
     }
 }
