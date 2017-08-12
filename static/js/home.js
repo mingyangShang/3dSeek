@@ -13,16 +13,14 @@ var views;
           searchByKey("All");
         });
         // $("#search-error-hint").css("display", "none");
-        //说明是搜索结果页面
+        //说明不是搜索结果页面
         if($("#model-classes-treeview").length > 0){
                 $.getJSON("/api/set/names", function(data, status){
                 setsData = data;
-                console.log(setsData);
                 refreshModelSetsSelect(data);
             });
             $.getJSON("/api/set/classes", function (data, status) {
                 classesData = data;
-                console.log(classesData);
                 refreshClasses("ModelNet10"); //TODO use modelnet10 as default
                 //默认选择第一个节点
                 if(classesData["ModelNet10"].length > 0){
@@ -32,6 +30,8 @@ var views;
             });
         }else{
             isHomePage = false;
+            getSearchResult(1);
+            $("#model-views-info .item:first").addClass("active");
         }
 
         $("#search").click(searchModel);
@@ -46,9 +46,10 @@ var views;
           window.location.href = "view-model.html";
         });
         $("#models-list .btn-download").click(downloadModel);
+        $("#models-list").addClass("loading");
         //检索结果中展示3维模型
         if($("#canvas").length > 0){
-          showModel("static/three-vtk/models/vtk/airplane.off", $("#canvas"));
+
           window.controls.enabled = false;
         }
         
@@ -69,9 +70,6 @@ var views;
           $("#bigImgModal").css("display", "none");
         });
 
-        if($("#featureChart").length > 0){
-          window.featureChart = refreshFeatureChart("featureChart", [], []);
-        }
         //文件检索
         //找好位置
         $("#fileSearchDiv").css("top", $("#search-row").offset().top);
@@ -99,21 +97,51 @@ function downloadModel(){
   console.log("downloadModel");
 }
 
+function getSearchResult(page){
+    var searchKey = new Url(window.location.href).query.key;
+    if(!page){
+        page = 1;
+    }
+    $.getJSON('/api/search/detail?search_key='+searchKey+'&page_size='+searchPageSize+'&page='+page, function(data, status){
+       if(status == "success"){
+           refreshModelsList(data.models);
+           refreshPageNav(data); //重新布局页面导航
+            $("#nums-result").html("<b>"+data.total_count+"</b>"); //检索的结果数
+           // if(data.type == "img"){
+           //     $("#img-info").css("display", "block");
+           //     $("#model-info").css("display", "none");
+           //     $("#model-views-info").css("display", "none");
+           // }else{
+           //     $("#img-info").css("display", "none");
+           //     $("#model-info").css("display", "block");
+           //     $("#model-views-info").css("display", "block");
+           // }
+       }else{
+           console.log("error");
+       }
+    });
+}
+
 function refreshModelsList(modelsList){
   //首先清空原来的模型信息
   var modelsDiv = $("#models-list");
   modelsDiv.empty();
   for(i in modelsList){
-      modelsDiv.append(newModelDiv(modelsList[i]));
+      modelsDiv.append(newModelDiv(modelsList[i], isHomePage ? 3 : 2));
   }
-  $("#models-list .model-col").click(openModelViewer);
+  $("#models-list .model-col").click(function(event){
+      if(!$(event.target).is("button")){
+          openModelViewer($(this).data("info"));
+      }
+  });
   $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
+  $("#models-list").removeClass("loading");
 }
 
 function refreshPageNav(pageInfo){
      //分页浏览
     $('#models-pagination').pagination({
-        items: pageInfo.total_count,
+        items: Math.ceil(pageInfo.total_count / (isHomePage ? homePageSize : searchPageSize)),
         itemOnPage: pageInfo.curr_count,
         currentPage: pageInfo.curr_page,
         cssStyle: '',
@@ -127,15 +155,20 @@ function refreshPageNav(pageInfo){
             if(isHomePage){
                 getModels($("#model-classes-treeview").treeview("getSelected")[0].href + "&page=" + page);
             }else{
-                getModels();
+                getSearchResult(page);
             }
         }
       });
 }
 
-function newModelDiv(model){
+function newModelDiv(model, row_md){
   var modelDiv = document.createElement("div");
-  $(modelDiv).addClass("col-md-3 model-col");
+  $(modelDiv).addClass("model-col");
+  if(row_md == 3){
+      $(modelDiv).addClass("col-md-3");
+  }else if(row_md == 2){
+      $(modelDiv).addClass("col-md-2");
+  }
     var modelImg = document.createElement("img");
     $(modelImg).addClass("img-thumbnail model-img");
     $(modelImg).attr("src", model.view_urls[0]);
@@ -147,12 +180,14 @@ function newModelDiv(model){
       var tagSpan = document.createElement("span");
       $(tagSpan).addClass("model-tag label label-default");
       $(tagSpan).text(model.class_name);
+      var downloadA = document.createElement("a");
       var downloadBtn = document.createElement("button");
       $(downloadBtn).addClass("btn btn-primary btn-md btn-download");
       $(downloadBtn).text("下载");
-      $(downloadBtn).attr("href", model.download_url);
+      $(downloadA).attr("href", model.download_url);
+      $(downloadA).append(downloadBtn);
     $(infoDiv).append(tagSpan);
-    $(infoDiv).append(downloadBtn);
+    $(infoDiv).append(downloadA);
   $(modelDiv).append(infoDiv);
   //绑定数据
     $(modelDiv).data("info", model);
@@ -180,9 +215,7 @@ function refreshModelSetsSelect(sets){
 }
 
 //弹出窗口展示模型信息
-function openModelViewer(event){
-  var modelInfo = $(this).data("info");
-  console.log(modelInfo);
+function openModelViewer(modelInfo){
   //弹出窗口
   $("#viewerModal").css("display", "block");
   $("#viewerModal").addClass("in");
@@ -259,11 +292,14 @@ function searchByUrl(){
         //检查URL是否合法
         if((/\.(gif|jpg|jpeg|tiff|png|off)$/i).test(url)) {
             $("#url-error").addClass("hide");
+            $("#searchingUrl").removeClass("hide");
             search("url", url, null);
         }else{
+            $("#searchingUrl").addClass("hide");
             $("#url-error").removeClass("hide").text("url不合法");
         }
     }else{
+        $("#searchingUrl").removeClass("hide");
         $("#url-error").removeClass("hide").text("url不能为空");
     }
 }
@@ -300,6 +336,7 @@ function search(type, url, file){
         cache: false,
         contentType: false,
         processData: false,
+        dataType: 'json',
 
         // Custom XMLHttpRequest
         // xhr: function() {
@@ -320,6 +357,15 @@ function search(type, url, file){
         success: function(data, status, xhr){
           console.log("success");
           console.log(data);
+          if(data.success){
+              window.location.href = data.result_url;
+          }else{
+              if(type == "url"){
+                  $("#url-error").removeClass("hide").text(data.info);
+              }else{
+                  $("#searchFileName").text(data.info);
+              }
+          }
         },
         error: function(data, status, xhr){
           console.log("error");
@@ -351,10 +397,11 @@ function searchByModel(){
     return;
   }
   var file = $("#model-file-input")[0].files[0];
+  console.log(file);
   if((/\.(off|obj|jpg|jpeg|png)$/i).test(file.name)){
       $("#searchFileName").text(filepath);
       $("#uploadingFile").css("display", "inline-block");
-      search("file", "", filepath);
+      search("file", "", file);
   }else{
       $("#searchFileName").text("模型格式错误");
   }

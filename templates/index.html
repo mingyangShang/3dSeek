@@ -111,6 +111,10 @@
                         </div>
                         <div class="col-md-2" style="margin-top: 5px;">
                             <span class="hide error-hint" id="url-error">URL不能为空</span>
+                            <div id="searchingUrl" class="text-center hide">
+                                <img src="{{ url_for('static', filename="img/loading.gif") }}" style="width: 40px;height: 40px;">
+                                <span style="color:#428bca">正在搜索……</span>
+                            </div>
                         </div>
                     </div>
                     <div id="fileSearchPane" class="tab-pane fade in active" style="display: none; margin-top: 20px; margin-left: 20px; font-size: 14px;">
@@ -153,165 +157,7 @@
                             <div class="panel-heading"></div>
                             <div class="panel-body">
                                 <div id="models-list" class="row-fluid nav-right">
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <div class="">
-                                            <span class="model-tag label label-default">airplane</span>
-                                            <button class="btn btn-primary btn-md btn-download">下载</button>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <div class="">
-                                            <span class="model-tag label label-default">airplane</span>
-                                            <button class="btn btn-primary btn-md btn-download">下载</button>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <div class="">
-                                            <span class="model-tag label label-default">airplane</span>
-                                            <button class="btn btn-primary btn-md btn-download">下载</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <div class="">
-                                            <span class="model-tag label label-default">airplane</span>
-                                            <button class="btn btn-primary btn-md btn-download">下载</button>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 model-col">
-                                        <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/>
-                                        <span class="model-tag label label-default">
-                                            airplane
-                                        </span>
-                                        <button class="btn btn-primary btn-md btn-download"> 下载
-                                        </button>
-                                    </div>
+
                                 </div>
                                 <div id="models-nav" class="row-fluid text-center">
                                     <div class="col-md-12">

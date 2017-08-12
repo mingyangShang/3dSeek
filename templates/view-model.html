@@ -136,7 +136,40 @@
       <script src="{{ url_for('static', filename="js/loaders/VTKLoader.js") }}"></script>
       <script src="{{ url_for('static', filename="js/viewer.js") }}"></script>
       <script src="{{ url_for('static', filename="js/Detector.js") }}"></script>
-      <script src="{{ url_for('static', filename="js/view-model.js") }}"></script>
+{#      <script src="{{ url_for('static', filename="js/view-model.js") }}"></script>#}
       <audio controls="controls" style="display: none;"></audio>
+        <script>
+            var featureChart;
+            var controls;
+            $(document).ready(function(){
+                // $.getJSON('/viewer', function(resp, status){
+                // 	if(status == "success"){
+                // 		refreshModelInfo();
+                // 	}
+                // });
+                $('#images').on('shown.bs.collapse', function () {
+                  // modelViewer.modelImagesPanel.onResize();
+                });
+                $('#instructions').hide();
+                $('#instructionsPanel').click(function () { $('#instructions').toggle(); });
+                showModel("{{model.model_url}}", $("#canvas"));
+                if({{ model.feature_dim }} > 0){
+                    var x = [];
+                    for(var i=0;i<{{ model.feature_dim }};++i){
+                        x.push(i + "");
+                    }
+                  featureChart = refreshFeatureChart("featureChart", x, {{ model.feature }});
+                }
+
+                // controls.enabled = true;
+                window.controls.enabled = true;
+                $("#canvas canvas").css("margin-top", "60px");
+            });
+
+            function refreshModelInfo(info){
+                featureChart = refreshFeatureChart("featureChart", info.x, info.y);
+                // featureChart
+            }
+        </script>
    </body>
 </html>

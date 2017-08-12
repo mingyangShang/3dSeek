@@ -2,8 +2,8 @@
 .media-carousel 
 {
   margin-bottom: 0;
-  padding: 0 40px 30px 40px;
-  margin-top: 30px;
+  padding: 0 40px 0px 40px;
+  margin-top: 0px;
 }
 /* Previous button  */
 .media-carousel .carousel-control.left 
