@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, send_from_directory, send_file
-from utils.process_file import random_str, get_file_type, get_file_extensions
+from utils.process_file import random_str, get_file_type, get_file_extensions, get_file_size
 from utils.search_engineer import search_by_feature, search_by_text
 from utils.feature_extract import get_feature
 import os
@@ -76,6 +76,7 @@ def search():
     result_json = {}
     print(search_type)
     if search_type == 'file':
+        print('aaaaaa')
         upload_file = request.files['file']
         file_type = get_file_type(upload_file.filename)
         filename = random_str() + '.' + get_file_extensions(upload_file.filename)
@@ -92,15 +93,29 @@ def search():
         else:
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file_type = get_file_extensions(filename)
-    try:
-        feature = get_feature(file_path, file_type, search_method, dataset)
-    except Exception:
-        result_json['success'] = False
-        result_json['info'] = "feature error"
-        return json.dumps(result_json)
+    # try:
+    #     feature = get_feature(file_path, file_type, search_method, dataset)
+    # except Exception:
+    #     result_json['success'] = False
+    #     result_json['info'] = "feature error"
+    #     return json.dumps(result_json)
+    feature = [0.1 * i for i in range(128)]
+    print(feature)
     result_list = search_by_feature(feature, search_method, dataset)
     search_key = filename.split('.')[0]
-    app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_path': ""}
+    file_size = get_file_size(file_path)
+
+    file_info = {'file_type': file_type, "file_name": filename, "file_path": file_path, "file_size": file_size,
+                 "file_url": url_for('uploaded_file', filename=filename), 'search_key': search_key, "feature": feature,
+                 "feature_dim": len(feature)}
+    if file_type == 'SHAPE':
+        file_info['view_urls'] = [url_for('uploaded_file', filename='%s_%03d.jpg' % (search_key, i)) for i in
+                                  range(1, 13)]
+        file_info['view_urls'] = ['/static/img/bathtub_view.jpg' for i in range(12)]
+        file_info['vertice_num'] = 3455
+        file_info['edge_num'] = 2344
+    print(file_info)
+    app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_info': file_info}
 
     result_json['success'] = True
     result_json['result_url'] = '/search-result?key=%s' % search_key
@@ -110,7 +125,10 @@ def search():
 
 @app.route('/search-result')
 def search_result():
-    return render_template('search_result.html')
+    search_key = request.args.get('key')
+    info_dic = app.cache_dic[search_key]['file_info']
+    print(info_dic)
+    return render_template('search_result.html', info=info_dic)
 
 
 @app.route('/api/search/detail')
@@ -130,7 +148,6 @@ def search_detail():
     return db_utils.get_search_result_detail(search_result['dataset'], search_result['result_list'], page, page_size)
 
 
-
 @app.route('/')
 def hello_world():
     return render_template('index.html')
@@ -148,11 +165,25 @@ def middle_result():
 
 @app.route('/viewer')
 def model_view():
-    dataset = request.args.get('dataset')
-    class_name = request.args.get('class_name')
-    model_name = request.args.get('model_name')
-
-    model_info = db_utils.get_model_info(dataset, class_name, model_name)
+    search_key = request.args.get('key')
+    if search_key is not None:
+        file_info = app.cache_dic[search_key]['file_info']
+        model_info = {}
+        model_info['size'] = file_info['file_size']
+        model_info['name'] = file_info['file_name']
+        model_info['model_url'] = file_info['file_url']
+        model_info['view_urls'] = file_info['view_urls']
+        model_info['vertice_num'] = file_info['vertice_num']
+        model_info['edge_num'] = file_info['edge_num']
+        model_info['featrue'], model_info['feature_dim'] = file_info['feature'], file_info['feature_dim']
+    else:
+        dataset = request.args.get('dataset')
+        class_name = request.args.get('class_name')
+        model_name = request.args.get('model_name')
+        model_info = db_utils.get_model_info(dataset, class_name, model_name)
+        feature = [0.1 * i for i in range(128)]
+        model_info['feature'] = feature
+        model_info['feature_dim'] = len(feature)
     print(model_info)
 
     return render_template('view-model.html', model=model_info)
