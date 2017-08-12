@@ -114,7 +114,7 @@ def search():
         result_json['success'] = False
         result_json['info'] = "feature error"
         return json.dumps(result_json)
-    feature = [0.1 * i for i in range(128)]
+    # feature = [0.1 * i for i in range(128)]
     print(feature)
     file_info['feature'] = feature
     file_info['feature_dim'] = len(feature)
