@@ -47,11 +47,6 @@ var views;
         });
         $("#models-list .btn-download").click(downloadModel);
         $("#models-list").addClass("loading");
-        //检索结果中展示3维模型
-        if($("#canvas").length > 0){
-
-          window.controls.enabled = false;
-        }
         
         $(".views img").click(function(event){
             $("#bigImgModal").css("display", "block");
@@ -362,8 +357,10 @@ function search(type, url, file){
           }else{
               if(type == "url"){
                   $("#url-error").removeClass("hide").text(data.info);
+                  $("#searchingUrl").addClass("hide");
               }else{
                   $("#searchFileName").text(data.info);
+                  $("#uploadingFile").css("display", "none");
               }
           }
         },
