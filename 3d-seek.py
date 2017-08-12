@@ -111,6 +111,7 @@ def search():
     if file_type == 'SHAPE':
         file_info['view_urls'] = [url_for('uploaded_file', filename='%s_%03d.jpg' % (search_key, i)) for i in
                                   range(1, 13)]
+        file_info['view_urls'] = ['/static/img/bathtub_view.jpg' for i in range(12)]
         file_info['vertice_num'] = 3455
         file_info['edge_num'] = 2344
     print(file_info)
