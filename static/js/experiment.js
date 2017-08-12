@@ -38,17 +38,7 @@ $(document).ready(function () {
                     backgroundColor: window.chartColors.blue,
                     borderColor: window.chartColors.blue,
                     data: [
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor()
-                        1.0, 0.98, 0.95, 0.88, 0.81, 0.75, 0.72, 0.65, 0.62, 0.55, 0.51
+                        1.0, 0.9212, 0.116, 0.894, 0.8559, 0.8343, 0.8157, 0.8016, 0.7883, 0.7302, 0.0376
                     ],
                 }, {
                 	label: "陆宏磊",
