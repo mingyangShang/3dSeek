@@ -153,7 +153,13 @@
                 $('#instructions').hide();
                 $('#instructionsPanel').click(function () { $('#instructions').toggle(); });
                 showModel("{{model.model_url}}", $("#canvas"));
-                featureChart = refreshFeatureChart("featureChart", [], []); //特征可视化
+                if({{ model.feature_dim }} > 0){
+                    var x = [];
+                    for(var i=0;i<{{ model.feature_dim }};++i){
+                        x.push(i + "");
+                    }
+                  featureChart = refreshFeatureChart("featureChart", x, {{ model.feature }});
+                }
 
                 // controls.enabled = true;
                 window.controls.enabled = true;

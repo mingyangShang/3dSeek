@@ -31,6 +31,7 @@ var views;
         }else{
             isHomePage = false;
             getSearchResult(1);
+            $("#model-views-info .item:first").addClass("active");
         }
 
         $("#search").click(searchModel);
@@ -45,6 +46,7 @@ var views;
           window.location.href = "view-model.html";
         });
         $("#models-list .btn-download").click(downloadModel);
+        $("#models-list").addClass("loading");
         //检索结果中展示3维模型
         if($("#canvas").length > 0){
           showModel("/static/airplane.off", $("#canvas"));
@@ -68,9 +70,6 @@ var views;
           $("#bigImgModal").css("display", "none");
         });
 
-        if($("#featureChart").length > 0){
-          window.featureChart = refreshFeatureChart("featureChart", [], []);
-        }
         //文件检索
         //找好位置
         $("#fileSearchDiv").css("top", $("#search-row").offset().top);
@@ -109,15 +108,15 @@ function getSearchResult(page){
            refreshPageNav(data); //重新布局页面导航
             console.log(data);
             $("#nums-result").html("<b>"+data.total_count+"</b>"); //检索的结果数
-           if(data.type == "img"){
-               $("#img-info").css("display", "block");
-               $("#model-info").css("display", "none");
-               $("#model-views-info").css("display", "none");
-           }else{
-               $("#img-info").css("display", "none");
-               $("#model-info").css("display", "block");
-               $("#model-views-info").css("display", "block");
-           }
+           // if(data.type == "img"){
+           //     $("#img-info").css("display", "block");
+           //     $("#model-info").css("display", "none");
+           //     $("#model-views-info").css("display", "none");
+           // }else{
+           //     $("#img-info").css("display", "none");
+           //     $("#model-info").css("display", "block");
+           //     $("#model-views-info").css("display", "block");
+           // }
        }else{
            console.log("error");
        }
@@ -133,6 +132,7 @@ function refreshModelsList(modelsList){
   }
   $("#models-list .model-col").click(openModelViewer);
   $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
+  $("#models-list").removeClass("loading");
 }
 
 function refreshPageNav(pageInfo){
@@ -289,11 +289,14 @@ function searchByUrl(){
         //检查URL是否合法
         if((/\.(gif|jpg|jpeg|tiff|png|off)$/i).test(url)) {
             $("#url-error").addClass("hide");
+            $("#searchingUrl").removeClass("hide");
             search("url", url, null);
         }else{
+            $("#searchingUrl").addClass("hide");
             $("#url-error").removeClass("hide").text("url不合法");
         }
     }else{
+        $("#searchingUrl").removeClass("hide");
         $("#url-error").removeClass("hide").text("url不能为空");
     }
 }
