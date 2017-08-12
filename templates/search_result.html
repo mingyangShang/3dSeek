@@ -154,7 +154,11 @@
             </div>
             <div class="col-md-3">
               <div class="panel panel-default" >
-                <div class="panel-heading">上传模型信息 <a href="/viewer?key={{ info.search_key }}"><font size="-2">更多&raquo;&raquo;</font></a></div>
+                <div class="panel-heading">上传模型信息
+                    {% if info.file_type  == "SHAPE" %}
+                        <a href="/viewer?key={{ info.search_key }}"><font size="-2">更多&raquo;&raquo;</font></a>
+                    {% endif %}
+                </div>
                 <div class="panel-body nav-upload-model">
                   <section id="upload-model-section">
                     <div class="container-fluid">
@@ -291,7 +295,9 @@
            $("#model-views-info").css("display", "block");
            $("#model-views-info .item:first").addClass("active");
             showModel("{{ info.file_url }}", $("#canvas"));
-
+            if(window.controls){
+                window.controls.enabled = false;
+            }
        }
        //画特征图
         if({{ info.feature_dim }} > 0){
