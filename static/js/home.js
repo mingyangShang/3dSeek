@@ -106,7 +106,6 @@ function getSearchResult(page){
        if(status == "success"){
            refreshModelsList(data.models);
            refreshPageNav(data); //重新布局页面导航
-            console.log(data);
             $("#nums-result").html("<b>"+data.total_count+"</b>"); //检索的结果数
            // if(data.type == "img"){
            //     $("#img-info").css("display", "block");
@@ -130,7 +129,11 @@ function refreshModelsList(modelsList){
   for(i in modelsList){
       modelsDiv.append(newModelDiv(modelsList[i], isHomePage ? 3 : 2));
   }
-  $("#models-list .model-col").click(openModelViewer);
+  $("#models-list .model-col").click(function(event){
+      if(!$(event.target).is("button")){
+          openModelViewer($(this).data("info"));
+      }
+  });
   $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
   $("#models-list").removeClass("loading");
 }
@@ -177,12 +180,14 @@ function newModelDiv(model, row_md){
       var tagSpan = document.createElement("span");
       $(tagSpan).addClass("model-tag label label-default");
       $(tagSpan).text(model.class_name);
+      var downloadA = document.createElement("a");
       var downloadBtn = document.createElement("button");
       $(downloadBtn).addClass("btn btn-primary btn-md btn-download");
       $(downloadBtn).text("下载");
-      $(downloadBtn).attr("href", model.download_url);
+      $(downloadA).attr("href", model.download_url);
+      $(downloadA).append(downloadBtn);
     $(infoDiv).append(tagSpan);
-    $(infoDiv).append(downloadBtn);
+    $(infoDiv).append(downloadA);
   $(modelDiv).append(infoDiv);
   //绑定数据
     $(modelDiv).data("info", model);
@@ -210,9 +215,7 @@ function refreshModelSetsSelect(sets){
 }
 
 //弹出窗口展示模型信息
-function openModelViewer(event){
-  var modelInfo = $(this).data("info");
-  console.log(modelInfo);
+function openModelViewer(modelInfo){
   //弹出窗口
   $("#viewerModal").css("display", "block");
   $("#viewerModal").addClass("in");
