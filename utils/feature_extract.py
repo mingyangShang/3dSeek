@@ -12,7 +12,7 @@ def get_feature(image_list, file_type, search_method, dataset='modelnet40'):
     :return: feature of the file
     """
     feature = None
-    search_method = 'lhl'
+    #search_method = 'lhl'
 
     if search_method == 'lhl':
         feature = lhl.get_feature_from_image_list(image_list)

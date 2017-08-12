@@ -8,6 +8,8 @@ import os
 import json
 import utils.database_utils as db_utils
 
+print('12333333')
+
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 app = Flask(__name__)
@@ -70,7 +72,6 @@ def get_class_details():
         page_size = int(page_size)
     return db_utils.get_class_detail(dataset, class_name, page, page_size)
 
-
 @app.route('/search', methods=['POST'])
 def search():
     search_type = request.form.get('type')
@@ -111,10 +112,11 @@ def search():
     else:
         image_list = [file_path]
     #feature = get_feature(image_list, file_type, search_method, dataset)
-
+    #search_method = 'smy'
     try:
         feature = get_feature(image_list, file_type, search_method, dataset)
-    except Exception:
+    except Exception as ex:
+        print(ex)
         result_json['success'] = False
         result_json['info'] = "feature error"
         return json.dumps(result_json)
@@ -207,4 +209,5 @@ def team_info():
 
 if __name__ == '__main__':
     # app.run()
+    print('1231')
     app.run(host='0.0.0.0', port=8610)
