@@ -3,7 +3,7 @@ import methods.smy.feature_extract as smy
 import methods.wxy.feature_extract as wxy
 
 
-def get_feature(file_path, file_type, search_method, dataset='modelnet40'):
+def get_feature(image_list, file_type, search_method, dataset='modelnet40'):
     """
     get extracted feature from file 
     :param file_path: 
@@ -12,18 +12,13 @@ def get_feature(file_path, file_type, search_method, dataset='modelnet40'):
     :return: feature of the file
     """
     feature = None
-    if file_type == 'IMG':
-        if search_method == 'lhl':
-            feature = lhl.get_feature_from_image(file_path)
-        elif search_method == 'smy':
-            feature = smy.get_feature_from_image(file_path)
-        elif search_method == 'wxy':
-            feature = wxy.get_feature_from_image(file_path, dataset)
-    if file_type == 'SHAPE':
-        if search_method == 'lhl':
-            feature = lhl.get_feature_from_model(file_path)
-        elif search_method == 'smy':
-            feature = smy.get_feature_from_model(file_path)
-        elif search_method == 'wxy':
-            feature = wxy.get_feature_from_model(file_path, dataset)
+    search_method = 'lhl'
+
+    if search_method == 'lhl':
+        feature = lhl.get_feature_from_image_list(image_list)
+    elif search_method == 'smy':
+        feature = smy.get_feature_from_image_list(image_list)
+    elif search_method == 'wxy':
+        feature = wxy.get_feature_from_image_list(image_list)
+    feature = feature.reshape(-1).tolist()
     return feature

@@ -7,6 +7,9 @@ static/database/
 # upload files
 uploads/
 
+# lhl render files
+methods/lhl/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

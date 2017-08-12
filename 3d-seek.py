@@ -1,11 +1,15 @@
 from flask import Flask, render_template, request, url_for, send_from_directory, send_file
 from utils.process_file import random_str, get_file_type, get_file_extensions, get_file_size
-from utils.search_engineer import search_by_feature, search_by_text
+from utils.search_engineer import search_by_feature
 from utils.feature_extract import get_feature
+from methods.lhl.feature_extract import render_12p, get_model_info
+
 import os
 import json
 import utils.database_utils as db_utils
 
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
@@ -82,6 +86,7 @@ def search():
         filename = random_str() + '.' + get_file_extensions(upload_file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         upload_file.save(file_path)
+
     if search_type == 'url':
         file_url = request.form.get('url')
         filename = db_utils.download_file(file_url, app.config['UPLOAD_FOLDER'])
@@ -92,27 +97,34 @@ def search():
         else:
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file_type = get_file_type(filename)
-    # try:
-    #     feature = get_feature(file_path, file_type, search_method, dataset)
-    # except Exception:
-    #     result_json['success'] = False
-    #     result_json['info'] = "feature error"
-    #     return json.dumps(result_json)
-    feature = [0.1 * i for i in range(128)]
-    print(feature)
-    result_list = search_by_feature(feature, search_method, dataset)
+
     search_key = filename.split('.')[0]
     file_size = get_file_size(file_path)
 
     file_info = {'file_type': file_type, "file_name": filename, "file_path": file_path, "file_size": file_size,
-                 "file_url": url_for('uploaded_file', filename=filename), 'search_key': search_key, "feature": feature,
-                 "feature_dim": len(feature)}
-    if file_type == 'SHAPE':
+                 "file_url": url_for('uploaded_file', filename=filename), 'search_key': search_key}
+    if file_type == "SHAPE":
+        image_list = render_12p(file_path, dst_path=app.config['UPLOAD_FOLDER'])
+        file_info['vertice_num'], file_info['edge_num'], file_info['file_size'] = get_model_info(file_path)
         file_info['view_urls'] = [url_for('uploaded_file', filename='%s_%03d.jpg' % (search_key, i)) for i in
-                                  range(1, 13)]
-        file_info['view_urls'] = ['/static/img/bathtub_view.jpg' for i in range(12)]
-        file_info['vertice_num'] = 3455
-        file_info['edge_num'] = 2344
+                              range(1, 13)]
+    else:
+        image_list = [file_path]
+    #feature = get_feature(image_list, file_type, search_method, dataset)
+
+    try:
+        feature = get_feature(image_list, file_type, search_method, dataset)
+    except Exception:
+        result_json['success'] = False
+        result_json['info'] = "feature error"
+        return json.dumps(result_json)
+   
+    # feature = [0.1 * i for i in range(128)]
+    print(feature)
+    file_info['feature'] = feature
+    file_info['feature_dim'] = len(feature)
+    result_list = search_by_feature(feature, search_method, dataset)
+
     print(file_info)
     app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_info': file_info}
 
