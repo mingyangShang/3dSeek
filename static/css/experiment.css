@@ -31,3 +31,18 @@
 .form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
     display: none;   
 }
+
+#middleDiv{
+    margin-top: 100px;
+}
+#middleDiv .tab-content{
+    background: white;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#middleDiv .panel-group{
+    margin-top: 20px;
+}
+#smy .col-md-6 img{
+    width: 100%;
+}
