@@ -189,8 +189,8 @@
                                     {% if info.file_type  == "SHAPE" %}
                                         {% for url in info.view_urls %}
                                             <div class="item">
-                                                <div class="row">
-                                                    <div class="col-md-10">
+                                                <div class="row text-center">
+                                                    <div class="col-md-10 col-md-offset-1">
                                                         <a class="thumbnail"><img alt="" src="{{ url }}"></a>
                                                     </div>
                                                 </div>
@@ -290,6 +290,8 @@
            $("#model-info").css("display", "block");
            $("#model-views-info").css("display", "block");
            $("#model-views-info .item:first").addClass("active");
+            showModel("{{ info.file_url }}", $("#canvas"));
+
        }
        //画特征图
         if({{ info.feature_dim }} > 0){
