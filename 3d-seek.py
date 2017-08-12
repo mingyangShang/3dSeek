@@ -8,6 +8,8 @@ import os
 import json
 import utils.database_utils as db_utils
 
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
@@ -108,12 +110,15 @@ def search():
                               range(1, 13)]
     else:
         image_list = [file_path]
+    #feature = get_feature(image_list, file_type, search_method, dataset)
+
     try:
         feature = get_feature(image_list, file_type, search_method, dataset)
     except Exception:
         result_json['success'] = False
         result_json['info'] = "feature error"
         return json.dumps(result_json)
+   
     # feature = [0.1 * i for i in range(128)]
     print(feature)
     file_info['feature'] = feature

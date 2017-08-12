@@ -35,9 +35,10 @@ def get_model_info(model_path):
     return vertice_num,edge_num,fsize	
 
 def render_12p(model_path,dst_path):
-	dst_path = dst_path+os.path.basename(model_path)[:-4]
-	#print model_path,dst_path
+	dst_path = os.path.join(dst_path,os.path.basename(model_path))[:-4]
+	print(model_path,dst_path)
 	eng = matlab.engine.start_matlab()
+        eng.cd('/home/wangxiyang/workspace/3dSeek/methods/lhl')
 	eng.shape_render(model_path,dst_path,nargout=0)
 	eng.quit()
 	img_path_list = [dst_path+'_'+str(i).zfill(3)+'.jpg' for i in range(1,13)]
@@ -129,6 +130,7 @@ def get_feature_from_feature(vgg_feature):
 		y_batch = [1 if 1 == k else 0 for k in range(40)]
 		y_batch = np.reshape(y_batch,(1,40))
 		_,test_feature_tcnn = dev_step(x_batch, y_batch)
+        print('test_feature_tcnn')
 	return test_feature_tcnn
 
 
@@ -145,7 +147,8 @@ def get_feature_from_model(model_path):
 
 def get_feature_from_image_list(img_path_list):
 	vgg_feature = get_vgg_feature(img_path_list)
-	if len(img_path_list==1):
+        print('vgg-feature')
+	if len(img_path_list) == 1:
 		vgg_feature = [vgg_feature for i in range(12)]
 	return get_feature_from_feature(vgg_feature)
 
