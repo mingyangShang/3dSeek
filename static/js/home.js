@@ -31,6 +31,7 @@ var views;
         }else{
             isHomePage = false;
             getSearchResult(1);
+            $("#model-views-info .item:first").addClass("active");
         }
 
         $("#search").click(searchModel);
@@ -69,9 +70,6 @@ var views;
           $("#bigImgModal").css("display", "none");
         });
 
-        if($("#featureChart").length > 0){
-          window.featureChart = refreshFeatureChart("featureChart", [], []);
-        }
         //文件检索
         //找好位置
         $("#fileSearchDiv").css("top", $("#search-row").offset().top);
@@ -110,15 +108,15 @@ function getSearchResult(page){
            refreshPageNav(data); //重新布局页面导航
             console.log(data);
             $("#nums-result").html("<b>"+data.total_count+"</b>"); //检索的结果数
-           if(data.type == "img"){
-               $("#img-info").css("display", "block");
-               $("#model-info").css("display", "none");
-               $("#model-views-info").css("display", "none");
-           }else{
-               $("#img-info").css("display", "none");
-               $("#model-info").css("display", "block");
-               $("#model-views-info").css("display", "block");
-           }
+           // if(data.type == "img"){
+           //     $("#img-info").css("display", "block");
+           //     $("#model-info").css("display", "none");
+           //     $("#model-views-info").css("display", "none");
+           // }else{
+           //     $("#img-info").css("display", "none");
+           //     $("#model-info").css("display", "block");
+           //     $("#model-views-info").css("display", "block");
+           // }
        }else{
            console.log("error");
        }

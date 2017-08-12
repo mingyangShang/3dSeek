@@ -186,67 +186,26 @@
                             <div class="panel-body text-center">
                               <div class="carousel slide media-carousel views" id="media">
                                 <div class="carousel-inner">
-                                  <div class="item  active">
-                                    <div class="row">
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[0] }}"></a>
-                                      </div>          
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[1] }}"></a>
-                                      </div>
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{info.view_urls[2] }}"></a>
-                                      </div>        
-                                    </div>
-                                  </div>
-                                  <div class="item">
-                                    <div class="row">
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[3] }}"></a>
-                                      </div>          
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[4] }}"></a>
-                                      </div>
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[5] }}"></a>
-                                      </div>        
-                                    </div>
-                                  </div>
-                                  <div class="item">
-                                    <div class="row">
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[6] }}"></a>
-                                      </div>          
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[7] }}"></a>
-                                      </div>
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[8] }}"></a>
-                                      </div>      
-                                    </div>
-                                  </div>
-                                    <div class="item">
-                                    <div class="row">
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[9] }}"></a>
-                                      </div>
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[10] }}"></a>
-                                      </div>
-                                      <div class="col-md-4">
-                                        <a class="thumbnail" href="#"><img alt="" src="{{ info.view_urls[11] }}"></a>
-                                      </div>
-                                    </div>
-                                  </div>
+                                    {% if info.file_type  == "SHAPE" %}
+                                        {% for url in info.view_urls %}
+                                            <div class="item">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <a class="thumbnail"><img alt="" src="{{ url }}"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
                                 <a data-slide="prev" href="#media" class="left carousel-control">‹</a>
                                 <a data-slide="next" href="#media" class="right carousel-control">›</a>
-                              </div>
                             </div>
                         </div>
                         </div>
                       </div>
-                      <div class="row-fluid">
+                      </div>
+                      <div class="row-fluid" id="feature-info">
                         <div class="col-md-12">
                           <div class="panel panel-default">
                             <div class="panel-heading">可视化特征</div>
@@ -330,6 +289,7 @@
            $("#img-info").css("display", "none");
            $("#model-info").css("display", "block");
            $("#model-views-info").css("display", "block");
+           $("#model-views-info .item:first").addClass("active");
        }
        //画特征图
         if({{ info.feature_dim }} > 0){
