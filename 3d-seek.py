@@ -162,7 +162,9 @@ def search():
 
     result_json['success'] = True
     result_json['result_url'] = '/search-result?key=%s' % search_key
-    print(result_json)
+    # print(result_json)
+    with open('cache.json') as fp:
+        json.dump(app.cache_dic, fp)
     return json.dumps(result_json)
 
 
@@ -245,4 +247,7 @@ def team_info():
 if __name__ == '__main__':
     # app.run()
     print('1231')
+    if os.path.exists('cache.json'):
+        with open('cache.json') as fp:
+            app.cache_dic = json.load(fp)
     app.run(host='0.0.0.0', port=8610)
