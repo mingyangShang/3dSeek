@@ -1,6 +1,8 @@
 import os
 import json
 from utils.process_file import get_class_name_by_name
+import numpy as np
+
 # import urllib.request
 try:
     from urllib import urlretrieve
@@ -159,6 +161,8 @@ def get_model_info(dataset_name, class_name, model_name):
 def get_search_result_detail(dataset_name, model_list, dist_list, method, page=1, size=100):
     set_info = get_set_info(dataset_name)
     models = []
+    features = get_feature_by_name(model_list, method)
+    feature_dim = len(features[0])
     for idx, model_name in enumerate(model_list):
         # class_name = model_name.split('_')[0]
         class_name = get_class_name_by_name(model_name)
@@ -176,6 +180,8 @@ def get_search_result_detail(dataset_name, model_list, dist_list, method, page=1
         info_dic['edge_num'] = int(class_info[model_name]['edge_num'])
         info_dic['download_url'] = '/download?dataset=%s&model_name=%s' % (dataset_name, model_name)
         info_dic['dist'] = dist_list[idx]
+        info_dic['feature'] = features[idx]
+        info_dic['feature_dim'] = feature_dim
         models.append(info_dic)
     detail_json = {}
     total_count = len(models)
@@ -193,14 +199,26 @@ def get_search_result_detail(dataset_name, model_list, dist_list, method, page=1
         detail_json['curr_count'] = size
     return json.dumps(detail_json)
 
-# def load_json(json_path):
-#     with open(json_path) as fp:
-#         return json.load(fp)
 
-# def get_feature_by_name(model_name_list, method):
-#     name_list = load_json('/home/wangxiyang/workspace/3dSeek/static/database/modelnet40/train_model_list.json')
-#     if method == 'smy':
-#
+def load_json(json_path):
+    with open(json_path) as fp:
+        return json.load(fp)
+
+
+def get_feature_by_name(model_name_list, method):
+    name_list = load_json('/home/wangxiyang/workspace/3dSeek/static/database/modelnet40/train_model_list.json')
+    if method == 'lhl':
+        search_data = np.load('/home/wangxiyang/workspace/3dSeek/methods/lhl/train_feature_modelnet40.npy')
+    if method == 'wxy':
+        search_data = np.load('/home/wangxiyang/workspace/3dSeek/methods/wxy/m40_train-data.npy')
+    if method == 'smy':
+        search_data = np.load('/home/wangxiyang/workspace/3dSeek/methods/smy/train_hidden.npy')
+    features = []
+    for model_name in model_name_list:
+        idx = name_list.index(model_name)
+        features.append(search_data[idx].tolist())
+    return features
+
 
 def download_file(url, dst_dir):
     # file_name = url.split('/')[-1]
