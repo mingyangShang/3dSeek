@@ -210,6 +210,9 @@ def middle_result():
 @app.route('/viewer')
 def model_view():
     search_key = request.args.get('key')
+    search_method = request.args.get('method')
+    if search_method is None:
+        search_method = 'smy'
     if search_key is not None:
         file_info = app.cache_dic[search_key]['file_info']
         model_info = {}
@@ -225,7 +228,8 @@ def model_view():
         class_name = request.args.get('class_name')
         model_name = request.args.get('model_name')
         model_info = db_utils.get_model_info(dataset, class_name, model_name)
-        feature = [0.1 * i for i in range(128)]
+        feature = db_utils.get_feature_by_name([model_name], search_method)[0]
+        # feature = [0.1 * i for i in range(128)]
         model_info['feature'] = feature
         model_info['feature_dim'] = len(feature)
     print(model_info)
