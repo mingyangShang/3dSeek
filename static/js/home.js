@@ -237,7 +237,7 @@ function openModelViewer(modelInfo){
   //弹出窗口
   $("#viewerModal").css("display", "block");
   $("#viewerModal").addClass("in");
-  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name);
+  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+window.searchingMethod);
 }
 
 //关闭展示模型的窗口i 
