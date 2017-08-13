@@ -156,7 +156,7 @@ def get_model_info(dataset_name, class_name, model_name):
     return info_dic
 
 
-def get_search_result_detail(dataset_name, model_list, dist_list, page=1, size=100):
+def get_search_result_detail(dataset_name, model_list, dist_list, method, page=1, size=100):
     set_info = get_set_info(dataset_name)
     models = []
     for idx, model_name in enumerate(model_list):
@@ -203,7 +203,8 @@ def get_search_result_detail(dataset_name, model_list, dist_list, page=1, size=1
 #
 
 def download_file(url, dst_dir):
-    file_name = url.split('/')[-1]
+    # file_name = url.split('/')[-1]
+    file_name = url[-5:]
     file_type = get_file_type(file_name)
     if not file_type in ['IMG', 'SHAPE']:
         return None
