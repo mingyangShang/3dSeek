@@ -289,14 +289,14 @@ function searchByUrl(){
         //检查URL是否合法
         if((/\.(gif|jpg|jpeg|tiff|png|off)$/i).test(url)) {
             $("#url-error").addClass("hide");
-            $("#searchingUrl").removeClass("hide");
+            $("#searchingUrl").addClass("hide");
             search("url", url, null);
         }else{
             $("#searchingUrl").addClass("hide");
             $("#url-error").removeClass("hide").text("url不合法");
         }
     }else{
-        $("#searchingUrl").removeClass("hide");
+        $("#searchingUrl").addClass("hide");
         $("#url-error").removeClass("hide").text("url不能为空");
     }
 }
