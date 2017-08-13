@@ -6,6 +6,8 @@ IMG_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
 SHAPE_EXTENSIONS = ['off', 'obj']
 
 root_dir = '..'
+name_2_class = {'tv': 'tv_stand', 'night': 'night_stand', 'flower': 'flower_pot', 'glass': 'glass_box',
+                'range': 'range_hood'}
 
 
 def get_file_extensions(filename):
@@ -13,6 +15,15 @@ def get_file_extensions(filename):
         return filename.rsplit('.', 1)[1]
     else:
         return ''
+
+
+def get_class_name_by_name(model_name):
+    raw_class_name = model_name.split('_')[0]
+    if raw_class_name in name_2_class.keys():
+        raw_class_name = name_2_class[raw_class_name]
+
+    # special_names = ['tv_stand', 'night_stand', 'flower_pot', 'glass_box', 'range_hood']
+    return raw_class_name
 
 
 def get_file_size(filepath):

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, send_from_directory, send_file
-from utils.process_file import random_str, get_file_type, get_file_extensions, get_file_size
+from utils.process_file import random_str, get_file_type, get_file_extensions, get_file_size, get_class_name_by_name
 from utils.search_engineer import search_by_feature
 from utils.feature_extract import get_feature
 from methods.lhl.feature_extract import render_12p, get_model_info
@@ -26,7 +26,8 @@ app.cache_dic = {}
 def download_file():
     dataset = request.args.get('dataset')
     model_name = request.args.get('model_name')
-    class_name = model_name.split('_')[0]
+    # class_name = model_name.split('_')[0]
+    class_name = get_class_name_by_name(model_name)
     dataset = dataset.lower()
     model_folder = os.path.join(app.root_path, 'static', 'database', dataset, 'models', class_name, 'train')
     return send_file(os.path.join(model_folder, model_name + '.off'), as_attachment=True)
