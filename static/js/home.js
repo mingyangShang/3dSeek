@@ -64,6 +64,9 @@ var views;
         $("#bigImgModal .close").click(function(event){
           $("#bigImgModal").css("display", "none");
         });
+        $("#closeCompareChart").click(function(){
+          $("#compareModal").css("display", "none");
+        });
 
         //文件检索
         //找好位置
@@ -240,7 +243,6 @@ function refreshClasses(modelsetName){
 function getModels(url){
     $.getJSON(url, function(resp, status){
         if(status == "success") {
-            console.log(resp);
             refreshModelsList(resp["models"]);
             refreshPageNav(resp); //重新布局页面导航
         }
@@ -350,8 +352,6 @@ function search(type, url, file){
         //   return myXhr;
         // },
         success: function(data, status, xhr){
-          console.log("success");
-          console.log(data);
           if(data.success){
               window.location.href = data.result_url;
           }else{
@@ -394,7 +394,6 @@ function searchByModel(){
     return;
   }
   var file = $("#model-file-input")[0].files[0];
-  console.log(file);
   if((/\.(off|obj|jpg|jpeg|png)$/i).test(file.name)){
       $("#searchFileName").text(file.name);
       $("#uploadingFile").css("display", "inline-block");
