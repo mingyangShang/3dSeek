@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, url_for, send_from_directory, send_file
 from utils.process_file import random_str, get_file_type, get_file_extensions, get_file_size, get_class_name_by_name
-from utils.search_engineer import search_by_feature
-from utils.feature_extract import get_feature
-from methods.lhl.feature_extract import render_12p, get_model_info
+# from utils.search_engineer import search_by_feature
+# from utils.feature_extract import get_feature
+# from methods.lhl.feature_extract import render_12p, get_model_info
 
 import os
 import json
@@ -74,31 +74,6 @@ def get_class_details():
     return db_utils.get_class_detail(dataset, class_name, page, page_size)
 
 
-@app.route('/api/shape-test')
-def search_shape_test():
-    search_method = request.args.get('method')
-    if search_method is None:
-        search_method = 'smy'
-    print(search_method)
-    image_list = [app.config.root_path + "/static/img/bathtub_view.jpg" for i in range(12)]
-    print(image_list)
-    feature = get_feature(image_list, "SHAPE", search_method, 'modelnet40')
-    print(feature)
-    return "Hello world!"
-
-
-@app.route('/api/image-test')
-def search_img_test():
-    search_method = request.args.get('method')
-    if search_method is None:
-        search_method = 'smy'
-    print(search_method)
-    image_list = [app.config.root_path + "/static/img/bathtub_view.jpg"]
-    print(image_list)
-    feature = get_feature(image_list, "IMG", search_method, 'modelnet40')
-    print(feature)
-    return "Hello world!"
-
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -108,53 +83,29 @@ def search():
     dataset = "modelnet40"
     result_json = {}
     print(search_type)
-    if search_type == 'file':
-        print('aaaaaa')
-        upload_file = request.files['file']
-        file_type = get_file_type(upload_file.filename)
-        filename = random_str() + '.' + get_file_extensions(upload_file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        upload_file.save(file_path)
-
-    if search_type == 'url':
-        file_url = request.form.get('url')
-        filename = db_utils.download_file(file_url, app.config['UPLOAD_FOLDER'])
-        if filename is None:
-            result_json['success'] = False
-            result_json['info'] = "Invalid url"
-            return json.dumps(result_json)
-        else:
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file_type = get_file_type(filename)
-
+    filename = 'airplane_0001.off'
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     search_key = filename.split('.')[0]
     file_size = get_file_size(file_path)
+    file_type = get_file_type(filename)
 
     file_info = {'file_type': file_type, "file_name": filename, "file_path": file_path, "file_size": file_size,
                  "file_url": url_for('uploaded_file', filename=filename), 'search_key': search_key,
                  'method': search_method}
     if file_type == "SHAPE":
-        image_list = render_12p(file_path, dst_path=app.config['UPLOAD_FOLDER'])
-        file_info['vertice_num'], file_info['edge_num'], file_info['file_size'] = get_model_info(file_path)
+        file_info['vertice_num'], file_info['edge_num'], file_info['file_size'] = 111, 222, '111.12KB'
         file_info['view_urls'] = [url_for('uploaded_file', filename='%s_%03d.jpg' % (search_key, i)) for i in
                                   range(1, 13)]
     else:
         image_list = [file_path]
     # feature = get_feature(image_list, file_type, search_method, dataset)
     # search_method = 'smy'
-    try:
-        feature = get_feature(image_list, file_type, search_method, dataset)
-    except Exception as ex:
-        print(ex)
-        result_json['success'] = False
-        result_json['info'] = "feature error"
-        return json.dumps(result_json)
 
-    # feature = [0.1 * i for i in range(128)]
+    feature = [0.1 * i for i in range(128)]
     print(feature)
     file_info['feature'] = feature
     file_info['feature_dim'] = len(feature)
-    result_list, dist_list = search_by_feature(feature, search_method, dataset)
+    result_list, dist_list = ['airplane_0001' for i in range(50)], [0.01 * i for i in range(50)]
 
     print(file_info)
     app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_info': file_info,
