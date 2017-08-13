@@ -237,7 +237,24 @@ function openModelViewer(modelInfo){
   //弹出窗口
   $("#viewerModal").css("display", "block");
   $("#viewerModal").addClass("in");
-  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+window.searchingMethod);
+  var method;
+  if(isHomePage){
+        method = $("#search-domain input[type=radio]:checked").val();
+        if(method.indexOf("smy") != -1){
+            method = "smy";
+        }else if(method.indexOf("wxy") != -1){
+            method = "wxy";
+        }else if(method.indexOf("lhl") != -1){
+            method = "lhl";
+        }
+  }else{
+      method = window.searchingMethod;
+  }
+  if(method == undefined){
+      method = "wxy";
+  }
+
+  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+method);
 }
 
 //关闭展示模型的窗口i 
