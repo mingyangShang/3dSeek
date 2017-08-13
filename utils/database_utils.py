@@ -218,7 +218,8 @@ def download_file(url, dst_dir):
 
 if __name__ == '__main__':
     pass
-    # res = get_model_url('modelnet10', 'airplane_0001')
+    #git test test
+    #res = get_model_url('modelnet10', 'airplane_0001')
     # print(res)
     # res = get_view_urls('modelnet10', 'toilet_0358')
     # print(res)
