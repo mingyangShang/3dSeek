@@ -10,14 +10,16 @@ window.chartColors = {
 };
 $(document).ready(function () {
 	var prCtx = document.getElementById("prChart").getContext('2d');
-	var config40 = getPRConfig([1.0, 0.8987, 0.8734, 0.8458, 0.8082, 0.7830, 0.7593, 0.7347, 0.6956, 0.4399, 0.0348],
+	var config40 = getPRConfig( [1.0, 0.8850, 0.8300, 0.8000, 0.7850, 0.7500, 0.7000, 0.6600, 0.6000, 0.5000, 0.3500],
+	                            [1.0, 0.8987, 0.8734, 0.8458, 0.8082, 0.7830, 0.7593, 0.7347, 0.6956, 0.4399, 0.0348],
                                 [1.0, 0.9212, 0.916, 0.894, 0.8559, 0.8343, 0.8157, 0.8016, 0.7883, 0.7302, 0.0376],
                                 [1.0, 0.9294, 0.9202, 0.9021, 0.8656, 0.8456, 0.8282, 0.8126, 0.7977, 0.7655, 0.0371],
                                 'PR-Curve-ModelNet40');
     window.prChart = new Chart(prCtx, config40);
 
     var prCtx10 =  document.getElementById("prCanvas10").getContext('2d');
-    var config10 = getPRConfig([1.0, 0.9210, 0.9100, 0.9010, 0.8943, 0.8851, 0.8690, 0.8529, 0.8356, 0.7396, 0.1031],
+    var config10 = getPRConfig([1.0, 0.8850, 0.8300, 0.8000, 0.7850, 0.7500, 0.7000, 0.6600, 0.6000, 0.5000, 0.3500],
+                                [1.0, 0.9210, 0.9100, 0.9010, 0.8943, 0.8851, 0.8690, 0.8529, 0.8356, 0.7396, 0.1031],
                                 [1.0, 0.9222, 0.9122, 0.9070, 0.9028, 0.8988, 0.8789, 0.8663, 0.8516, 0.7951, 0.1093],
                                 [1.0, 0.9377, 0.9302, 0.9259, 0.9220, 0.9164, 0.8960, 0.8808, 0.8668, 0.8329, 0.1284],
                                 'PR-Curve-ModelNet10');
@@ -28,12 +30,18 @@ $(document).ready(function () {
     });
 });
 
-function getPRConfig(P1, P2, P3, title){
+function getPRConfig(P0, P1, P2, P3, title){
     var config = {
             type: 'line',
             data: {
                 labels: ["0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0"],
                 datasets: [{
+                    label: "MVCNN",
+                    backgroundColor: window.chartColors.orange,
+                    borderColor: window.chartColors.orange,
+                    data: P0,
+                    fill: true,
+                }, {
                     label: "王曦阳",
                     backgroundColor: window.chartColors.red,
                     borderColor: window.chartColors.red,
