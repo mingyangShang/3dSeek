@@ -19,17 +19,7 @@ $(document).ready(function () {
                     backgroundColor: window.chartColors.red,
                     borderColor: window.chartColors.red,
                     data: [
-                        1.0, 0.95, 0.89, 0.85, 0.82, 0.78, 0.70, 0.68, 0.66, 0.62, 0.58
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor()
+                        1.0, 0.8987, 0.8734, 0.8458, 0.8082, 0.7830, 0.7593, 0.7347, 0.6956, 0.4399, 0.0348
                     ],
                     fill: true,
                 }, {
