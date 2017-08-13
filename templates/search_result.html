@@ -66,7 +66,7 @@
           						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_smy"> 商明阳
         					</label>
         					<label class="radio-inline">
-          						<input type="radio" name="inlineRadioOptions" id="method2Radio" value="method_lhl"> 陆宏磊
+          						<input type="radio" name="inlineRadioOptions" id="method3Radio" value="method_lhl"> 陆宏磊
         					</label>
   				</div>
           </div>
@@ -286,6 +286,13 @@
     <script src="{{ url_for('static', filename="js/home.js") }}"></script>
     <audio controls="controls" style="display: none;"></audio>
     <script>
+        if("{{ info.method }}" == "wxy"){
+            $("#method1Radio").attr("checked", true);
+        }else if("{{ info.method }}" == "smy"){
+            $("#method2Radio").attr("checked", true);
+        }else if("{{ info.method }}" == "lhl" ){
+            $("#method3Radio").attr("checked", true);
+        }
         window.searchingModelInfo = {{ info.feature }};
         window.searchingMethod = "{{ info.method }}";
         //test
