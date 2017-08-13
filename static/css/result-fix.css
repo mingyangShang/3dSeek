@@ -44,16 +44,34 @@
     to {transform:scale(1)}
 }
 #bigImgModal.modal {
-	width: 40%;
-	margin-top: 120px;
-	margin-left: auto;
-	margin-right: auto;
+	padding-left: 30%;
+  padding-right: 30%;
+	padding-top: 120px;
+  background: rgba(0,0,0,0.7);
+
 }
 #bigImgModal .big-img {
     margin: auto;
     display: block;
     width: 100%;
     max-width: 700px;
+}
+#compareModal {
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 100px;
+  background: rgba(0,0,0,0.7);
+}
+#bigImgModal .close{
+  position: absolute;
+  top: 130px;
+  right: 31%;
+  display: inline;
+}
+#compareModal .close{
+  position: relative;
+  top: 0px;
+  right: 0px;
 }
 
 /*.views img:hover{

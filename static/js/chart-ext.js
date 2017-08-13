@@ -1,4 +1,8 @@
 function refreshFeatureChart(id, labels, data){
+    var radius = [];
+    for(var i=0;i<labels.length;++i){
+        radius.push(0);
+    }
   var featureCtx = document.getElementById(id).getContext('2d');
   var config = {
             type: 'line',
@@ -10,6 +14,7 @@ function refreshFeatureChart(id, labels, data){
                     backgroundColor: "#428bca",
                     borderColor: "#428bca",
                     data: data,
+                    pointRadius: radius,
                 }]
             },
             options: {
