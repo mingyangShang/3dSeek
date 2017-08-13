@@ -1,6 +1,6 @@
 import os
 import json
-
+from utils.process_file import get_class_name_by_name
 # import urllib.request
 try:
     from urllib import urlretrieve
@@ -32,7 +32,8 @@ def get_set_info(db_name):
 
 
 def get_model_url(dataset, model_name):
-    class_name = model_name.split('_')[0]
+    # class_name = model_name.split('_')[0]
+    class_name = get_class_name_by_name(model_name)
     return "/static/database/%s/models/%s/train/%s.off" % (dataset, class_name, model_name)
 
 
@@ -159,7 +160,8 @@ def get_search_result_detail(dataset_name, model_list, page=1, size=100):
     set_info = get_set_info(dataset_name)
     models = []
     for model_name in model_list:
-        class_name = model_name.split('_')[0]
+        # class_name = model_name.split('_')[0]
+        class_name = get_class_name_by_name(model_name)
         class_info = set_info[class_name]
         # print(class_info)
         info_dic = {}

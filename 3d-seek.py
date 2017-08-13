@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, send_from_directory, send_file
-from utils.process_file import random_str, get_file_type, get_file_extensions, get_file_size
+from utils.process_file import random_str, get_file_type, get_file_extensions, get_file_size, get_class_name_by_name
 from utils.search_engineer import search_by_feature
 from utils.feature_extract import get_feature
 from methods.lhl.feature_extract import render_12p, get_model_info
@@ -7,6 +7,8 @@ from methods.lhl.feature_extract import render_12p, get_model_info
 import os
 import json
 import utils.database_utils as db_utils
+
+print('12333333')
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
@@ -24,7 +26,8 @@ app.cache_dic = {}
 def download_file():
     dataset = request.args.get('dataset')
     model_name = request.args.get('model_name')
-    class_name = model_name.split('_')[0]
+    # class_name = model_name.split('_')[0]
+    class_name = get_class_name_by_name(model_name)
     dataset = dataset.lower()
     model_folder = os.path.join(app.root_path, 'static', 'database', dataset, 'models', class_name, 'train')
     return send_file(os.path.join(model_folder, model_name + '.off'), as_attachment=True)
@@ -70,6 +73,29 @@ def get_class_details():
         page_size = int(page_size)
     return db_utils.get_class_detail(dataset, class_name, page, page_size)
 
+@app.route('/api/shape-test')
+def search_shape_test():
+    search_method = request.args.get('method')
+    if search_method is None:
+        search_method = 'smy'
+    print(search_method)
+    image_list = [app.config.root_path + "/static/img/bathtub_view.jpg" for i in range(12)]
+    print(image_list)
+    feature = get_feature(image_list, "SHAPE", search_method, 'modelnet40')
+    print(feature)
+    return "Hello world!"
+
+@app.route('/api/image-test')
+def search_img_test():
+    search_method = request.args.get('method')
+    if search_method is None:
+        search_method = 'smy'
+    print(search_method)
+    image_list = [app.config.root_path + "/static/img/bathtub_view.jpg"]
+    print(image_list)
+    feature = get_feature(image_list, "IMG", search_method, 'modelnet40')
+    print(feature)
+    return "Hello world!"
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -111,10 +137,11 @@ def search():
     else:
         image_list = [file_path]
     #feature = get_feature(image_list, file_type, search_method, dataset)
-
+    #search_method = 'smy'
     try:
         feature = get_feature(image_list, file_type, search_method, dataset)
-    except Exception:
+    except Exception as ex:
+        print(ex)
         result_json['success'] = False
         result_json['info'] = "feature error"
         return json.dumps(result_json)
@@ -207,4 +234,5 @@ def team_info():
 
 if __name__ == '__main__':
     # app.run()
+    print('1231')
     app.run(host='0.0.0.0', port=8610)

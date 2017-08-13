@@ -16,8 +16,10 @@ def get_feature_from_image_list(image_list):
     :return: 1-dim feature vector, numpy array
     """
     vgg_feature = get_vgg_feature(image_list)
+    print('get feature')
     if len(vgg_feature) == 1:
-        vgg_feature = [vgg_feature for _ in range(12)]
+        vgg_feature = np.array([vgg_feature for _ in range(12)])
+    return inference(vgg_feature)[0]
     try:
         return inference(vgg_feature)[0]
     except Exception as e:

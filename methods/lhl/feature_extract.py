@@ -53,6 +53,7 @@ def get_vgg_feature(img_path_list):
 	sess = tf.Session()
 	vgg = vgg19.Vgg19_1('/home3/lhl/tensorflow-vgg-master-total/param/date0703epo10batchsize32_do05_12p_sigmoid7_total.npy',dropout=1)
 	vgg.build(images, train_mode)
+        print('build success!')
 	sess.run(tf.global_variables_initializer())
 	feature = np.zeros((len(img_path_list),4096),dtype=float)
 	for i,img_path in enumerate(img_path_list):
@@ -60,6 +61,7 @@ def get_vgg_feature(img_path_list):
         	imgbatch = imgtest.reshape((1, 224, 224, 3))
         	# test classification again, should have a higher probability about tiger
         	feature[i] = sess.run(vgg.relu7, feed_dict={images: imgbatch, train_mode: False})
+        print(feature)
         return feature
 
 def get_feature_from_feature(vgg_feature):
@@ -71,7 +73,7 @@ def get_feature_from_feature(vgg_feature):
 	tf.flags.DEFINE_float("l2_reg_lambda", 0.0, "L2 regularization lambda (default: 0.0)")
 
 	# Training parameters
-	tf.flags.DEFINE_integer("batch_size", 1, "Batch Size (default: 1)")
+	#tf.flags.DEFINE_integer("batch_size", 1, "Batch Size (default: 1)")
 	tf.flags.DEFINE_integer("num_epochs", 200, "Number of training epochs (default: 200)")
 	tf.flags.DEFINE_integer("evaluate_every", 100, "Evaluate model on dev set after this many steps (default: 100)")
 	tf.flags.DEFINE_integer("checkpoint_every", 100, "Save model after this many steps (default: 100)")

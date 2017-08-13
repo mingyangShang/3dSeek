@@ -9,6 +9,9 @@ uploads/
 
 # lhl render files
 methods/lhl/
+methods/smy/
+methods/wxy/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
