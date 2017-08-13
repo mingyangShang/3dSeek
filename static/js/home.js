@@ -162,11 +162,12 @@ function refreshPageNav(pageInfo){
 function newModelDiv(model, row_md){
   var modelDiv = document.createElement("div");
   $(modelDiv).addClass("model-col");
-  if(row_md == 3){
-      $(modelDiv).addClass("col-md-3");
-  }else if(row_md == 2){
-      $(modelDiv).addClass("col-md-2");
-  }
+  // if(row_md == 3){
+  //     $(modelDiv).addClass("col-md-3");
+  // }else if(row_md == 2){
+  //     $(modelDiv).addClass("col-md-2");
+  // }
+  $(modelDiv).addClass("col-md-3");
     var modelImg = document.createElement("img");
     $(modelImg).addClass("img-thumbnail model-img");
     $(modelImg).attr("src", model.view_urls[0]);
@@ -184,12 +185,31 @@ function newModelDiv(model, row_md){
       $(downloadBtn).text("下载");
       $(downloadA).attr("href", model.download_url);
       $(downloadA).append(downloadBtn);
+
+      if(!isHomePage){
+          var compareBtn = document.createElement("button");
+          $(compareBtn).text("对比");
+          $(compareBtn).addClass("btn btn-info btn-md btn-download");
+          $(compareBtn).click(function(event){
+              openCompareModal($(event.target).parent().parent().data("info"));
+          });
+      }
     $(infoDiv).append(tagSpan);
     $(infoDiv).append(downloadA);
+    $(infoDiv).append(compareBtn);
   $(modelDiv).append(infoDiv);
   //绑定数据
     $(modelDiv).data("info", model);
   return modelDiv;
+}
+
+function openCompareModal(model){
+    $("#compareModal").css("display", "block");
+    var x = [];
+    for(var i=0;i<window.searchingModelInfo.length;++i){
+        x.push(i + "");
+    }
+    refreshCompareFeatureChart("compareCanvas", x, window.searchingModelInfo, model.feature);
 }
 
 function refreshModelSetsSelect(sets){
@@ -243,6 +263,7 @@ function refreshClasses(modelsetName){
 function getModels(url){
     $.getJSON(url, function(resp, status){
         if(status == "success") {
+            console.log(resp);
             refreshModelsList(resp["models"]);
             refreshPageNav(resp); //重新布局页面导航
         }

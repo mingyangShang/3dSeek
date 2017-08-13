@@ -23,8 +23,13 @@
 
 #models-list .model-tag{
 	margin-left: 10px;
+	max-width: 40px;
 }
 #models-list .btn-download {
+	float: right;
+	font-size: 12px;
+}
+#models-list .compare {
 	float: right;
 	font-size: 12px;
 }

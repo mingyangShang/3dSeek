@@ -252,21 +252,22 @@
             <span class="close img-circle text-center">&times;</span>
             <img class="big-img" id="big-img">
           </div>
+            <div id="compareModal" class="modal animated bounce infinite">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        特征对比
+                        <span class="close img-circle text-center" id="closeCompareChart">&times</span>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="compareCanvas"> </canvas>
+                    </div>
+                </div>
+            </div>
 
         </div>
       </section>
     </div>
-    
-     <!--FOOTER SECTION END-->
-    <!-- <div class="copy-txt">
-         <div class="container">
-            <div class="row">
-                <div class="col-md-12 set-foot" >
-                    &copy 2017 your domain | All rights reserved |  More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a> 
-                </div>
-            </div>
-        </div>
-    </div> -->
+
     <script src="{{ url_for('static', filename="js/jquery-1.11.1.js") }}"></script>
     <script src="{{ url_for('static', filename="js/bootstrap.js") }}"></script>
     <script src="{{ url_for('static', filename="js/jquery.simplePagination.js") }}"></script>
@@ -285,6 +286,8 @@
     <script src="{{ url_for('static', filename="js/home.js") }}"></script>
     <audio controls="controls" style="display: none;"></audio>
     <script>
+        window.searchingModelInfo = {{ info.feature }};
+        //test
         if("{{ info.file_type }}" == "IMG"){
            $("#img-info").css("display", "block");
            $("#model-info").css("display", "none");
