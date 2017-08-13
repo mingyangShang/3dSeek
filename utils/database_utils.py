@@ -156,10 +156,10 @@ def get_model_info(dataset_name, class_name, model_name):
     return info_dic
 
 
-def get_search_result_detail(dataset_name, model_list, page=1, size=100):
+def get_search_result_detail(dataset_name, model_list, dist_list, page=1, size=100):
     set_info = get_set_info(dataset_name)
     models = []
-    for model_name in model_list:
+    for idx, model_name in enumerate(model_list):
         # class_name = model_name.split('_')[0]
         class_name = get_class_name_by_name(model_name)
         class_info = set_info[class_name]
@@ -175,6 +175,7 @@ def get_search_result_detail(dataset_name, model_list, page=1, size=100):
         info_dic['vertice_num'] = int(class_info[model_name]['vertice_num'])
         info_dic['edge_num'] = int(class_info[model_name]['edge_num'])
         info_dic['download_url'] = '/download?dataset=%s&model_name=%s' % (dataset_name, model_name)
+        info_dic['dist'] = dist_list[idx]
         models.append(info_dic)
     detail_json = {}
     total_count = len(models)
@@ -192,6 +193,14 @@ def get_search_result_detail(dataset_name, model_list, page=1, size=100):
         detail_json['curr_count'] = size
     return json.dumps(detail_json)
 
+# def load_json(json_path):
+#     with open(json_path) as fp:
+#         return json.load(fp)
+
+# def get_feature_by_name(model_name_list, method):
+#     name_list = load_json('/home/wangxiyang/workspace/3dSeek/static/database/modelnet40/train_model_list.json')
+#     if method == 'smy':
+#
 
 def download_file(url, dst_dir):
     file_name = url.split('/')[-1]

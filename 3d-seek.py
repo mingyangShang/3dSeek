@@ -73,6 +73,7 @@ def get_class_details():
         page_size = int(page_size)
     return db_utils.get_class_detail(dataset, class_name, page, page_size)
 
+
 @app.route('/api/shape-test')
 def search_shape_test():
     search_method = request.args.get('method')
@@ -85,6 +86,7 @@ def search_shape_test():
     print(feature)
     return "Hello world!"
 
+
 @app.route('/api/image-test')
 def search_img_test():
     search_method = request.args.get('method')
@@ -96,6 +98,7 @@ def search_img_test():
     feature = get_feature(image_list, "IMG", search_method, 'modelnet40')
     print(feature)
     return "Hello world!"
+
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -128,16 +131,17 @@ def search():
     file_size = get_file_size(file_path)
 
     file_info = {'file_type': file_type, "file_name": filename, "file_path": file_path, "file_size": file_size,
-                 "file_url": url_for('uploaded_file', filename=filename), 'search_key': search_key}
+                 "file_url": url_for('uploaded_file', filename=filename), 'search_key': search_key,
+                 'method': search_method}
     if file_type == "SHAPE":
         image_list = render_12p(file_path, dst_path=app.config['UPLOAD_FOLDER'])
         file_info['vertice_num'], file_info['edge_num'], file_info['file_size'] = get_model_info(file_path)
         file_info['view_urls'] = [url_for('uploaded_file', filename='%s_%03d.jpg' % (search_key, i)) for i in
-                              range(1, 13)]
+                                  range(1, 13)]
     else:
         image_list = [file_path]
-    #feature = get_feature(image_list, file_type, search_method, dataset)
-    #search_method = 'smy'
+    # feature = get_feature(image_list, file_type, search_method, dataset)
+    # search_method = 'smy'
     try:
         feature = get_feature(image_list, file_type, search_method, dataset)
     except Exception as ex:
@@ -145,15 +149,16 @@ def search():
         result_json['success'] = False
         result_json['info'] = "feature error"
         return json.dumps(result_json)
-   
+
     # feature = [0.1 * i for i in range(128)]
     print(feature)
     file_info['feature'] = feature
     file_info['feature_dim'] = len(feature)
-    result_list = search_by_feature(feature, search_method, dataset)
+    result_list, dist_list = search_by_feature(feature, search_method, dataset)
 
     print(file_info)
-    app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_info': file_info}
+    app.cache_dic[search_key] = {'result_list': result_list, 'dataset': dataset, 'file_info': file_info,
+                                 'dist_list': dist_list, 'method': search_method}
 
     result_json['success'] = True
     result_json['result_url'] = '/search-result?key=%s' % search_key
@@ -183,7 +188,8 @@ def search_detail():
     else:
         page_size = int(page_size)
     search_result = app.cache_dic[search_key]
-    return db_utils.get_search_result_detail(search_result['dataset'], search_result['result_list'], page, page_size)
+    return db_utils.get_search_result_detail(search_result['dataset'], search_result['result_list'],
+                                             search_result['dist_list'], search_result['method'], page, page_size)
 
 
 @app.route('/')

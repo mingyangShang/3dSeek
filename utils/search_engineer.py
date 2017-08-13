@@ -3,16 +3,19 @@ from sklearn.neighbors import KDTree
 from sklearn.externals import joblib
 import json
 
-#model_name_list = load_json('/home/wangxiyang/workspace/3dSeek/static/database/modelnet40/train_model_list.json')
+# model_name_list = load_json('/home/wangxiyang/workspace/3dSeek/static/database/modelnet40/train_model_list.json')
 lhl_kd_tree = joblib.load('/home/wangxiyang/workspace/3dSeek/methods/lhl/kd_tree/kd_tree.pkl')
 smy_kd_tree = joblib.load('/home/wangxiyang/workspace/3dSeek/methods/smy/kd_tree/kd_tree.pkl')
 wxy_kd_tree = joblib.load('/home/wangxiyang/workspace/3dSeek/methods/wxy/kd_tree/kd_tree.pkl')
+
 
 def load_json(json_path):
     with open(json_path) as fp:
         return json.load(fp)
 
+
 model_name_list = load_json('/home/wangxiyang/workspace/3dSeek/static/database/modelnet40/train_model_list.json')
+
 
 def search_by_feature(search_feature, method_name='wxy', data_set='modelnet40'):
     """
@@ -31,11 +34,10 @@ def search_by_feature(search_feature, method_name='wxy', data_set='modelnet40'):
         kd_tree = lhl_kd_tree
     dist, ind = kd_tree.query(search_feature, 50)
     ind = ind.reshape([-1])
+    dist = dist.reshape([-1])
     name_list = [model_name_list[int(i)] for i in ind]
-    
-    return name_list
-
-    #return ['bathtub_0007' for i in range(50)]
+    dist_list = [d for d in dist]
+    return name_list, dist_list
 
 
 def k_d_tree_test():
@@ -53,7 +55,7 @@ def k_d_tree_dump():
     print(ind)
     name_list = [model_name_list[int(i)] for i in ind]
     print(name_list)
-    #joblib.dump(tree, 'kd_tree/kd_tree.pkl')
+    # joblib.dump(tree, 'kd_tree/kd_tree.pkl')
 
 
 if __name__ == '__main__':
