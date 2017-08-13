@@ -1,6 +1,8 @@
 # pycharm files
 .idea/
 
+cache.json
+
 # database files
 static/database/
 
