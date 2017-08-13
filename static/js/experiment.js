@@ -46,17 +46,7 @@ $(document).ready(function () {
                     backgroundColor: window.chartColors.green,
                     borderColor: window.chartColors.green,
                     data: [
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor(),
-                        //randomScalingFactor()
-                        1.0, 0.96, 0.94, 0.89, 0.84, 0.8, 0.75, 0.68, 0.60, 0.54, 0.50
+                        1.0, 0.9294, 0.9202, 0.9021, 0.8656, 0.8456, 0.8282, 0.8126, 0.7977, 0.7655, 0.0371
                     ],
                 }]
             },
