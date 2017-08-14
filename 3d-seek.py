@@ -163,7 +163,7 @@ def search():
     result_json['success'] = True
     result_json['result_url'] = '/search-result?key=%s' % search_key
     # print(result_json)
-    with open('cache.json') as fp:
+    with open('cache.json','w') as fp:
         json.dump(app.cache_dic, fp)
     return json.dumps(result_json)
 
