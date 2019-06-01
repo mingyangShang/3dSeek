@@ -9,6 +9,12 @@ root_dir = '..'
 name_2_class = {'tv': 'tv_stand', 'night': 'night_stand', 'flower': 'flower_pot', 'glass': 'glass_box',
                 'range': 'range_hood'}
 
+classes = ['bathtub', 'bed', 'chair', 'desk', 'dresser', 'monitor', 'night_stand', 'sofa', 'table', 'toilet']
+
+
+def get_all_class_names():
+    return classes
+
 
 def get_model_name(file_name):
     file_ext = get_file_extensions(file_name)
