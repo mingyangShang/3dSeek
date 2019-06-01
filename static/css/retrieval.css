@@ -74,7 +74,11 @@
   right: 0px;
 }
 
-/*.views img:hover{
+.div_img{
+  font-weight: bolder;
+}
+
+#model_views .model-img:hover{
     color: #424242; 
   -webkit-transition: all .3s ease-in;
   -moz-transition: all .3s ease-in;
@@ -85,4 +89,4 @@
   transform: scale(1.5);
   -ms-transform: scale(1.5);  
   -webkit-transform: scale(1.5); 
-}*/
+}

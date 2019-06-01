@@ -114,7 +114,7 @@
 									<label for="query_model">上传三维模型：</label>
                                     <br/>
 									<input type="text" id="query_text" class="form-control" style="float: left; width: 1080px; padding-right: 65px;" placeholder="Enter a phrase">
-                                    <input id="file_up" type="file" style="display: none"/>
+                                    <input id="model-file-input" type="file" style="display: none"/>
                                     <img id="upload_button" height="50px" src="../static/img/upload.png" style="float: left; margin-left: -64px;"/>
                                     <center style="margin-top: 80px;">
                                         <input type="radio" id="use_seqview2seqlabels" name="retrieval_method" checked="true"/><label for="use_seqview2seqlabels" style="margin-right: 20px; font-size: larger;">SeqView2SeqLabels</label>
@@ -165,14 +165,14 @@
 
 				<div id="model_views_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
 					<div class="fh5co-post">
-						<label class="div_hint">模型视图：</label>
+						<span class="div_hint" style="font-weight: bolder;">模型视图：</span><br/>
 						<div id="model_views"></div>
 					</div>
 				</div>
 
 				<div id="feature_vis_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
 					<div class="fh5co-post">
-						
+						<span class="div_hint" style="font-weight: bolder;">特征可视化：</span><br/>
 					</div>
 				</div>
 
