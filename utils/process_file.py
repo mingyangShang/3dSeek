@@ -2,12 +2,22 @@ import random, string
 import json
 import os
 
-IMG_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
+IMG_EXTENSIONS = ['png', 'jpg', 'gif']
 SHAPE_EXTENSIONS = ['off', 'obj']
 
 root_dir = '..'
 name_2_class = {'tv': 'tv_stand', 'night': 'night_stand', 'flower': 'flower_pot', 'glass': 'glass_box',
                 'range': 'range_hood'}
+
+
+def get_model_name(file_name):
+    file_ext = get_file_extensions(file_name)
+    model_name = ''
+    if file_ext in SHAPE_EXTENSIONS:
+        model_name = file_name[:-4]
+    if file_ext in IMG_EXTENSIONS:
+        model_name = file_name[:-8]
+    return model_name
 
 
 def get_file_extensions(filename):
@@ -21,8 +31,6 @@ def get_class_name_by_name(model_name):
     raw_class_name = model_name.split('_')[0]
     if raw_class_name in name_2_class.keys():
         raw_class_name = name_2_class[raw_class_name]
-
-    # special_names = ['tv_stand', 'night_stand', 'flower_pot', 'glass_box', 'range_hood']
     return raw_class_name
 
 

@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request, url_for, send_from_directory, send_file
+from utils.process_file import get_model_name
+import methods.smy.info as smy
+import methods.wxy.info as wxy
 import json
 import os
 
@@ -17,17 +20,22 @@ def uploaded_file(filename):
 
 @app.route('/search', methods=['POST'])
 def search():
-    print('----> search')
-    # search_type = request.form.get('type')
-    # search_method = request.form.get('method')
-    # result_json = {}
-    # print(search_type)
-    # if search_type == 'file':
-    #     print('search file')
-    #     upload_file = request.files['file']
-    #     filename = upload_file.filename
-    #     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    #     upload_file.save(file_path)
+
+    search_author = request.form.get('author')
+    search_type = request.form.get('type')
+    search_method = request.form.get('method')
+    filename = 'bathtub_0107.off'
+    print('search----> ', search_type, search_author, search_method)
+    result_json = {}
+
+    if search_type == 'file':
+        model_name = get_model_name(filename)
+        print('search file', model_name)
+        if search_author == 'smy':
+            result_json = smy.get_total_info(model_name)
+        else:
+            result_json = wxy.get_total_info(model_name)
+    return json.dumps(result_json)
 
 
 @app.route('/retrieval.html')
