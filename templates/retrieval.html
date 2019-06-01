@@ -1,0 +1,614 @@
+<!DOCTYPE HTML>
+<!--
+	Concept by gettemplates.co
+	Twitter: http://twitter.com/gettemplateco
+	URL: http://gettemplates.co
+-->
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>基于序列视图的三维模型检索系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="基于序列视图的三维模型检索系统" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="Mingyang Shang" />
+
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+    <link href="http://cdn.bootcss.com/iCheck/1.0.2/skins/all.css" rel="stylesheet">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="../static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="../static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="../static/css/bootstrap.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="../static/css/magnific-popup.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="../static/css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="../static/js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	<style type="text/css">
+		#fh5co-header a
+		{
+			color: rgba(255, 255, 255, 1);
+		}
+	</style>
+
+	</head>
+	<body>
+		
+	<div class="fh5co-loader"></div>
+	
+	<div id="page">
+	<nav class="fh5co-nav" role="navigation">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-5 text-left">
+					<div id="fh5co-logo"><a href="index.html">SeqViews2SeqLabels & VIP-GAN</a></div>
+				</div>
+				<div class="col-xs-7 text-right menu-1">
+					<ul>
+						<li><a href="index.html">主页</a></li>
+						<li class="active"><a href="retrieval.html">检索系统</a></li>
+						<!-- 
+						<li><a href="demo_eval.html">评估反馈</a></li>
+						<li><a href="performance.html">性能</a></li>
+						<li><a href="reference.html">参考文献</a></li>
+						-->
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</nav>
+
+	<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url(../static/img/img_bg_1.jpg); height: 400px;" data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-left">
+					<div class="display-t" style="height: 400px;">
+						<div class="display-tc animate-box" style="height: 400px;" data-animate-effect="fadeInUp">
+							<h1 class="mb70">基于序列视图的三维模型检索系统</h1>
+							<h3 class="mb30" style="color: white;">使用<a href="demo_dataset.html">ModelNet数据集</a></h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div id="fh5co-blog" class="fh5co-bg-section">
+
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<form action="#">
+						<div class="fh5co-post">
+							<div class="row form-group">
+								<div class="col-md-12" id="fileSearchDiv">
+									<label for="query_model">上传三维模型：</label>
+                                    <br/>
+									<input type="text" id="query_text" class="form-control" style="float: left; width: 1080px; padding-right: 65px;" placeholder="Enter a phrase">
+                                    <input id="file_up" type="file" style="display: none"/>
+                                    <img id="upload_button" height="50px" src="../static/img/upload.png" style="float: left; margin-left: -64px;"/>
+                                    <center style="margin-top: 80px;">
+                                        <input type="radio" id="use_seqview2seqlabels" name="retrieval_method" checked="true"/><label for="use_seqview2seqlabels" style="margin-right: 20px; font-size: larger;">SeqView2SeqLabels</label>
+                                        <input type="radio" id="use_vipgan" name="retrieval_method"/><label for="use_vipgan" style="margin-right: 20px; font-size: larger;">VIP-GAN</label>
+                                    </center>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<center>
+									<!--select id="select_example" onchange="loadDefault()"></select-->
+                                    <input id="vis_button" type="button" value="展示三维模型" class="btn btn-outline btn-lg btn-primary">
+									<input id="submit_button" type="button" value="提交" class="btn btn-outline btn-lg btn-primary">
+                                    <!-- <input id="vis_button" type="button" value="特征曲线" class="btn btn-outline btn-lg btn-primary"> -->
+									<!--input type="button" value="加载示例" onclick="loadDefault()" class="btn btn-outline btn-lg btn-primary"-->
+                                    <p id="query_time" style="color: black; font-size: large;"></p>
+                                    <p id="server_message" style="color: indianred; font-size: large;"></p>
+								</center>
+							</div>
+						</div>
+					</form>
+				</div>
+				
+				<div class="col-md-12 col-sm-6 animate-box model_views" style="display: none;" data-animate-effect="fadeInUp">
+					<form action="#">
+						<div class="fh5co-post">
+                            <center>
+                                <span style="font-weight: bolder;">检索三维模型：</span><br/>
+                                <img id="uploaded_img" style="max-width: 60%; max-height: 350px;" src="" alt="尚未上传查询三维模型"/>
+                            </center>
+						</div>
+                        <div id="text_row1" class="fh5co-post" style="position: relative">
+                            <div style="float: left; width: 250px;">
+                                <center>
+                                    <img class="resultimg1" src="../static/img/work-4.jpg" style="max-height: 150px; max-width: 250px;"/>
+                                </center>
+                            </div>
+                            <div style="margin-left: 270px;">
+                                <span class="image_info_sentence">1</span> <br/>
+                                <span class="image_info_sentence">1</span> <br/>
+                                <span class="image_info_sentence">1</span> <br/>
+                                <span class="image_info_sentence">1</span> <br/>
+                                <span class="image_info_sentence">1</span> <br/>
+                            </div>
+                        </div>
+					</form>
+				</div>
+
+				<div id="model_views" class="col-md12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+				</div>
+				
+				<div id="fh5co-project" class="col-md-12 col-sm-6 animate-box text_query_result" data-animate-effect="fadeInUp">
+
+                    <div id="image_row1" class="row">
+                        <div id="image_box1" class="col-md-2 col-sm-6 fh5co-project" data-animate-effect="fadeIn">
+                            <input id="select_img1" class="vis_selector" style="display: none; position: absolute; left: 20px; top: 5px;" type="checkbox"/>
+                            <img class="resultimg1" src="../static/img/work-1.jpg" style="max-width: 100%;" alt="result1" class="img-responsive">
+                        </div>
+                    </div>
+				</div>
+
+                <div class="col-md-12 col-sm-6 animate-box big_image_display" style="display: none;" data-animate-effect="fadeInUp">
+                    <center>
+                        <div>
+                            <img id="big_image" src="../static/img/work-4.jpg" style="height: 100%; margin-bottom: 25px;"/> <br/>
+                            <span class="infoline"><strong>文件名：</strong><span id="image_info_name">images/sheep/2008003562.jpg</span></span> <br/>
+                            <span class="infoline"><strong>类别：</strong><span id="image_info_category">sheep</span></span> <br/>
+                            <span class="infoline"><strong>原始文本[1]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
+                            <span class="infoline truth_text"><strong>原始文本[2]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
+                            <span class="infoline truth_text"><strong>原始文本[3]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
+                            <span class="infoline truth_text"><strong>原始文本[4]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
+                            <span class="infoline truth_text"><strong>原始文本[5]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
+                            <span class="infoline"><strong>来源：</strong><span id="image_info_source">Pascal数据集</span> -- <span id="image_info_type" style="font-weight: bolder; color: black;">测试集</span></span> <br/>
+                            <span class="infoline"><strong>检索得分：</strong><span id="image_info_score">100.00</span></span> <br/>
+                            <button class="btn btn-outline btn-lg btn-primary" onclick="prev_big_image();">上一张</button>
+                            <button class="btn btn-outline btn-lg btn-primary" onclick="close_big_image();">关闭</button>
+                            <button class="btn btn-outline btn-lg btn-primary" onclick="next_big_image();">下一张</button>
+                        </div>
+                    </center>
+                </div>
+
+                <div class="col-md-12 col-sm-6 animate-box vis_display" style="display: none;" data-animate-effect="fadeInUp">
+                    <div class="fh5co-post">
+                        <canvas id="vis_chart">
+
+                        </canvas>
+                    </div>
+                </div>
+
+                <center><a id="prev" style="cursor:hand;" onclick="prevPage()">上一页</a><span id="cpage" style="margin-left: 60px; margin-right: 60px; margin-top: 8px;">1</span><a id="next" style="cursor:hand;" onclick="nextPage()">下一页</a></center>
+
+				<div class="clearfix visible-md-block"></div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	
+	<div id="fh5co-started">
+		<div class="container">
+			<div class="row animate-box">
+				<div class="col-md-10 col-md-offset-1 text-center fh5co-heading">
+					<h2>基于序列视图的三维模型检索系统</h2>
+					<p>Studies on Representation Learning of 3D Shapes based on Sequential Views</p>
+					<p><button type="submit" class="btn btn-default">In progress</button></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer id="fh5co-footer" role="contentinfo">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-4 fh5co-widget ">
+					<h3>Concept.</h3>
+					<p>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
+					<p><a href="#">Learn More</a></p>
+				</div>
+				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1 ">
+					<ul class="fh5co-footer-links">
+						<li><a href="#">About</a></li>
+						<li><a href="#">Help</a></li>
+						<li><a href="#">Contact</a></li>
+						<li><a href="#">Terms</a></li>
+						<li><a href="#">Meetups</a></li>
+					</ul>
+				</div>
+
+				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1 ">
+					<ul class="fh5co-footer-links">
+						<li><a href="#">Shop</a></li>
+						<li><a href="#">Privacy</a></li>
+						<li><a href="#">Testimonials</a></li>
+						<li><a href="#">Handbook</a></li>
+						<li><a href="#">Held Desk</a></li>
+					</ul>
+				</div>
+
+				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1 ">
+					<ul class="fh5co-footer-links">
+						<li><a href="#">Find Designers</a></li>
+						<li><a href="#">Find Developers</a></li>
+						<li><a href="#">Teams</a></li>
+						<li><a href="#">Advertise</a></li>
+						<li><a href="#">API</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="row copyright">
+				<div class="col-md-12 text-center">
+					<p>
+						<small class="block">&copy; 2016 Free HTML5. All Rights Reserved.</small> 
+						<small class="block">Designed by <a href="http://gettemplates.co/" target="_blank">GetTemplates.co</a> Demo Images: <a href="http://pixeden.com/" target="_blank">Pixeden</a> &amp; <a href="http://unsplash.com/" target="_blank">Unsplash</a></small>
+					</p>
+					<p>
+						<ul class="fh5co-social-icons">
+							<li><a href="#"><i class="icon-twitter"></i></a></li>
+							<li><a href="#"><i class="icon-facebook"></i></a></li>
+							<li><a href="#"><i class="icon-linkedin"></i></a></li>
+							<li><a href="#"><i class="icon-dribbble"></i></a></li>
+						</ul>
+					</p>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+	</div>
+
+    <div id="vis_popup" style="position: absolute; padding: 10px; border: 4px solid rgba(42, 51, 86, 0.9); background-color: white; left: 1000px; top: 500px;">
+        已选样本：
+        <ul id="selected_samples">
+
+        </ul>
+        <center><button id="vis_pop_button" class="btn btn-outline btn-lg btn-primary">绘制</button></center>
+    </div>
+	
+	<!-- jQuery -->
+	<script src="../static/js/jquery-1.11.1.js"></script>
+	<!-- jQuery Easing -->
+	<script src="../static/js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="../static/js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="../static/js/jquery.waypoints.min.js"></script>
+	<!-- countTo -->
+	<script src="../static/js/jquery.countTo.js"></script>
+	<!-- Magnific Popup -->
+	<script src="../static/js/jquery.magnific-popup.min.js"></script>
+	<script src="../static/js/magnific-popup-options.js"></script>
+	<!-- Stellar -->
+	<script src="../static/js/jquery.stellar.min.js"></script>
+    <!-- Chart -->
+    <script src="../static/js/chart.min.js"></script>
+    <!-- iCheck -->
+    <script src="../static/js/icheck.min.js"></script>
+	<!-- Main -->
+	<script src="../static/js/main.js"></script>
+    <script lang="javascript">
+        big_img_idx = -1;
+        lastQueryType = "text";
+        selecting = false;
+
+        function move_vis_pop(){
+            //console.log("Current scroll: " + window.scrollY);
+            if(window.scrollY < 680)
+            {
+                ll = $(".container").position().left + $(".container").width() + window.scrollX + 370 + 'px';
+                tt = 733 + 'px';
+                $("#vis_popup").css("top", tt);
+                $("#vis_popup").css("left", ll);
+                console.log("Container left = " + $(".container").position().left);
+                console.log("Container width = " + $(".container").width());
+                console.log("Window scroll X = " + window.scrollX);
+                console.log("Pop left calc = " + ll);
+                console.log("Pop left actual = " + $("#vis_popup").position().left);
+            }
+            else if(window.scrollY)
+            {
+                ll = $(".container").position().left + $(".container").width() + window.scrollX + 370 + 'px';
+                tt = window.scrollY + 70 + 'px';
+                $("#vis_popup").css("top", tt);
+                $("#vis_popup").css("left", ll);
+                console.log("Container left = " + $(".container").position().left);
+                console.log("Container width = " + $(".container").width());
+                console.log("Window scroll X = " + window.scrollX);
+                console.log("Pop left calc = " + ll);
+                console.log("Pop left actual = " + $("#vis_popup").position().left);
+            }
+        }
+
+        function close_big_image() {
+            if(lastQueryType == "text")
+            {
+                $(".text_query_result").show();
+            }
+            else if (lastQueryType == "image")
+            {
+                $(".image_query_result").show();
+            }
+            $(".big_image_display").hide();
+            big_img_idx = -1;
+        }
+
+        function prev_big_image() {
+            big_img_idx -= 1;
+            if(big_img_idx < 0)
+            {
+                big_img_idx = 0;
+                alert("目前已是第一张");
+            }
+            show_big_image(big_img_idx);
+        }
+
+        function next_big_image() {
+            big_img_idx += 1;
+            if(big_img_idx > 35)
+            {
+                big_img_idx = 35;
+                alert("目前已是最后一张");
+            }
+            show_big_image(big_img_idx);
+        }
+
+        function show_big_image(idx) {
+            if (big_img_idx == -1)
+            {
+                return false;
+            }
+
+            $(".text_query_result").hide();
+            $(".image_query_result").hide();
+            $(".big_image_display").show();
+
+            var tarimg = $(".resultimg" + (idx + 1));
+            var imgsrc = tarimg.attr("src");
+            var image_data = textQueryData[idx];
+            $("#big_image").attr("src", imgsrc);
+            $("#image_info_name").text(image_data['filename']);
+            $("#image_info_category").text(image_data['label']);
+            $("#image_info_score").text(image_data['score']);
+
+            var sents = image_data['sentence'].split("\n");
+            if(sents.length > 1)
+            {
+                var places = $(".big_image_info_sentence");
+                for(var i = 0; i < 5; i++)
+                {
+                    places[i].textContent = sents[i];
+                }
+                $(".truth_text").show();
+            }
+            else
+            {
+                $(".big_image_info_sentence").text(sents[0]);
+                $(".truth_text").hide();
+            }
+
+
+            var source = parseInt(image_data['source']);
+            console.log("source: " + source);
+            if(source / 10 > 1)
+            {
+                $("#image_info_source").text("Pascal数据集");
+            }
+            else
+            {
+                $("#image_info_source").text("未知来源");
+            }
+
+            if(source % 10 == 1)
+            {
+                $("#image_info_type").text("训练集");
+                $("#image_info_type").css("background-color", "#a7a7a7");
+            }
+            else if(source % 10 == 2)
+            {
+                $("#image_info_type").text("验证集");
+                $("#image_info_type").css("background-color", "#66d5cd");
+            }
+            else
+            {
+                $("#image_info_type").text("测试集");
+                $("#image_info_type").css("background-color", "#5aae2d");
+            }
+
+            $(".infoline").offset({"left": $("#big_image").offset().left});
+
+            $('html, body').animate({
+                scrollTop: $(".big_image_display").offset().top - 200
+            }, 600);
+        }
+
+        function update_list(){
+            var arr = [];
+            var cnt = 0;
+
+            for(var i = 1; i <= 36; i++)
+            {
+                var ckd = $("#select_img" + i).prop("checked");
+                if(ckd)
+                {
+                    if(cnt == 5)
+                    {
+                        alert("为保证显示效果，最多选择5个结果。");
+                        $("#select_img" + i).prop("checked", "false");
+                        break;
+                    }
+
+                    vis_fid.push((current_page - 1) * 36 + i - 1);
+
+                    var corr_img = $(".resultimg" + i);
+                    var imgname = corr_img.attr("alt");
+                    imgname = imgname.substr(imgname.length - 15, 11);
+                    arr.push(imgname);
+                    cnt++;
+                }
+            }
+
+            $("#selected_samples").html("");
+            for(var i = 0; i < arr.length; i++)
+            {
+                console.log("IMAGE: " + arr[i]);
+                $("#selected_samples").append("<li>" + arr[i] + "</li>");
+            }
+        }
+
+        function imageclick() {
+            //if(!hasTextQueryResult)
+            //{
+            //    return false;
+            //}
+
+            if(selecting)
+            {
+                var idx = parseInt($(this).attr("class").replace("resultimg", ""));
+                var ckd = $("#select_img" + idx).prop("checked");
+                if(ckd)
+                {
+                    $("#select_img" + idx).prop("checked", false);
+                }
+                else
+                {
+                    $("#select_img" + idx).prop("checked", true);
+                }
+                //update
+                update_list();
+            }
+            else
+            {
+                big_img_idx = parseInt($(this).attr("class").replace("resultimg", "")) - 1;
+                show_big_image(big_img_idx);
+            }
+        }
+
+        function copyTextNodes(n, randomInit)
+        {
+            var lastrow = $("#text_row1");
+            $(".resultimg1").bind("click", imageclick);
+
+            for(var i = 0; i < n - 1; i++)
+            {
+                var nrow = lastrow.clone();
+                nrow.attr("id", "text_row" + (i + 2));
+                nrow.insertAfter(lastrow);
+                lastrow = nrow;
+
+                var tarimg = $("#text_row" + (i + 2) + " img");
+                tarimg.attr("class", "resultimg" + (i + 2));
+                tarimg.bind("click", imageclick);
+
+                if(randomInit)
+                {
+                    var imgid = parseInt(Math.random() * 5) % 5 + 1;
+                    tarimg.attr("src", "../static/img/work-" + imgid + ".jpg");
+                }
+            }
+        }
+
+        function copyImageNodes(m, n, randomInit)
+        {
+            var lastrow = $("#image_row1");
+            var lastbox = $("#image_box1");
+            $(".resultimg1").bind("click", imageclick);
+            for(var i = 0; i < n - 1; i++)
+            {
+                var nbox = lastbox.clone();
+                nbox.attr("id", "image_box" + (i + 2));
+                nbox.insertAfter(lastbox);
+                lastbox = nbox;
+
+                var tarimg = $("#image_box" + (i + 2) + " img");
+                tarimg.attr("class", "resultimg" + (i + 2));
+                tarimg.bind("click", imageclick);
+                var ipt = $("#image_box" + (i + 2) + " input");
+                ipt.attr("id", "select_img" + (i + 2));
+
+                if(randomInit)
+                {
+                    var imgid = parseInt(Math.random() * 5) % 5 + 1;
+                    tarimg.attr("src", "../static/img/work-" + imgid + ".jpg");
+                }
+            }
+
+            for(var i = 0; i < m - 1; i++)
+            {
+                var nrow = lastrow.clone();
+                nrow.attr("id", "image_row" + (i + 2));
+                nrow.insertAfter(lastrow);
+                lastrow = nrow;
+                for(var j = 0; j < n; j++)
+                {
+                    var boxid = "#image_row" + (i + 2) + " #image_box" + (i * n + (j + 1));
+                    var tarimg = $(boxid+ " img");
+                    tarimg.attr("class", "resultimg" + ((i + 1) * n + (j + 1)));
+                    tarimg.bind("click", imageclick);
+                    var ipt = $(boxid + " input");
+                    ipt.attr("id", "select_img" + ((i + 1) * n + (j + 1)));
+
+                    $(boxid).attr("id", "image_box" + ((i + 1) * n + (j + 1)));
+
+                    if(randomInit)
+                    {
+                        var imgid = parseInt(Math.random() * 5) % 5 + 1;
+                        tarimg.attr("src", "../static/img/work-" + imgid + ".jpg");
+                    }
+                }
+            }
+        }
+
+        // $(".retrieval_image").bind("click", function () {
+        //     alert("Image click: " + $(this).attr("src"));
+        // });
+        $(document).bind("scroll", move_vis_pop);
+
+        $(document).ready(function () {
+            copyImageNodes(6, 6, true);
+            copyTextNodes(36, true);
+            move_vis_pop();
+
+            //$(("input")).iCheck({
+            //    checkboxClass: 'icheckbox_minimal-blue',
+            //    radioClass: 'iradio_square-blue'
+            //});
+        });
+
+    </script>
+
+    <script src="../static/js/retrieval.js"></script>
+
+	</body>
+</html>
+

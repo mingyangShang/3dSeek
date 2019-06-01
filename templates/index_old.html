@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>3D Seek</title>
+    <link href="{{ url_for('static', filename="css/bootstrap.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/font-awesome.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap-treeview.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap-select.min.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/style.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/viewer.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="css/bootstrap-fix.css") }}" rel="stylesheet" />
+</head>
+<body class="fh5co-bg-section"> 
+        <div class="navbar navbar-inverse navbar-fixed-top " >
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/" ><strong>3D Seek</strong></a>
+            </div>
+            <div class="navbar-collapse collapse move-me">
+                <ul class="nav navbar-nav navbar-right set-links">
+                     <li><a href="/" class="active-menu-item">主页</a></li>
+                     <li><a href="/middle-result">中间结果</a></li>
+                     <li><a href="/experiment-result">实验结果</a></li>
+                     <li><a href="/team">任务分工</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--HOME SECTION END-->
+    <div>
+        <section id="search-domain">
+            <div class="container">
+                <div class="row text-center" id="search-row">
+    				<div class="col-md-10 text-center col-md-offset-1 input-group">
+    				    <input type="text" class="form-control input-cls search-query"  placeholder="请输入查询类名或上传模型检索"  id="search-key-input"/>
+                        <span class="input-group-btn">
+                            <input type="button" id="search" class="btn btn-primary btn-lg btn-set"  value="检索" />
+                            <button class="btn btn-danger" type="button" id="upload-model-btn">
+                                <span class="glyphicon glyphicon-camera"></span>
+                            </button>
+                        </span>
+                        <input type="file" id="model-file-input" name="file" style="display:none">
+    				</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 has-error col-md-offset-1 error">
+                        <span id="search-error-hint" class="small-font help-block hide">检索关键字不能为空</span>
+                    </div>
+                	<div class="col-md-6 text-center">
+                		<label class="radio-inline">
+      						<input type="radio" name="inlineRadioOptions" id="wxyRadio" value="method_wxy" checked> 王曦阳
+    					</label>
+    					<label class="radio-inline">
+      						<input type="radio" name="inlineRadioOptions" id="smyRadio" value="method_smy"> 商明阳
+    					</label>
+    					<label class="radio-inline">
+      						<input type="radio" name="inlineRadioOptions" id="lhlRadio" value="method_lhl"> 陆宏磊
+    					</label>
+    				</div>
+                </div>
+            </div>
+        </section>
+        <!-- 图像或模型的搜索框 -->
+        <div class="container modal" id="fileSearchDiv" style="background-color: white;height: 200px;"> 
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-md-2">
+                    <span style="font-size:16px;font-weight:bold;">上传模型检索</span>
+                </div>
+                <div class="col-md-1 col-md-offset-9">
+                    <span style="font-size:30px;cursor:pointer" id="closeFileSearchDiv">&times;</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="radio-inline" style="font-size: 12px;">
+                        <input type="radio" name="inlineRadioOptions_file" id="wxyRadio_file" value="method_wxy_file" checked> 王曦阳
+                    </label>
+                    <label class="radio-inline" style="font-size: 12px;">
+                        <input type="radio" name="inlineRadioOptions_file" id="smyRadio_file" value="method_smy_file"> 商明阳
+                    </label>
+                    <label class="radio-inline" style="font-size: 12px;">
+                        <input type="radio" name="inlineRadioOptions_file" id="lhlRadio_file" value="method_lhl_file"> 陆宏磊
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a id="urlLink" data-toggle="tab">URL</a></li>
+                    <li><a id="fileLink" data-toggle="tab">上传文件</a></li>
+                </ul>
+            </div>
+            <div class="row tab-content" style="background: #DDDDDD; height: 100px;">
+                    <div id="urlSearchPane" class="tab-pane fade in active" style="margin-left: 10px; margin-top: 20px;">
+                        <div class="col-md-9" >
+                            <input type="text" class="form-control input-cls"  placeholder="图片或模型URL"  id="search-url-input" style="font-size: 14px;" /> 
+                        </div>
+                        <div class="col-md-1" >
+                            <input type="button" id="search_url" class="btn btn-primary btn-lg btn-set"  value="检索" style="font-size: 14px;" />
+                        </div>
+                        <div class="col-md-2" style="margin-top: 5px;">
+                            <span class="hide error-hint" id="url-error">URL不能为空</span>
+                            <div id="searchingUrl" class="text-center hide">
+                                <img src="{{ url_for('static', filename="img/loading.gif") }}" style="width: 40px;height: 40px;">
+                                <span style="color:#428bca">正在搜索……</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="fileSearchPane" class="tab-pane fade in active" style="display: none; margin-top: 20px; margin-left: 20px; font-size: 14px;">
+                        <input type="button" id="searchFile" class="btn btn-primary btn-lg btn-set col-md-1" value="上传" style="font-size: 14px;" />
+                        <span style="margin-left: 10px; margin-right: 10px;vertical-align: sub;" id="searchFileName">未选择文件</span>
+                        <div id="uploadingFile" class="text-center" style="display: none;">
+                            <img src="{{ url_for('static', filename="img/loading.gif") }}" style="width: 40px;height: 40px;">
+                            <span style="color:#428bca">正在上传……</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     <!--SEARCH SECTION END-->
+        <section id="model-scan">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="panel panel-default" id="classes-nav-panel">
+                            <div class="panel-heading">
+                                模型集合
+                                <select id="model-set-select" class="selectpicker">
+                                  <optgroup label="ModelNet">
+                                    <option>ModelNet10</option>
+                                    <option>ModelNet40</option>
+                                  </optgroup>
+                                  <optgroup label="ShapeNet">
+                                    <option disabled>ShapeNet Core</option>
+                                    <option disabled>ShapeNet Sem</option>
+                                  </optgroup>
+                                </select>
+                            </div>
+                            <div class="panel-body">
+                                <div id="model-classes-treeview" class="nav-left"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"></div>
+                            <div class="panel-body">
+                                <div id="models-list" class="row-fluid nav-right">
+
+                                </div>
+                                <div id="models-nav" class="row-fluid text-center">
+                                    <div class="col-md-12">
+                                        <ul class="pagination" id="models-pagination">
+                                           <!--  <li class="disabled"><a href="#">&laquo;</a></li>
+                                            <li class="active"><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#">4</a></li>
+                                            <li><a href="#">5</a></li>
+                                            <li><a href="#">&raquo;</a></li> -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Model View Modal-->
+      <div id="viewerModal" class="modal fade">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body embed-responsive embed-responsive-4by3">
+                      <div id="viewerIframeOverlay" class="embed-responsive-item">
+                          <div class="pull-right" id="close-viewer">
+                              <button type="button" data-dismiss="modal" class="btn btn-danger">
+                                  <span aria-hidden="true">×</span>
+                                  <span class="sr-only">Close</span>
+                              </button>
+                          </div>
+                          <div class="text-center">
+                              <button id="viewerSourceButton" class="btn btn-primary">新窗口查看</button>
+                          </div>
+                      </div>
+                      <iframe id="viewerIframe" class="embed-responsive-item"></iframe>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+   
+    
+     <!--FOOTER SECTION END-->
+    <!-- <div class="copy-txt">
+         <div class="container">
+            <div class="row">
+                <div class="col-md-12 set-foot" >
+                    &copy 2017 your domain | All rights reserved |  More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+     <!-- COPY TEXT SECTION END-->
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+    <!-- CORE JQUERY  -->
+    <script src="{{ url_for('static', filename="js/jquery-1.11.1.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/bootstrap.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/bootstrap-treeview.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/bootstrap-select.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/jquery.simplePagination.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/home.js") }}"></script>
+</body>
+</html>
