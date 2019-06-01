@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, url_for, send_from_directory,
 from utils.process_file import random_str, get_file_type, get_file_extensions, get_file_size, get_class_name_by_name
 from utils.search_engineer import search_by_feature
 from utils.feature_extract import get_feature
-from methods.lhl.feature_extract import render_12p, get_model_info
 
 import os
 import json
@@ -197,6 +196,7 @@ def search_detail():
 @app.route('/')
 def hello_world():
     return render_template('index.html')
+
 
 
 @app.route('/experiment-result')
