@@ -15,6 +15,8 @@ vis_fid = [];
 
 (function ($) {
     $(document).ready(function () {
+        $("#model-file-input").change(searchByModel);
+
         $("#submit_button").click(function () {
             var queryText = $("#query_text").val();
             if(queryText){
@@ -538,15 +540,6 @@ $("#vis_pop_button").click(function () {
     }
 );
 
-$('#file_up').on('change', function(){
-    var imageFile = $("#file_up")[0].files[0];
-    var image_fn = imageFile.name;
-    console.log("UPLOAD: " + image_fn);
-    if(imageFile) {
-        doImageQuery(uuid(), image_fn, imageFile);
-    }
-});
-
 $("#upload_button").hover(function () {
     $(this).attr("src", "../static/img/upload_hover.png");
 }, function () {
@@ -554,7 +547,7 @@ $("#upload_button").hover(function () {
 });
 
 $("#upload_button").click(function (){
-    $("#file_up").click();
+    $("#model-file-input").click();
 });
 
 
@@ -695,8 +688,27 @@ function newModelDiv(data, is_model=false){
   return modelDiv;
 }
 
+// 通过模型检索
+function searchByModel(){
+    console.log("search by model");
+    //存下来本地要能显示，然后将模型上传到服务器上
+    var filepath = $("#model-file-input").val();
+    if(filepath == ""){
+        // $("#uploadingFile").css("display", "none");
+        // $("#searchFileName").text("未选择文件");
+        return;
+    }
+    var file = $("#model-file-input")[0].files[0];
+    if((/\.(off|obj|jpg|jpeg|png)$/i).test(file.name)){
+        /*$("#searchFileName").text(file.name);*/
+        // $("#uploadingFile").css("display", "inline-block");
+        search("file", "", file);
+    }
+}
+
 // 三维模型检索
 function search(type, url, file){
+    console.log("search by "+type+",url="+url+",filename="+(file!=null?file.name:"NULL"));
     var method = $("#fileSearchDiv input[type=radio]:checked").val();
     var author = "smy";
     var formData = new FormData();
@@ -724,22 +736,6 @@ function search(type, url, file){
         processData: false,
         dataType: 'json',
 
-        // Custom XMLHttpRequest
-        // xhr: function() {
-        //   var myXhr = $.ajaxSettings.xhr();
-        //   if (myXhr.upload) {
-        //       // For handling the progress of the upload
-        //       myXhr.upload.addEventListener('progress', function(e) {
-        //           if (e.lengthComputable) {
-        //               $('progress').attr({
-        //                   value: e.loaded,
-        //                   max: e.total,
-        //               });
-        //           }
-        //       } , false);
-        //   }
-        //   return myXhr;
-        // },
         success: function(data, status, xhr){
           if(data.success){
                 window.search_result = data;
@@ -747,11 +743,11 @@ function search(type, url, file){
               // window.location.href = data.result_url;
           }else{
               if(type == "url"){
-                  $("#url-error").removeClass("hide").text(data.info);
-                  $("#searchingUrl").addClass("hide");
+                  // $("#url-error").removeClass("hide").text(data.info);
+                  // $("#searchingUrl").addClass("hide");
               }else{
-                  $("#searchFileName").text(data.info);
-                  $("#uploadingFile").css("display", "none");
+                  // $("#searchFileName").text(data.info);
+                  // $("#uploadingFile").css("display", "none");
               }
           }
         },
@@ -793,12 +789,6 @@ function refreshViews(data){
     $("#model_views img").click(function(event){
             $("#bigImgModal").css("display", "block");
             $("#big-img").attr("src", $(event.target).attr("src"));
-        })
-    $("#model_views .view-col").click(function(event){
-        if(!$(event.target).is("button")){
-            console.log("");
-            // openModelViewer($(this).data("info"));
-        }
     });
     // $("#model_views .model-col").hover(hoverInModel, hoverOutModel);
     $("#model_views").removeClass("loading");
