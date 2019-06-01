@@ -41,6 +41,9 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="../static/css/style.css">
 
+	<!-- custom style -->
+	<link rel="stylesheet" href="../static/css/retrieval.css">
+
 	<!-- Modernizr JS -->
 	<script src="../static/js/modernizr-2.6.2.min.js"></script>
 	<!-- FOR IE9 below -->
@@ -160,11 +163,26 @@
 					</form>
 				</div>
 
-				<div id="model_views" class="col-md12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+				<div id="model_views_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="fh5co-post">
+						<label class="div_hint">模型视图：</label>
+						<div id="model_views"></div>
+					</div>
 				</div>
+
+				<div id="feature_vis_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="fh5co-post">
+						
+					</div>
+				</div>
+
+				<!-- Big Image Viewer Modal -->
+		        <div id="bigImgModal" class="modal animated bounce infinite">
+		            <span class="close img-circle text-center">&times;</span>
+		            <img class="big-img" id="big-img">
+		        </div>
 				
 				<div id="fh5co-project" class="col-md-12 col-sm-6 animate-box text_query_result" data-animate-effect="fadeInUp">
-
                     <div id="image_row1" class="row">
                         <div id="image_box1" class="col-md-2 col-sm-6 fh5co-project" data-animate-effect="fadeIn">
                             <input id="select_img1" class="vis_selector" style="display: none; position: absolute; left: 20px; top: 5px;" type="checkbox"/>
@@ -200,8 +218,6 @@
                         </canvas>
                     </div>
                 </div>
-
-                <center><a id="prev" style="cursor:hand;" onclick="prevPage()">上一页</a><span id="cpage" style="margin-left: 60px; margin-right: 60px; margin-top: 8px;">1</span><a id="next" style="cursor:hand;" onclick="nextPage()">下一页</a></center>
 
 				<div class="clearfix visible-md-block"></div>
 

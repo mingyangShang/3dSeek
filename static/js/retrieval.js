@@ -13,6 +13,23 @@ lastQueryText = "";
 
 vis_fid = [];
 
+(function ($) {
+    $(document).ready(function () {
+        $("#submit_button").click(function () {
+            var queryText = $("#query_text").val();
+            if(queryText){
+                search("url", queryText, null);
+            }
+        });
+
+        $("#bigImgModal .close").click(function(event){
+            $("#bigImgModal").css("display", "none");
+        });
+
+        $("#model_views_wrapper").hide();
+    });
+}(jQuery));
+
 function getUUID(len, radix) {
     var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
     var uuid = [], i;
@@ -540,13 +557,7 @@ $("#upload_button").click(function (){
     $("#file_up").click();
 });
 
-$("#submit_button").click(function () {
-    var queryText = $("#query_text").val();
-    if(queryText)
-    {
-        doTextQuery(uuid(), queryText);
-    }
-});
+
 
 $("#vis_button").click(function () {
     //doVis();
@@ -627,9 +638,9 @@ function prevPage(){
 
 
 // 创建模型或者视图div
-function newModelDiv(data, is_model=False){
+function newModelDiv(data, is_model=false){
   var modelDiv = document.createElement("div");
-  $(modelDiv).addClass("model-col");
+  
   // if(row_md == 3){
   //     $(modelDiv).addClass("col-md-3");
   // }else if(row_md == 2){
@@ -638,11 +649,13 @@ function newModelDiv(data, is_model=False){
   $(modelDiv).addClass("col-md-3");
     var modelImg = document.createElement("img");
     $(modelImg).addClass("img-thumbnail model-img");
-    if(is_model){
+    if(!is_model){
+        $(modelDiv).addClass("view-col");
         $(modelImg).attr("src", data.view_url);
         $(modelImg).attr("height", "236");
         $(modelImg).attr("alt", "view" + (data.view_index+1));
     }else{
+        $(modelDiv).addClass("model-col");
         $(modelImg).attr("src", data.view_urls[0]);
         $(modelImg).attr("height", "236");
         $(modelImg).attr("alt", "Model view");
@@ -744,15 +757,49 @@ function search(type, url, file){
         },
         error: function(data, status, xhr){
           console.log("error");
-        }
+          var fakeData = {
+            "views": {
+                "n_views": 12, 
+                "imgs": [
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 0},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 1},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 2},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 3},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 4},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 5},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 6},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 7},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 8},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 9},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 10},
+                            {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 11},
+                        ]
+                }
+          }; 
+          refreshViews(fakeData["views"]);
+    }
     });
 }
 
 // 刷新模型视图显示
 function refreshViews(data){
     var views_div = $("#model_views");
+    console.log(views_div);
+    $("#model_views_wrapper").show();
     views_div.empty();
-    for(i in data){
-      modelsDiv.append(newModelDiv(data[i], is_model=False));
-  }
+    for(i in data.imgs){
+        views_div.append(newModelDiv(data.imgs[i], is_model=false));
+    }
+    $("#model_views img").click(function(event){
+            $("#bigImgModal").css("display", "block");
+            $("#big-img").attr("src", $(event.target).attr("src"));
+        })
+    $("#model_views .view-col").click(function(event){
+        if(!$(event.target).is("button")){
+            console.log("");
+            // openModelViewer($(this).data("info"));
+        }
+    });
+    // $("#model_views .model-col").hover(hoverInModel, hoverOutModel);
+    $("#model_views").removeClass("loading");
 }
