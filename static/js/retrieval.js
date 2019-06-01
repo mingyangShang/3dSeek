@@ -777,7 +777,6 @@ function search(type, url, file){
                 }
           }; 
           refreshViews(fakeData["views"]);
-          console.log("end");
     }
     });
 }
