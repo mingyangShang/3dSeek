@@ -43,6 +43,8 @@
 
 	<!-- custom style -->
 	<link rel="stylesheet" href="../static/css/retrieval.css">
+	<link rel="stylesheet" href="../static/css/bootstrap-fix.css">
+
 
 	<!-- Modernizr JS -->
 	<script src="../static/js/modernizr-2.6.2.min.js"></script>
@@ -164,61 +166,124 @@
 				</div>
 
 				<div id="model_views_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
-					<div class="fh5co-post">
-						<span class="div_hint" style="font-weight: bolder;">模型视图：</span><br/>
-						<div id="model_views"></div>
+					<div class="panel panel-default">
+						<div class="panel-heading div_hint">模型视图</div>
+						<div id="model_views" class="panel-body text-center"></div>
 					</div>
+					<button id="switch_from_view" type="button" class="next-btn btn btn-default">下一步</button>
 				</div>
 
-				<div id="feature_vis_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
-					<div class="fh5co-post">
-						<span class="div_hint" style="font-weight: bolder;">特征可视化：</span><br/>
-					</div>
+
+				<div id="feature_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">特征可视化</div>
+                        <div class="panel-body text-center">
+                          <canvas id="featureChart" style=" :300px !important"></canvas>
+                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
+                        </div>
+                    </div>	
+                    <button id="switch_to_attention" type="button" class="next-btn btn btn-default">下一步</button>				
 				</div>
 
-				<!-- Big Image Viewer Modal -->
+				<div id="attention_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">注意力可视化</div>
+                        <div class="panel-body text-center">
+                          <canvas id="attentionChart" style=" :300px !important"></canvas>
+                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
+                        </div>
+                    </div>	
+                    <button id="switch_to_classification" type="button" class="next-btn btn btn-default">下一步</button>				
+				</div>
+
+				<div id="midview_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">中心视图重建</div>
+                        <div class="panel-body text-center" id="midview_panel">
+                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
+                        </div>
+                    </div>	
+                    <button id="switch_to_feature_recon" type="button" class="next-btn btn btn-default">下一步</button>				
+				</div>
+
+				<div id="feature_recon_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">上下文视图特征重建</div>
+                        <div class="panel-body text-center">
+                          <canvas id="midFeatureChart" style=" :300px !important"></canvas>
+                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
+                        </div>
+                    </div>	
+                    <button id="switch_to_classification" type="button" class="next-btn btn btn-default">下一步</button>				
+				</div>
+
+
+
+				<div id="classification_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">分类结果</div>
+                        <div class="panel-body text-center">
+                          <canvas id="classificationChart" style=" :300px !important"></canvas>
+                        </div>
+                    </div>	
+                    <button id="switch_to_retrieval" type="button" class="next-btn btn btn-default">下一步</button>				
+				</div>
+
+				<div id="retrieval_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">检索结果</div>
+                        <div class="panel-body text-center">
+                          	<div id="models-list" class="row-fluid models"></div>
+                  			<div id="models-nav" class="row-fluid text-center">
+                    			<div class="col-md-12">
+                        			<ul class="pagination" id="models-pagination"></ul>
+                    			</div>
+                  			</div>
+                        </div>
+                    </div>	
+                    <button id="switch_to_search" type="button" class="next-btn btn btn-default js-gotop">返回搜索</button>				
+				</div>
+
+				<!-- 模型浏览 -->
+				<div id="viewerModal" class="modal fade">
+	              <div class="modal-dialog">
+	                  <div class="modal-content">
+	                      <div class="modal-body embed-responsive embed-responsive-4by3">
+	                          <div id="viewerIframeOverlay" class="embed-responsive-item">
+	                              <div class="pull-right" id="close-viewer">
+	                                  <button type="button" data-dismiss="modal" class="btn btn-danger">
+	                                      <span aria-hidden="true">×</span>
+	                                      <span class="sr-only">Close</span>
+	                                  </button>
+	                              </div>
+	                              <div class="text-center">
+	                                  <button id="viewerSourceButton" class="btn btn-primary">新窗口查看</button>
+	                              </div>
+	                          </div>
+	                          <iframe id="viewerIframe" class="embed-responsive-item"></iframe>
+	                      </div>
+	                  </div>
+	              </div>
+          		</div>
+
+          		<!-- 模型特征对比 -->
+          		<div id="compareModal" class="modal animated bounce infinite">
+	                <div class="panel panel-default">
+	                    <div class="panel-heading">
+	                        特征对比
+	                        <span class="close img-circle text-center" id="closeCompareChart">&times</span>
+	                    </div>
+	                    <div class="panel-body">
+	                        <canvas id="compareCanvas"> </canvas>
+	                    </div>
+	                </div>
+            	</div>
+
+            	<!-- Big Image Viewer Modal -->
 		        <div id="bigImgModal" class="modal animated bounce infinite">
 		            <span class="close img-circle text-center">&times;</span>
 		            <img class="big-img" id="big-img">
 		        </div>
-				
-				<div id="fh5co-project" class="col-md-12 col-sm-6 animate-box text_query_result" data-animate-effect="fadeInUp">
-                    <div id="image_row1" class="row">
-                        <div id="image_box1" class="col-md-2 col-sm-6 fh5co-project" data-animate-effect="fadeIn">
-                            <input id="select_img1" class="vis_selector" style="display: none; position: absolute; left: 20px; top: 5px;" type="checkbox"/>
-                            <img class="resultimg1" src="../static/img/work-1.jpg" style="max-width: 100%;" alt="result1" class="img-responsive">
-                        </div>
-                    </div>
-				</div>
-
-                <div class="col-md-12 col-sm-6 animate-box big_image_display" style="display: none;" data-animate-effect="fadeInUp">
-                    <center>
-                        <div>
-                            <img id="big_image" src="../static/img/work-4.jpg" style="height: 100%; margin-bottom: 25px;"/> <br/>
-                            <span class="infoline"><strong>文件名：</strong><span id="image_info_name">images/sheep/2008003562.jpg</span></span> <br/>
-                            <span class="infoline"><strong>类别：</strong><span id="image_info_category">sheep</span></span> <br/>
-                            <span class="infoline"><strong>原始文本[1]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
-                            <span class="infoline truth_text"><strong>原始文本[2]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
-                            <span class="infoline truth_text"><strong>原始文本[3]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
-                            <span class="infoline truth_text"><strong>原始文本[4]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
-                            <span class="infoline truth_text"><strong>原始文本[5]：</strong><span class="big_image_info_sentence">Three sheep on a dirt road viewed from a passenger vehicle.</span></span> <br/>
-                            <span class="infoline"><strong>来源：</strong><span id="image_info_source">Pascal数据集</span> -- <span id="image_info_type" style="font-weight: bolder; color: black;">测试集</span></span> <br/>
-                            <span class="infoline"><strong>检索得分：</strong><span id="image_info_score">100.00</span></span> <br/>
-                            <button class="btn btn-outline btn-lg btn-primary" onclick="prev_big_image();">上一张</button>
-                            <button class="btn btn-outline btn-lg btn-primary" onclick="close_big_image();">关闭</button>
-                            <button class="btn btn-outline btn-lg btn-primary" onclick="next_big_image();">下一张</button>
-                        </div>
-                    </center>
-                </div>
-
-                <div class="col-md-12 col-sm-6 animate-box vis_display" style="display: none;" data-animate-effect="fadeInUp">
-                    <div class="fh5co-post">
-                        <canvas id="vis_chart">
-
-                        </canvas>
-                    </div>
-                </div>
-
 				<div class="clearfix visible-md-block"></div>
 
 			</div>
@@ -329,10 +394,15 @@
 	<script src="../static/js/jquery.stellar.min.js"></script>
     <!-- Chart -->
     <script src="../static/js/chart.min.js"></script>
+    <script src="../static/js/chart-ext.js"></script>
+    <!-- page -->
+    <script src="../static/js/jquery.simplePagination.js"></script>
     <!-- iCheck -->
     <script src="../static/js/icheck.min.js"></script>
 	<!-- Main -->
 	<script src="../static/js/main.js"></script>
+	<script src="../static/js/retrieval.js"></script>
+
     <script lang="javascript">
         big_img_idx = -1;
         lastQueryType = "text";
@@ -366,244 +436,6 @@
             }
         }
 
-        function close_big_image() {
-            if(lastQueryType == "text")
-            {
-                $(".text_query_result").show();
-            }
-            else if (lastQueryType == "image")
-            {
-                $(".image_query_result").show();
-            }
-            $(".big_image_display").hide();
-            big_img_idx = -1;
-        }
-
-        function prev_big_image() {
-            big_img_idx -= 1;
-            if(big_img_idx < 0)
-            {
-                big_img_idx = 0;
-                alert("目前已是第一张");
-            }
-            show_big_image(big_img_idx);
-        }
-
-        function next_big_image() {
-            big_img_idx += 1;
-            if(big_img_idx > 35)
-            {
-                big_img_idx = 35;
-                alert("目前已是最后一张");
-            }
-            show_big_image(big_img_idx);
-        }
-
-        function show_big_image(idx) {
-            if (big_img_idx == -1)
-            {
-                return false;
-            }
-
-            $(".text_query_result").hide();
-            $(".image_query_result").hide();
-            $(".big_image_display").show();
-
-            var tarimg = $(".resultimg" + (idx + 1));
-            var imgsrc = tarimg.attr("src");
-            var image_data = textQueryData[idx];
-            $("#big_image").attr("src", imgsrc);
-            $("#image_info_name").text(image_data['filename']);
-            $("#image_info_category").text(image_data['label']);
-            $("#image_info_score").text(image_data['score']);
-
-            var sents = image_data['sentence'].split("\n");
-            if(sents.length > 1)
-            {
-                var places = $(".big_image_info_sentence");
-                for(var i = 0; i < 5; i++)
-                {
-                    places[i].textContent = sents[i];
-                }
-                $(".truth_text").show();
-            }
-            else
-            {
-                $(".big_image_info_sentence").text(sents[0]);
-                $(".truth_text").hide();
-            }
-
-
-            var source = parseInt(image_data['source']);
-            console.log("source: " + source);
-            if(source / 10 > 1)
-            {
-                $("#image_info_source").text("Pascal数据集");
-            }
-            else
-            {
-                $("#image_info_source").text("未知来源");
-            }
-
-            if(source % 10 == 1)
-            {
-                $("#image_info_type").text("训练集");
-                $("#image_info_type").css("background-color", "#a7a7a7");
-            }
-            else if(source % 10 == 2)
-            {
-                $("#image_info_type").text("验证集");
-                $("#image_info_type").css("background-color", "#66d5cd");
-            }
-            else
-            {
-                $("#image_info_type").text("测试集");
-                $("#image_info_type").css("background-color", "#5aae2d");
-            }
-
-            $(".infoline").offset({"left": $("#big_image").offset().left});
-
-            $('html, body').animate({
-                scrollTop: $(".big_image_display").offset().top - 200
-            }, 600);
-        }
-
-        function update_list(){
-            var arr = [];
-            var cnt = 0;
-
-            for(var i = 1; i <= 36; i++)
-            {
-                var ckd = $("#select_img" + i).prop("checked");
-                if(ckd)
-                {
-                    if(cnt == 5)
-                    {
-                        alert("为保证显示效果，最多选择5个结果。");
-                        $("#select_img" + i).prop("checked", "false");
-                        break;
-                    }
-
-                    vis_fid.push((current_page - 1) * 36 + i - 1);
-
-                    var corr_img = $(".resultimg" + i);
-                    var imgname = corr_img.attr("alt");
-                    imgname = imgname.substr(imgname.length - 15, 11);
-                    arr.push(imgname);
-                    cnt++;
-                }
-            }
-
-            $("#selected_samples").html("");
-            for(var i = 0; i < arr.length; i++)
-            {
-                console.log("IMAGE: " + arr[i]);
-                $("#selected_samples").append("<li>" + arr[i] + "</li>");
-            }
-        }
-
-        function imageclick() {
-            //if(!hasTextQueryResult)
-            //{
-            //    return false;
-            //}
-
-            if(selecting)
-            {
-                var idx = parseInt($(this).attr("class").replace("resultimg", ""));
-                var ckd = $("#select_img" + idx).prop("checked");
-                if(ckd)
-                {
-                    $("#select_img" + idx).prop("checked", false);
-                }
-                else
-                {
-                    $("#select_img" + idx).prop("checked", true);
-                }
-                //update
-                update_list();
-            }
-            else
-            {
-                big_img_idx = parseInt($(this).attr("class").replace("resultimg", "")) - 1;
-                show_big_image(big_img_idx);
-            }
-        }
-
-        function copyTextNodes(n, randomInit)
-        {
-            var lastrow = $("#text_row1");
-            $(".resultimg1").bind("click", imageclick);
-
-            for(var i = 0; i < n - 1; i++)
-            {
-                var nrow = lastrow.clone();
-                nrow.attr("id", "text_row" + (i + 2));
-                nrow.insertAfter(lastrow);
-                lastrow = nrow;
-
-                var tarimg = $("#text_row" + (i + 2) + " img");
-                tarimg.attr("class", "resultimg" + (i + 2));
-                tarimg.bind("click", imageclick);
-
-                if(randomInit)
-                {
-                    var imgid = parseInt(Math.random() * 5) % 5 + 1;
-                    tarimg.attr("src", "../static/img/work-" + imgid + ".jpg");
-                }
-            }
-        }
-
-        function copyImageNodes(m, n, randomInit)
-        {
-            var lastrow = $("#image_row1");
-            var lastbox = $("#image_box1");
-            $(".resultimg1").bind("click", imageclick);
-            for(var i = 0; i < n - 1; i++)
-            {
-                var nbox = lastbox.clone();
-                nbox.attr("id", "image_box" + (i + 2));
-                nbox.insertAfter(lastbox);
-                lastbox = nbox;
-
-                var tarimg = $("#image_box" + (i + 2) + " img");
-                tarimg.attr("class", "resultimg" + (i + 2));
-                tarimg.bind("click", imageclick);
-                var ipt = $("#image_box" + (i + 2) + " input");
-                ipt.attr("id", "select_img" + (i + 2));
-
-                if(randomInit)
-                {
-                    var imgid = parseInt(Math.random() * 5) % 5 + 1;
-                    tarimg.attr("src", "../static/img/work-" + imgid + ".jpg");
-                }
-            }
-
-            for(var i = 0; i < m - 1; i++)
-            {
-                var nrow = lastrow.clone();
-                nrow.attr("id", "image_row" + (i + 2));
-                nrow.insertAfter(lastrow);
-                lastrow = nrow;
-                for(var j = 0; j < n; j++)
-                {
-                    var boxid = "#image_row" + (i + 2) + " #image_box" + (i * n + (j + 1));
-                    var tarimg = $(boxid+ " img");
-                    tarimg.attr("class", "resultimg" + ((i + 1) * n + (j + 1)));
-                    tarimg.bind("click", imageclick);
-                    var ipt = $(boxid + " input");
-                    ipt.attr("id", "select_img" + ((i + 1) * n + (j + 1)));
-
-                    $(boxid).attr("id", "image_box" + ((i + 1) * n + (j + 1)));
-
-                    if(randomInit)
-                    {
-                        var imgid = parseInt(Math.random() * 5) % 5 + 1;
-                        tarimg.attr("src", "../static/img/work-" + imgid + ".jpg");
-                    }
-                }
-            }
-        }
 
         // $(".retrieval_image").bind("click", function () {
         //     alert("Image click: " + $(this).attr("src"));
@@ -611,19 +443,10 @@
         $(document).bind("scroll", move_vis_pop);
 
         $(document).ready(function () {
-            copyImageNodes(6, 6, true);
-            copyTextNodes(36, true);
             move_vis_pop();
-
-            //$(("input")).iCheck({
-            //    checkboxClass: 'icheckbox_minimal-blue',
-            //    radioClass: 'iradio_square-blue'
-            //});
         });
 
     </script>
-
-    <script src="../static/js/retrieval.js"></script>
 
 	</body>
 </html>

@@ -22,16 +22,27 @@
 
 
 #models-list .model-tag{
-	margin-left: 10px;
+	margin-left: 20px;
 	max-width: 40px;
+	float: left;
+	font: 100%;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 5px;
 }
 #models-list .btn-download {
 	float: right;
 	font-size: 12px;
+	margin-right: 10px;
 }
-#models-list .compare {
+
+
+#models-list .btn-compare {
 	float: right;
 	font-size: 12px;
+	margin-right: 5px;
 }
 .small-font{
 	font-size: 14px;

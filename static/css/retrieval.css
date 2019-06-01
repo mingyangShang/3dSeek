@@ -90,3 +90,13 @@
   -ms-transform: scale(1.5);  
   -webkit-transform: scale(1.5); 
 }
+
+.next-btn{
+  float: right;
+}
+
+
+#midview_wrapper .view-hint{
+  font: 100%;
+  text-align: center;
+}
