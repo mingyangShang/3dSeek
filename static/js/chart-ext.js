@@ -124,7 +124,7 @@ function refreshCompareFeatureChart(id, labels , data1, data2){
 
 function refreshClassProbChart(id, probs){
     var data = new Array();
-    data["labels"] = Object.keys(probs[0]["probs"]).sort();
+    data["labels"] = Object.keys(probs[0]["probs"]);
     data["datasets"] =  new Array();
     var colors = ["#428bca", "#F95959"];
     for(var i in probs){
@@ -158,6 +158,41 @@ function refreshClassProbChart(id, probs){
     };
     return new Chart(classProbCtx, config);
 }
+
+
+
+function refreshAttnChart_wxy(id, attns){
+    var labels = [];
+    for(var i in attns){
+        labels[i] = "视图"+i;
+    }
+    var attnCtx = document.getElementById(id).getContext("2d");
+    return new Chart(attnCtx, {
+        type: "bar",
+        data: {
+            "labels": labels,
+            "datasets": [
+                label: "3dview",
+                data: attns,
+                borderWidth: 1,
+                backgroundColor: "#428bca",
+                borderColor: "#428bca"
+            ]
+        }, 
+        options: {
+            responsive: true,
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "注意力权重"
+            }
+        }
+    });
+}
+
+
 
 
 function refreshCompareNeighFeatureChart(id, labels, feature1, feature2){
