@@ -49,7 +49,7 @@ function hideAll(){
         });
 
         $("#switch_from_view").click(function(event){
-            if(window.searchingMethod == "SeqViews2SeqLabels" || window.searchingMethod == "3dview"){
+            if(window.searchingMethod == "SeqViews2SeqLabels" || window.searchingMethod == "3DViewGraph"){
                 $("#feature_wrapper").show();
                 feature_vis("featureChart", window.search_result.features);
             }else{
