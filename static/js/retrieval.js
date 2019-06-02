@@ -13,11 +13,13 @@ lastQueryText = "";
 
 vis_fid = [];
 
+
 var setsData, classesData;
 var isHomePage = true;
 var homePageSize = 48, searchPageSize = 48;
 var modelImgsTimer;
 var modelImgsTimerCount = 0;
+var author = "wxy";
 
 (function ($) {
     $(document).ready(function () {
@@ -587,7 +589,6 @@ function search(type, url, file){
     var method = $("#fileSearchDiv input[type=radio]:checked").val();
     window.searchingMethod = method;
     console.log("searching method:", method);
-    var author = "wxy";
     var formData = new FormData();
     formData.append("author", author);
     formData.append("type", type);
@@ -802,7 +803,7 @@ function openModelViewer(modelInfo){
   if(method == undefined){
       method = "SeqViews2SeqLabels";
   }
-  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+method);
+  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+method+"&author="+author);
 }
 
 //关闭展示模型的窗口i 
@@ -878,5 +879,5 @@ function predictNeighFeature(chart_id, neigh_features){
     for(var i=0;i<neigh_features[0].feature_dim;++i){
         x.push(i + "");
     }
-    refreshCompareFeatureChart(chart_id, x, neigh_features[0], neigh_features[1]);
+    refreshCompareNeighFeatureChart(chart_id, x, neigh_features[0], neigh_features[1]);
 }

@@ -160,7 +160,7 @@ function refreshClassProbChart(id, probs){
 }
 
 
-function refreshCompareFeatureChart(id, labels, feature1, feature2){
+function refreshCompareNeighFeatureChart(id, labels, feature1, feature2){
     var radius = [];
     for(var i=0;i<labels.length;++i){
         radius.push(0);
