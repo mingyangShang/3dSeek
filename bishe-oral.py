@@ -38,7 +38,8 @@ def search():
             result_json = smy.get_total_info(model_name, search_method)
         else:
             result_json = wxy.get_total_info(model_name, search_method)
-    return json.dumps(result_json)
+    ret_str = json.dumps(result_json)
+    return ret_str
 
 
 @app.route('/retrieval.html')
