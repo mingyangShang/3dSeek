@@ -26,7 +26,7 @@ def search():
     search_type = request.form.get('type')
     search_method = request.form.get('method')
     filename = request.form.get('name')
-    search_author = 'smy'
+    # search_author = 'wxy'
     # filename = 'bathtub_0107.off'
     print('search----> ', search_type, search_author, search_method)
     result_json = {}
@@ -46,6 +46,10 @@ def search():
 @app.route('/retrieval.html')
 def retrieval():
     return render_template('retrieval.html')
+
+@app.route('/retrieval_wxy.html')
+def retrieval_wxy():
+    return render_template('retrieval_wxy.html')
 
 
 @app.route('/viewer')
@@ -72,9 +76,19 @@ def root():
     return render_template('index.html')
 
 
+@app.route('/wxy')
+def root_wxy():
+    return render_template('index_wxy.html')
+
+
 @app.route('/index.html')
 def index():
     return render_template('index.html')
+
+
+@app.route('/index_wxy.html')
+def index_wxy():
+    return render_template('index_wxy.html')
 
 
 if __name__ == '__main__':
