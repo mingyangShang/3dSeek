@@ -8,6 +8,8 @@ base_url = '/static/database/wxy/views/test/'
 view_num = 20
 base_dir = os.path.join(os.getcwd(), 'static/database/wxy')
 
+attns = np.load(os.path.join(base_dir, 'features', 'attention_mat_10_test.npy'))
+
 features = np.load(os.path.join(base_dir, 'features', 'fc_feature_mat_10_test.npy'))
 probs = np.load(os.path.join(base_dir, 'probs', 'fc_feature_mat_10_test_prob.npy'))
 
@@ -41,6 +43,11 @@ def get_prob_by_name(modelname, method_name):
         return probs[idx].tolist()
     else:
         return probs_us[idx].tolist()
+
+
+def get_attn_by_name(modelname, method_name='null'):
+    idx = get_idx_by_name(modelname)
+    return attns[idx]
 
 
 def get_model_info_by_name(modelname, method_name):
@@ -77,7 +84,16 @@ def get_search_result(modelname, method_name):
     return retrieval_res
 
 
-
+def get_attention_info(modelname, method_name):
+    attn_info = {"class_names":get_all_class_names()}
+    attn_val = get_attn_by_name(modelname)
+    mi_idx, ma_idx = int(np.argmin(attn_val)), int(np.argmax(attn_val))
+    attn_info['attn_weights'] = attn_val.tolist()
+    mi_url = base_url + "%s_%03d.jpg" % (modelname, mi_idx + 1)
+    ma_url = base_url + "%s_%03d.jpg" % (modelname, ma_idx + 1)
+    attn_info['max'] = {'attn_weight':attn_info['attn_weights'][ma_idx], 'view_url':ma_url}
+    attn_info['min'] = {'attn_weight':attn_info['attn_weights'][mi_idx], 'view_url':mi_url}
+    return attn_info
 
 def get_total_info(modelname, method_name):
     total_info = {}
@@ -104,4 +120,5 @@ def get_total_info(modelname, method_name):
     total_info['probs'] = [prob_info]
 
     total_info['retrieval'] = get_search_result(modelname, method_name)
+    total_info['attns'] = get_attention_info(modelname, '')
     return total_info

@@ -10,6 +10,7 @@ view_num = 12
 
 base_dir = os.path.join(os.getcwd(), 'static/database/smy')
 
+attn = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_attn.npy'))
 features = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_hidden.npy'))
 # need to be change
 features_us = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_hidden.npy'))
