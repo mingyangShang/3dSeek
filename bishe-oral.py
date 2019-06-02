@@ -26,7 +26,7 @@ def search():
     search_type = request.form.get('type')
     search_method = request.form.get('method')
     filename = request.form.get('name')
-    search_author = 'wxy'
+    # search_author = 'wxy'
     # filename = 'bathtub_0107.off'
     print('search----> ', search_type, search_author, search_method)
     result_json = {}
