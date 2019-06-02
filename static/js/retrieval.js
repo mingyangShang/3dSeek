@@ -19,7 +19,7 @@ var isHomePage = true;
 var homePageSize = 48, searchPageSize = 48;
 var modelImgsTimer;
 var modelImgsTimerCount = 0;
-var author = "wxy";
+var author = "smy";
 var currModelInfo;
 var currMethod;
 
@@ -59,6 +59,7 @@ function hideAll(){
         });
         $("#switch_to_attention").click(function(event){
             $("#attention_wrapper").show();
+            refreshAttn(window.search_result.attns);
         });
         $("#switch_to_feature_recon").click(function(event){
             $("#feature_recon_wrapper").show();
@@ -604,7 +605,7 @@ function search(type, url, file){
     console.log("search by "+type+",url="+url+",filename="+(file!=null?file.name:"NULL"));
     var method = $("#fileSearchDiv input[type=radio]:checked").val();
     console.log("searching method:", method);
-    method = "3dview";
+    // method = "3dview";
     window.searchingMethod = method;
     var formData = new FormData();
     formData.append("author", author);
@@ -746,6 +747,7 @@ function refreshViews(data){
 
 // 特征可视化
 function feature_vis(canvas_name, feature_info){
+    console.log("feature vis,", feature_info);
     if(feature_info.feature_dim > 0){
         var x = [];
         for(var i=0;i<feature_info.feature_dim;++i){
@@ -901,4 +903,34 @@ function predictNeighFeature(chart_id, neigh_features){
         x.push(i + "");
     }
     refreshCompareNeighFeatureChart(chart_id, x, neigh_features[0], neigh_features[1]);
+}
+
+
+function refreshAttn(attns){
+    attns = {
+        "class_names": ["bus", "car"],
+        "attn_weights": [0.4, 0.3],
+        "max": {
+            "attn_weight": 0.4,
+            "view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
+        },
+        "min": {
+            "attn_weight": 0.3,
+            "view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
+        }
+    };
+    refreshAttnChart_wxy("attentionChart", attns["attn_weights"]);
+    refreshImg("max_attn_img", attns["max"]["attn_weight"]);
+    refreshImg("min_attn_img", attns["min"]["attn_weight"]);
+    refreshText("max_attn_text");
+    refreshText("min_attn_text");
+}
+
+
+function refreshImg(img_id, url){
+    $(img_id).attr("src", url);
+}
+
+function refreshText(text_id, text){
+    $(text_id).text(text);
 }

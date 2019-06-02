@@ -193,7 +193,16 @@
                         <div class="panel-heading div_hint">注意力可视化</div>
                         <div class="panel-body text-center">
                           <canvas id="attentionChart" style=" :300px !important"></canvas>
-                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
+                          <div id="max_attn_wrapper" class="col-md-6 animate-box" data-anmiate-effect="fadeInUp">
+                          	<span class="attn-hint">最大权重:</span>
+                          	<span id="max_attn_text" class="attn-value">1.0</span>
+                          	<img id="max_attn_img" class="attn-view" src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001">
+                          </div>
+                          <div id="min_attn_wrapper" class="col-md-6 animate-box" data-anmiate-effect="fadeInUp">
+                          	<span class="attn-hint">最小权重:</span>
+                          	<span id="min_attn_text" class="attn-value">0.0</span>
+                          	<img id="min_attn_img" class="attn-view" src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001">
+                          </div>
                         </div>
                     </div>	
                     <button id="switch_to_classification" type="button" class="next-btn btn btn-default">下一步</button>				

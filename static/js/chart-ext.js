@@ -162,7 +162,7 @@ function refreshClassProbChart(id, probs){
 
 
 function refreshAttnChart_wxy(id, attns){
-    var labels = [];
+    var labels = new Array();
     for(var i in attns){
         labels[i] = "视图"+i;
     }
@@ -172,11 +172,13 @@ function refreshAttnChart_wxy(id, attns){
         data: {
             "labels": labels,
             "datasets": [
-                label: "3dview",
-                data: attns,
-                borderWidth: 1,
-                backgroundColor: "#428bca",
-                borderColor: "#428bca"
+                {
+                    label: "3dview",
+                    data: attns,
+                    borderWidth: 1,
+                    backgroundColor: "#428bca",
+                    borderColor: "#428bca"
+                }  
             ]
         }, 
         options: {
@@ -187,12 +189,72 @@ function refreshAttnChart_wxy(id, attns){
             title: {
                 display: true,
                 text: "注意力权重"
+            },
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
             }
         }
     });
 }
 
 
+function refreshAttnChart_smy(id, class_names, attns, legendClickCallback){
+    var labels = new Array();
+    for(var i in attns){
+        labels[i] = "视图"+i;
+    }
+    var attnCtx = document.getElementById(id).getContext("2d");
+    var datasets = new Array();
+    var colors = ["#428bca", "#F95959", 'rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)', "#8549ba"];
+    for(var i in attns){
+        datasets.push({
+            label: class_names[i],
+            data: attns[i],
+            borderWidth: 1,
+            backgroundColor: colors[i],
+            borderColor: colors[i],
+        });
+    }
+    return new Chart(attnCtx, {
+        type: "bar",
+        data: {
+            "labels": labels,
+            "datasets": datasets,
+        }, 
+        options: {
+            responsive: true,
+            legend: {
+                position: "top",
+                onClick: function(e, legendItem){
+                    var defaultLegendClickHandler = Chart.defaults.global.legend.onClick;
+                    var ci = this.chart;
+                    var index = legendItem.datasetIndex;
+                    var meta = ci.getDatasetMeta(index);
+                    defaultLegendClickHandler(e, legendItem);
+                    console.log("meta.hidden", meta.hidden);
+                    legendClickCallback("callback");
+                }
+            },
+            title: {
+                display: true,
+                text: "注意力权重"
+            },
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            }
+        }
+    });
+}
 
 
 function refreshCompareNeighFeatureChart(id, labels, feature1, feature2){

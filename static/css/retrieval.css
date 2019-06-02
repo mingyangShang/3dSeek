@@ -100,3 +100,14 @@
   font: 100%;
   text-align: center;
 }
+
+
+.attn-value{
+  font-weight: bold;
+}
+#max_attn_text{
+  color: red;
+}
+#min_attn_text{
+  color: green;
+}
