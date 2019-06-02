@@ -115,12 +115,13 @@
 								<div class="col-md-12" id="fileSearchDiv">
 									<label for="query_model">上传三维模型：</label>
                                     <br/>
+                                    <a hred="#" id="query_model_name"></a>
 									<input type="text" id="query_text" class="form-control" style="float: left; width: 1080px; padding-right: 65px;" placeholder="Enter a phrase">
                                     <input id="model-file-input" type="file" style="display: none"/>
                                     <img id="upload_button" height="50px" src="../static/img/upload.png" style="float: left; margin-left: -64px;"/>
                                     <center style="margin-top: 80px;">
-                                        <input type="radio" id="use_seqview2seqlabels" name="retrieval_method" checked="true"/><label for="use_seqview2seqlabels" style="margin-right: 20px; font-size: larger;">SeqView2SeqLabels</label>
-                                        <input type="radio" id="use_vipgan" name="retrieval_method"/><label for="use_vipgan" style="margin-right: 20px; font-size: larger;">VIP-GAN</label>
+                                        <input type="radio" id="use_seqviews2seqlabels" name="retrieval_method" checked="true" value="SeqViews2SeqLabels" /><label for="use_seqview2seqlabels" style="margin-right: 20px; font-size: larger;">SeqViews2SeqLabels</label>
+                                        <input type="radio" id="use_vipgan" name="retrieval_method" value="VIP-GAN" /><label for="use_vipgan" style="margin-right: 20px; font-size: larger;">VIP-GAN</label>
                                     </center>
 								</div>
 							</div>
@@ -214,7 +215,7 @@
                           <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
                         </div>
                     </div>	
-                    <button id="switch_to_classification" type="button" class="next-btn btn btn-default">下一步</button>				
+                    <button id="switch_to_classification2" type="button" class="next-btn btn btn-default">下一步</button>				
 				</div>
 
 

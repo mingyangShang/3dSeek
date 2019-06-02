@@ -48,9 +48,14 @@ var modelImgsTimerCount = 0;
         });
         $("#switch_to_feature_recon").click(function(event){
             $("#feature_recon_wrapper").show();
+            predictNeighFeature("midFeatureChart", window.search_result.neighbour_feature_recon);
             
         });
         $("#switch_to_classification").click(function(event){
+            $("#classification_wrapper").show();
+            refreshClassProbChart("classificationChart", window.search_result.probs);
+        });
+        $("#switch_to_classification2").click(function(event){
             $("#classification_wrapper").show();
             refreshClassProbChart("classificationChart", window.search_result.probs);
         });
@@ -566,6 +571,9 @@ function searchByModel(){
         return;
     }
     var file = $("#model-file-input")[0].files[0];
+    // 更新上传模型的名字
+    var modelNameObj = $("#query_model_name");
+    modelNameObj.text(file.name);
     if((/\.(off|obj|jpg|jpeg|png)$/i).test(file.name)){
         /*$("#searchFileName").text(file.name);*/
         // $("#uploadingFile").css("display", "inline-block");
@@ -578,11 +586,12 @@ function search(type, url, file){
     console.log("search by "+type+",url="+url+",filename="+(file!=null?file.name:"NULL"));
     var method = $("#fileSearchDiv input[type=radio]:checked").val();
     window.searchingMethod = method;
-    var author = "smy";
+    console.log("searching method:", method);
+    var author = "wxy";
     var formData = new FormData();
     formData.append("author", author);
     formData.append("type", type);
-    formData.append("method", method);
+    formData.append("method", "3dview");
     if(type == "url"){
         formData.append("url", url);
     }else if(type == "file"){
@@ -605,19 +614,9 @@ function search(type, url, file){
         dataType: 'json',
 
         success: function(data, status, xhr){
-          if(data.success){
-                window.search_result = data;
-                refreshViews(data["views"]);
-              // window.location.href = data.result_url;
-          }else{
-              if(type == "url"){
-                  // $("#url-error").removeClass("hide").text(data.info);
-                  // $("#searchingUrl").addClass("hide");
-              }else{
-                  // $("#searchFileName").text(data.info);
-                  // $("#uploadingFile").css("display", "none");
-              }
-          }
+            console.log("search result:", data);
+            window.search_result = data;
+            refreshViews(data["views"]);
         },
         error: function(data, status, xhr){
           console.log("error");
@@ -682,7 +681,22 @@ function search(type, url, file){
                         "gt_center": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001",
                         "pred_center": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
                     }
-                ]
+                ],
+            "neighbour_feature_recon": 
+            [
+                {
+                    "name": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001",
+                    "pred_feature": [10, 3, 1, 1,1,1,1,1,1,1,],
+                    "gt_feature": [10, 3, 1, 1,1,11,13,1,2,1,],
+                    "feature_dim": 10,
+                },
+                {
+                    "name": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001",
+                    "pred_feature": [10, 3, 1, 1,1,1,2,3,5,1,],
+                    "gt_feature": [10, 3, 1, 1,1,11,1,1,12,12],
+                    "feature_dim": 10,
+                }
+            ]
             
 
           }; 
@@ -695,7 +709,6 @@ function search(type, url, file){
 // 刷新模型视图显示
 function refreshViews(data){
     var views_div = $("#model_views");
-    console.log(views_div);
     $("#model_views_wrapper").show();
     views_div.empty();
     for(i in data.imgs){
@@ -857,4 +870,13 @@ function predictCenterView(center_view_preds){
         var pair = center_view_preds[i];
         newViewPair(pair["neighbours"], pair["gt_center"], pair["pred_center"]);
     }
+}
+
+// 上下文视图特征重建
+function predictNeighFeature(chart_id, neigh_features){
+    var x = [];
+    for(var i=0;i<neigh_features[0].feature_dim;++i){
+        x.push(i + "");
+    }
+    refreshCompareFeatureChart(chart_id, x, neigh_features[0], neigh_features[1]);
 }
