@@ -10,7 +10,7 @@ view_num = 12
 
 base_dir = os.path.join(os.getcwd(), 'static/database/smy')
 
-attn = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_attn.npy'))
+attns = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_attn.npy'))
 features = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_hidden.npy'))
 # need to be change
 features_us = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_hidden.npy'))
@@ -81,6 +81,25 @@ def get_search_result(modelname, method_name):
     return retrieval_res
 
 
+def get_attn_by_name(modelname, method_name='null'):
+    idx = get_idx_by_name(modelname)
+    return attns[idx]
+
+
+def get_attention_info(modelname, method_name):
+    attn_vals = get_attn_by_name(modelname)
+    attn_infos = []
+    for idx in range(10):
+        attn_info = {"class_names":get_all_class_names(), "class_idx":idx}
+        attn_val = attn_vals[idx]
+        mi_idx, ma_idx = int(np.argmin(attn_val)), int(np.argmax(attn_val))
+        attn_info['attn_weights'] = attn_val.tolist()
+        mi_url = base_url + "%s_%03d.jpg" % (modelname, mi_idx + 1)
+        ma_url = base_url + "%s_%03d.jpg" % (modelname, ma_idx + 1)
+        attn_info['max'] = {'attn_weight':attn_info['attn_weights'][ma_idx], 'view_url':ma_url}
+        attn_info['min'] = {'attn_weight':attn_info['attn_weights'][mi_idx], 'view_url':mi_url}
+        attn_infos.append(attn_info)
+    return attn_infos
 
 
 def get_total_info(modelname, method_name):
@@ -108,4 +127,5 @@ def get_total_info(modelname, method_name):
     total_info['probs'] = [prob_info]
 
     total_info['retrieval'] = get_search_result(modelname, method_name)
+    total_info['attns'] = get_attention_info(modelname, '')
     return total_info

@@ -26,7 +26,7 @@ def search():
     search_type = request.form.get('type')
     search_method = request.form.get('method')
     filename = request.form.get('name')
-    # search_author = 'smy'
+    search_author = 'smy'
     # filename = 'bathtub_0107.off'
     print('search----> ', search_type, search_author, search_method)
     result_json = {}
@@ -39,6 +39,7 @@ def search():
         else:
             result_json = wxy.get_total_info(model_name, search_method)
     ret_str = json.dumps(result_json)
+    print(json.dumps(result_json['attns']))
     return ret_str
 
 
