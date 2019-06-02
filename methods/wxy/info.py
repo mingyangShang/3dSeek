@@ -42,6 +42,18 @@ def get_prob_by_name(modelname, method_name):
         return probs_us[idx].tolist()
 
 
+def get_model_info_by_name(modelname, method_name):
+    feature = get_feature_by_name(modelname, method_name)
+    model_info = get_model_info(modelname)
+    views = get_view_urls_by_modelname(modelname)
+    view_urls = [v['view_url'] for v in views['imgs']]
+    meta_info = {"dataset": "modelnet", "size": model_info['file_size'], "name": modelname,
+                 "class_name": model_info['class_name'], "edge_num": model_info['edge_num'],
+                 "model_url": get_model_url(modelname), "view_urls": view_urls, "vertice_num":model_info['vertice_num'],
+                 "feature": feature, "feature_dim": len(feature), "download_url": "null"}
+    return meta_info
+
+
 def get_search_result(modelname, method_name):
     feature = get_feature_by_name(modelname, method_name)
     idxs, dists = search_by_feature(feature)
@@ -50,13 +62,15 @@ def get_search_result(modelname, method_name):
     retrieval_models = []
     for i in range(len(res_names)):
         name = res_names[i]
-        model_info = get_model_info(name)
-        views = get_view_urls_by_modelname(name)
-        view_urls = [v['view_url'] for v in views['imgs']]
-        meta_info = {"dataset":"modelnet", "size":model_info['file_size'], "name":name,
-                     "class_name":model_info['class_name'], "edge_num":model_info['edge_num'],
-                     "model_url":get_model_url(name), "view_urls":view_urls,
-                     "dist":dists[i], "feature":feature, "feature_dim":len(feature), "download_url":"null"}
+        meta_info = get_model_info_by_name(name, method_name)
+        meta_info['dist'] = dists[i]
+        # model_info = get_model_info(name)
+        # views = get_view_urls_by_modelname(name)
+        # view_urls = [v['view_url'] for v in views['imgs']]
+        # meta_info = {"dataset":"modelnet", "size":model_info['file_size'], "name":name,
+        #              "class_name":model_info['class_name'], "edge_num":model_info['edge_num'],
+        #              "model_url":get_model_url(name), "view_urls":view_urls,
+        #              "dist":dists[i], "feature":feature, "feature_dim":len(feature), "download_url":"null"}
         retrieval_models.append(meta_info)
     retrieval_res['models'] = retrieval_models
     return retrieval_res
