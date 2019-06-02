@@ -13,6 +13,12 @@ lastQueryText = "";
 
 vis_fid = [];
 
+var setsData, classesData;
+var isHomePage = true;
+var homePageSize = 48, searchPageSize = 48;
+var modelImgsTimer;
+var modelImgsTimerCount = 0;
+
 (function ($) {
     $(document).ready(function () {
         $("#model-file-input").change(searchByModel);
@@ -28,186 +34,47 @@ vis_fid = [];
             $("#bigImgModal").css("display", "none");
         });
 
+        $("#switch_from_view").click(function(event){
+            if(window.searchingMethod == "SeqViews2SeqLabels"){
+                $("#feature_wrapper").show();
+                feature_vis("featureChart", window.search_result.features);
+            }else{
+               $("#midview_wrapper").show();
+               predictCenterView(window.search_result.center_view_recon);
+            }
+        });
+        $("#switch_to_attention").click(function(event){
+            $("#attention_wrapper").show();
+        });
+        $("#switch_to_feature_recon").click(function(event){
+            $("#feature_recon_wrapper").show();
+            
+        });
+        $("#switch_to_classification").click(function(event){
+            $("#classification_wrapper").show();
+            refreshClassProbChart("classificationChart", window.search_result.probs);
+        });
+        $("#switch_to_retrieval").click(function(event){
+            $("#retrieval_wrapper").show();
+            refreshModelsList(window.search_result["retrieval"]["models"]);
+            refreshPageNav(window.search_result);
+        });
+
+        $("#closeCompareChart").click(function(){
+          $("#compareModal").css("display", "none");
+        });
+        $("#close-viewer").click(closeModelViewer);
+
         $("#model_views_wrapper").hide();
+        $("#feature_wrapper").hide();
+        $("#attention_wrapper").hide();
+        $("#midview_wrapper").hide();
+        $("#feature_recon_wrapper").hide();
+        $("#classification_wrapper").hide();
+        $("#retrieval_wrapper").hide();
     });
 }(jQuery));
 
-function getUUID(len, radix) {
-    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-    var uuid = [], i;
-    radix = radix || chars.length;
-
-    if (len) {
-        // Compact form
-        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
-    } else {
-        // rfc4122, version 4 form
-        var r;
-        // rfc4122 requires these characters
-        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-        uuid[14] = '4';
-        // Fill in random data.  At i==19 set the high bits of clock sequence as
-        // per rfc4122, sec. 4.1.5
-        for (i = 0; i < 36; i++) {
-            if (!uuid[i]) {
-                r = 0 | Math.random()*16;
-                uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
-            }
-        }
-    }
-    return uuid.join('');
-}
-
-function uuid() {
-    lastUID = getUUID(16, 16);
-    console.log("Generated new UUID = " + lastUID);
-    return lastUID;
-}
-
-function hide_blocks(selectors) {
-    for(var x in selectors)
-    {
-        $(selectors[x]).hide();
-    }
-}
-
-function show_blocks(selectors) {
-    for(var x in selectors)
-    {
-        $(selectors[x]).show();
-    }
-}
-
-function doTextQuery(queryID, queryText)
-{
-    lastQueryType = "text";
-    var textQueryBackend = "http://166.111.80.36:8889/text_query";
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function()
-    {
-        if (xhr.readyState==4 && xhr.status==200)
-        {
-            lastQueryText = queryText;
-            onTextQueryResult(lastUID, xhr.responseText);
-        }
-    }
-    xhr.open("post", textQueryBackend, true);
-    xhr.setRequestHeader("uuid", queryID);
-    xhr.setRequestHeader("method", current_method);
-    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xhr.send("query=" + queryText);
-
-    console.log("Text query: " + queryText);
-
-    hide_blocks([".image_query_result", ".big_image_display", "#server_message", ".vis_display"]);
-    show_blocks([".text_query_result"]);
-}
-
-function doImageQuery(queryID, filename, imageFile)
-{
-    lastQueryType = "image";
-    var imageQueryBackend = "http://166.111.80.36:8889/image_query"; // 接收上传文件的后台地址
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function()
-    {
-        if (xhr.readyState==4 && xhr.status==200)
-        {
-            onImageQueryResult(lastUID, xhr.responseText);
-        }
-    }
-    xhr.open("post", imageQueryBackend, true);
-    if(current_method == "cbow")
-    {
-        current_method = "cmst";
-    }
-    xhr.setRequestHeader("method", current_method);
-    xhr.setRequestHeader("uuid", queryID);
-    xhr.setRequestHeader("filename", filename);
-    xhr.send(imageFile);
-
-    console.log("Image query");
-
-    hide_blocks([".text_query_result", ".big_image_display", "#server_message", ".vis_display"]);
-    show_blocks([".image_query_result"]);
-}
-
-function onTextQueryResult(queryID, response)
-{
-    hasTextQueryResult = true;
-    var textQueryRet = JSON.parse(response);
-    var msg = textQueryRet['message'];
-    var qtime = msg[0];
-    var unks = msg[1];
-    textQueryData = textQueryRet['data'];
-    $("#query_time").text("检索用时："+ qtime + "秒");
-    if(unks.length >= 2)
-    {
-        $("#server_message").text("查询中包含多个词表外的词语：" + unks + "。请考虑修改或替换这些词语以提高检索效果。");
-        show_blocks(["#server_message"]);
-    }
-    else
-    {
-        hide_blocks(["#server_message"]);
-    }
-
-    for(var i = 0; i < textQueryData.length; i++)
-    {
-        var imgret = textQueryData[i];
-        var imgid = ".resultimg" + (i + 1);
-        $(imgid).attr("src", server + imgret['filename']);
-        $(imgid).attr("alt", imgret['filename']);
-    }
-}
-
-function onImageQueryResult(queryID, response)
-{
-    hasTextQueryResult = true;
-
-    $("#uploaded_img").attr("src", server + queryID + ".png");
-
-    var textQueryRet = JSON.parse(response);
-    var msg = textQueryRet['message'];
-    var qtime = msg[0];
-    $("#query_time").text("检索用时："+ qtime + "秒");
-
-    textQueryData = textQueryRet['data'];
-
-    hide_blocks(["#server_message"]);
-
-    for(var i = 0; i < textQueryData.length; i++)
-    {
-        var imgret = textQueryData[i];
-        var imgid = ".resultimg" + (i + 1);
-        $(imgid).attr("src", server + imgret['filename']);
-        $(imgid).attr("alt", imgret['filename']);
-
-        var sent_places = $("#text_row" + (i + 1) + " span");
-        console.log("LEN: " + sent_places.length);
-        var sents = imgret['sentence'].split('\n');
-
-        var j = 0;
-        if(sents.length >= sent_places.length)
-        {
-            for( ; j < sent_places.length; j++)
-            {
-                sent_places[j].textContent = sents[j];
-            }
-            //丢弃显示不下的句子
-        }
-        else
-        {
-            for( ; j < sents.length; j++)
-            {
-                sent_places[j].textContent = sents[j];
-            }
-            //隐藏没有内容的文本框
-            for( ; j < sent_places.length; j++)
-            {
-                sent_places[j].textContent = "";
-            }
-        }
-    }
-}
 
 function drawScatter(points, labels) {
     var tooltip_image = "";
@@ -660,6 +527,7 @@ function newModelDiv(data, is_model=false){
   if(is_model){
       model = data;
       var infoDiv = document.createElement("div");
+      $(infoDiv).addClass("center");
           var tagSpan = document.createElement("span");
           $(tagSpan).addClass("model-tag label label-default");
           $(tagSpan).text(model.class_name);
@@ -670,14 +538,12 @@ function newModelDiv(data, is_model=false){
           $(downloadA).attr("href", model.download_url);
           $(downloadA).append(downloadBtn);
 
-          if(!isHomePage){
-              var compareBtn = document.createElement("button");
-              $(compareBtn).text("对比");
-              $(compareBtn).addClass("btn btn-info btn-md btn-download");
-              $(compareBtn).click(function(event){
-                  openCompareModal($(event.target).parent().parent().data("info"));
-              });
-          }
+          var compareBtn = document.createElement("button");
+          $(compareBtn).text("对比");
+          $(compareBtn).addClass("btn btn-info btn-md btn-compare");
+          $(compareBtn).click(function(event){
+              openCompareModal($(event.target).parent().parent().data("info"));
+          });
       $(infoDiv).append(tagSpan);
       $(infoDiv).append(downloadA);
       $(infoDiv).append(compareBtn);
@@ -685,6 +551,7 @@ function newModelDiv(data, is_model=false){
 }
   //绑定数据
     $(modelDiv).data("info", data);
+    console.log(data);
   return modelDiv;
 }
 
@@ -710,6 +577,7 @@ function searchByModel(){
 function search(type, url, file){
     console.log("search by "+type+",url="+url+",filename="+(file!=null?file.name:"NULL"));
     var method = $("#fileSearchDiv input[type=radio]:checked").val();
+    window.searchingMethod = method;
     var author = "smy";
     var formData = new FormData();
     formData.append("author", author);
@@ -770,8 +638,55 @@ function search(type, url, file){
                             {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 10},
                             {"view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "view_index": 11},
                         ]
+                }, 
+            "features": {
+                "feature_dim": 10,
+                "feature": [1,2,3,4,5,6,7,8,9,10] 
+            },
+            "probs": [
+                {
+                    "method": "SeqViews2SeqLabels",
+                    "class_num": 2,
+                    "probs": {"car": 0.9, "desk": 0.1},
+                },
+                {
+                    "method": "VIP-GAN",
+                    "class_num": 2,
+                    "probs": {"car": 0.6, "desk": 0.4}
                 }
+            ], 
+            "retrieval": {
+                "total_count": 1,
+                "curr_count": 1,
+                "curr_page": 1,
+                "models": [
+                    {
+                        "dataset": "modelnet",
+                        "size": "12M",
+                        "name": "name",
+                        "class_name": "car",
+                        "model_url": "F:\\实验室\\毕业\\工程实践答辩\\实例\\airplane_test.off",
+                        "view_urls": ["https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"],
+                        "edge_num": 100,
+                        "download_url": "download url",
+                        "dist": 0.2,
+                        "feature": [10, 3, 1, 1,1,1,1,1,1,1,],
+                        "feature_dim": 10
+                    }
+                ]
+            },
+            "center_view_recon": 
+                [
+                    {
+                        "neighbours": ["https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001", "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"],
+                        "gt_center": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001",
+                        "pred_center": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
+                    }
+                ]
+            
+
           }; 
+          window.search_result = fakeData;
           refreshViews(fakeData["views"]);
     }
     });
@@ -792,4 +707,154 @@ function refreshViews(data){
     });
     // $("#model_views .model-col").hover(hoverInModel, hoverOutModel);
     $("#model_views").removeClass("loading");
+}
+
+
+// 特征可视化
+function feature_vis(canvas_name, feature_info){
+    if(feature_info.feature_dim > 0){
+        var x = [];
+        for(var i=0;i<feature_info.feature_dim;++i){
+            x.push(i + "");
+        }
+        window.featureChart = refreshFeatureChart(canvas_name, x, feature_info.feature);
+    }
+}
+
+// 检索结果
+function refreshModelsList(modelsList){
+  //首先清空原来的模型信息
+  var modelsDiv = $("#models-list");
+  modelsDiv.empty();
+  for(i in modelsList){
+      modelsDiv.append(newModelDiv(modelsList[i], true));
+  }
+  $("#models-list .model-col").click(function(event){
+      if(!$(event.target).is("button")){
+          openModelViewer($(this).data("info"));
+      }
+  });
+  $("#models-list .model-col").hover(hoverInModel, hoverOutModel);
+  $("#models-list").removeClass("loading");
+}
+
+function refreshPageNav(pageInfo){
+     //分页浏览
+    $('#models-pagination').pagination({
+        items: Math.ceil(pageInfo.total_count / searchPageSize),
+        itemOnPage: pageInfo.curr_count,
+        currentPage: pageInfo.curr_page,
+        cssStyle: '',
+        prevText: '<span aria-hidden="true">&laquo;</span>',
+        nextText: '<span aria-hidden="true">&raquo;</span>',
+        onInit: function () {
+            // fire first page loading
+        },
+        onPageClick: function (page, evt) {
+            // 向服务器请求第page页的数据
+            getSearchResult(page);
+        }
+      });
+}
+
+function hoverInModel(event){
+    console.log("hoverin");
+    views = $(this).data("info").view_urls;
+    //鼠标进入时轮流播放不同视角下的截图
+    modelImgsTimer = window.setInterval(function(){
+        modelImgsTimerCount += 1;
+        if(views.length > 0){
+            $(event.target).find(".model-img").attr("src", views[modelImgsTimerCount%views.length]);
+        }
+    }, 1000);
+}
+function hoverOutModel(event){
+    //鼠标离开时取消定时器，然后图像恢复默认值
+    if(modelImgsTimer){
+        window.clearInterval(modelImgsTimer);
+        if(views.length > 0) {
+            $(event.target).find(".model-img").attr("src", views[0]);
+        }
+    }
+    modelImgsTimer = null;
+    modelImgsTimerCount = 0;
+}
+
+//弹出窗口展示模型信息
+function openModelViewer(modelInfo){
+  //弹出窗口
+  $("#viewerModal").css("display", "block");
+  $("#viewerModal").addClass("in");
+  var method = window.searchingMethod;
+  if(method == undefined){
+      method = "SeqViews2SeqLabels";
+  }
+  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+method);
+}
+
+//关闭展示模型的窗口i 
+function closeModelViewer(event){
+  $("#viewerModal").css("display", "none");
+  $("#viewerModal").removeClass("in");
+}
+
+
+function openCompareModal(model){
+    $("#compareModal").css("display", "block");
+    var x = [];
+    var query_feature = window.search_result["features"]["feature"];
+    for(var i=0;i<window.search_result["features"]["feature_dim"];++i){
+        x.push(i + "");
+    }
+    refreshCompareFeatureChart("compareCanvas", x, query_feature, model.feature);
+}
+
+//关闭展示模型的窗口i 
+function closeModelViewer(event){
+  $("#viewerModal").css("display", "none");
+  $("#viewerModal").removeClass("in");
+}
+
+function newViewPair(neigh_views, gt_center_view, pred_center_view){
+  var midview_panel = $("#midview_panel");
+  var pairDivRow = document.createElement("div");
+  $(pairDivRow).addClass("row");
+  $(midview_panel).append(pairDivRow);
+  var pairDiv = document.createElement("div");
+  $(pairDiv).addClass("col-md-12");
+  $(pairDivRow).append(pairDiv);
+
+  var views = [];
+  for(var i in neigh_views){
+    views[i] = neigh_views[i];
+  }
+  views.push(pred_center_view);
+  views.push(gt_center_view);
+  var viewHints = ["前视图", "后视图", "中心视图(预测)", "中心视图(真实)"]
+
+  for(var i in views){
+    var viewDiv = document.createElement("div");
+    $(viewDiv).addClass("col-md-3 center");
+        var viewImg = document.createElement("img");
+        $(viewImg).addClass("img-thumbnail model-img");
+        $(viewImg).attr("src", views[i]);
+        $(viewImg).attr("height", "236");
+        $(viewImg).css("width", "100%");
+        $(viewDiv).append(viewImg);
+
+        var viewHint = document.createElement("span");
+        $(viewHint).addClass("view-hint");
+        $(viewHint).text(viewHints[i]);
+        $(viewDiv).append(viewHint);
+
+    $(pairDiv).append(viewDiv);
+  }
+}
+
+// 上下文视图预测中心视图
+function predictCenterView(center_view_preds){
+    for(var i in center_view_preds){
+        var pair = center_view_preds[i];
+        newViewPair(pair["neighbours"], pair["gt_center"], pair["pred_center"]);
+    }
 }
