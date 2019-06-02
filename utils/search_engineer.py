@@ -5,7 +5,7 @@ import json
 import os
 
 wxy_kd_tree = joblib.load(os.path.join(os.getcwd(), 'static/database/wxy/kd_tree.pkl'))
-smy_kd_tree = joblib.load(os.path.join(os.getcwd(), 'static/database/wxy/kd_tree.pkl'))
+smy_kd_tree = joblib.load(os.path.join(os.getcwd(), 'static/database/smy/kd_tree.pkl'))
 
 
 def load_json(json_path):
@@ -29,6 +29,7 @@ def search_by_feature(search_feature, author_name='wxy', method_name='3dview', d
         kd_tree = smy_kd_tree
     if len(search_feature.shape) == 1:
         search_feature = np.expand_dims(search_feature, axis=0)
+    print(search_feature.shape)
     dist, ind = kd_tree.query(search_feature, 50)
     ind = ind.reshape([-1])
     dist = dist.reshape([-1])
@@ -45,7 +46,8 @@ def k_d_tree_test():
 
 
 def k_d_tree_dump():
-    X = np.load(r'F:\实验室\毕业\毕设\演示demo\3dSeek\static\database\wxy\features\fc_feature_mat_10_test.npy')
+
+    X = np.load(os.path.join(os.getcwd(), 'static/database/smy/features/modelnet10_test_hidden.npy'))
     print(X.shape)
     tree = KDTree(X)
     dist, ind = tree.query(X[0:1], 10)
@@ -53,7 +55,8 @@ def k_d_tree_dump():
     print(ind)
     name_list = [int(i) for i in ind]
     print(name_list)
-    joblib.dump(tree, r'F:\实验室\毕业\毕设\演示demo\3dSeek\static\database\wxy\kd_tree.pkl')
+
+    joblib.dump(tree, os.path.join(os.getcwd(),'static\database\smy\kd_tree.pkl'))
 
 
 if __name__ == '__main__':
