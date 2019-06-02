@@ -205,7 +205,7 @@ function refreshAttnChart_wxy(id, attns){
 
 function refreshAttnChart_smy(id, class_names, attns, legendClickCallback){
     var labels = new Array();
-    for(var i in attns){
+    for(var i in attns[0]["attn_weights"]){
         labels[i] = "视图"+i;
     }
     var attnCtx = document.getElementById(id).getContext("2d");
@@ -214,12 +214,13 @@ function refreshAttnChart_smy(id, class_names, attns, legendClickCallback){
     for(var i in attns){
         datasets.push({
             label: class_names[i],
-            data: attns[i],
+            data: attns[i]["attn_weights"],
             borderWidth: 1,
             backgroundColor: colors[i],
             borderColor: colors[i],
         });
     }
+    var defaultLegendClickHandler = Chart.defaults.global.legend.onClick;
     return new Chart(attnCtx, {
         type: "bar",
         data: {
@@ -231,13 +232,19 @@ function refreshAttnChart_smy(id, class_names, attns, legendClickCallback){
             legend: {
                 position: "top",
                 onClick: function(e, legendItem){
-                    var defaultLegendClickHandler = Chart.defaults.global.legend.onClick;
                     var ci = this.chart;
                     var index = legendItem.datasetIndex;
                     var meta = ci.getDatasetMeta(index);
-                    defaultLegendClickHandler(e, legendItem);
                     console.log("meta.hidden", meta.hidden);
-                    legendClickCallback("callback");
+                    // var datasets_chart = this.config.data.datasets;
+                    for(var i in attns){
+                        ci.getDatasetMeta(i).hidden = true;
+                    }
+                    // datasets.forEach(function (dataset, i) { });
+                    meta.hidden = null;
+                    // defaultLegendClickHandler(e, legendItem);
+                    ci.update();
+                    legendClickCallback(index);
                 }
             },
             title: {

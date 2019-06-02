@@ -908,18 +908,18 @@ function predictNeighFeature(chart_id, neigh_features){
 
 
 function refreshAttn(attns){
-    attns = {
-        "class_names": ["bus", "car"],
-        "attn_weights": [[0.4, 0.3], [0.2, 0.5]],
-        "max": {
-            "attn_weight": 0.4,
-            "view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
-        },
-        "min": {
-            "attn_weight": 0.3,
-            "view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
-        }
-    };
+    // attns = {
+    //     "class_names": ["bus", "car"],
+    //     "attn_weights": [[0.4, 0.3], [0.2, 0.5]],
+    //     "max": {
+    //         "attn_weight": 0.4,
+    //         "view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
+    //     },
+    //     "min": {
+    //         "attn_weight": 0.3,
+    //         "view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
+    //     }
+    // };
     if(window.author == "wxy"){
         refreshAttnChart_wxy("attentionChart", attns["attn_weights"]);
         refreshImg("#max_attn_img", attns["max"]["view_url"]);
@@ -927,11 +927,19 @@ function refreshAttn(attns){
         refreshText("#max_attn_text", attns["max"]["attn_weight"]);
         refreshText("#min_attn_text", attns["min"]["attn_weight"]);
     }else{
-        refreshAttnChart_smy("attentionChart", attns["class_names"], attns["attn_weights"], function(info){
-            console.log("callback info:", info);
+        refreshAttnChart_smy("attentionChart", attns[0]["class_names"], attns, function(index){
+            console.log("callback index:", index);
+            refreshImg("#max_attn_img", attns[index]["max"]["view_url"]);
+            refreshImg("#min_attn_img", attns[index]["min"]["view_url"]);
+            refreshText("#max_attn_text", attns[index]["max"]["attn_weight"]);
+            refreshText("#min_attn_text", attns[index]["min"]["attn_weight"]);
         }); 
+        var index = 0;
+        refreshImg("#max_attn_img", attns[index]["max"]["view_url"]);
+        refreshImg("#min_attn_img", attns[index]["min"]["view_url"]);
+        refreshText("#max_attn_text", attns[index]["max"]["attn_weight"]);
+        refreshText("#min_attn_text", attns[index]["min"]["attn_weight"]);
     }
-    
 }
 
 
