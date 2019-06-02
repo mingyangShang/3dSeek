@@ -20,6 +20,8 @@ var homePageSize = 48, searchPageSize = 48;
 var modelImgsTimer;
 var modelImgsTimerCount = 0;
 var author = "wxy";
+var currModelInfo;
+var currMethod;
 
 (function ($) {
     $(document).ready(function () {
@@ -79,6 +81,13 @@ var author = "wxy";
         $("#feature_recon_wrapper").hide();
         $("#classification_wrapper").hide();
         $("#retrieval_wrapper").hide();
+
+
+        $("#viewerSourceButton").click(function(){
+          //在新窗口中打开
+          console.log("new window");
+          window.location.href = "/viewer?"+"dataset="+currModelInfo.dataset+"&class_name="+currModelInfo.class_name+"&model_name="+currModelInfo.name+"&method="+currMethod+"&author="+author;
+        });
     });
 }(jQuery));
 
@@ -587,12 +596,14 @@ function searchByModel(){
 function search(type, url, file){
     console.log("search by "+type+",url="+url+",filename="+(file!=null?file.name:"NULL"));
     var method = $("#fileSearchDiv input[type=radio]:checked").val();
-    window.searchingMethod = method;
     console.log("searching method:", method);
+    method = "3dview";
+    window.searchingMethod = method;
     var formData = new FormData();
     formData.append("author", author);
     formData.append("type", type);
-    formData.append("method", "3dview");
+    formData.append("method", method);
+    currMethod = method;
     if(type == "url"){
         formData.append("url", url);
     }else if(type == "file"){
@@ -803,6 +814,7 @@ function openModelViewer(modelInfo){
   if(method == undefined){
       method = "SeqViews2SeqLabels";
   }
+  currModelInfo = modelInfo;
   $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+method+"&author="+author);
 }
 
