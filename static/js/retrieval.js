@@ -19,7 +19,6 @@ var isHomePage = true;
 var homePageSize = 48, searchPageSize = 48;
 var modelImgsTimer;
 var modelImgsTimerCount = 0;
-var author = "smy";
 window.author = "smy";
 var currModelInfo;
 var currMethod;
@@ -95,7 +94,7 @@ function hideAll(){
 
         $("#viewerSourceButton").click(function(){
           //在新窗口中打开
-            window.location.href = "/viewer?"+"dataset="+currModelInfo.dataset+"&class_name="+currModelInfo.class_name+"&model_name="+currModelInfo.name+"&method="+currMethod+"&author="+author;
+            window.location.href = "/viewer?"+"dataset="+currModelInfo.dataset+"&class_name="+currModelInfo.class_name+"&model_name="+currModelInfo.name+"&method="+currMethod+"&author="+window.author;
         });
     });
 }(jQuery));
@@ -606,10 +605,14 @@ function search(type, url, file){
     console.log("search by "+type+",url="+url+",filename="+(file!=null?file.name:"NULL"));
     var method = $("#fileSearchDiv input[type=radio]:checked").val();
     console.log("searching method:", method);
-    // method = "3dview";
     window.searchingMethod = method;
     var formData = new FormData();
-    formData.append("author", author);
+    if(method == "SeqViews2SeqLabels" || method == "VIP-GAN"){
+        window.author = "smy";
+    }else{
+        window.author = "wxy";
+    }
+    formData.append("author", window.author);
     formData.append("type", type);
     formData.append("method", method);
     currMethod = method;
@@ -827,7 +830,7 @@ function openModelViewer(modelInfo){
       method = "SeqViews2SeqLabels";
   }
   currModelInfo = modelInfo;
-  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+method+"&author="+author);
+  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+method+"&author="+window.author);
 }
 
 //关闭展示模型的窗口i 
