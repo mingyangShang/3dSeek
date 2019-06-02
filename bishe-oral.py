@@ -34,7 +34,7 @@ def search():
         if search_author == 'smy':
             result_json = smy.get_total_info(model_name)
         else:
-            result_json = wxy.get_total_info(model_name)
+            result_json = wxy.get_total_info(model_name, search_method)
     return json.dumps(result_json)
 
 
