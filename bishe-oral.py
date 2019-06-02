@@ -26,6 +26,7 @@ def search():
     search_type = request.form.get('type')
     search_method = request.form.get('method')
     filename = request.form.get('name')
+    # search_author = 'smy'
     # filename = 'bathtub_0107.off'
     print('search----> ', search_type, search_author, search_method)
     result_json = {}
@@ -34,7 +35,7 @@ def search():
         model_name = get_model_name(filename)
         print('search file', model_name)
         if search_author == 'smy':
-            result_json = smy.get_total_info(model_name)
+            result_json = smy.get_total_info(model_name, search_method)
         else:
             result_json = wxy.get_total_info(model_name, search_method)
     return json.dumps(result_json)
@@ -53,10 +54,9 @@ def model_view():
         search_author = 'wxy'
     if search_method is None:
         search_method = '3dview'
-
     model_name = request.args.get('model_name')
     if search_author == 'smy':
-        model_info = wxy.get_model_info_by_name(model_name, search_method)
+        model_info = smy.get_model_info_by_name(model_name, search_method)
     else:
         model_info = wxy.get_model_info_by_name(model_name, search_method)
 

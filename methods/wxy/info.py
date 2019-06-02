@@ -17,6 +17,7 @@ probs_us = np.load(os.path.join(base_dir, 'probs', 'fc_feature_mat_10_test_label
 
 supervised_method_name = "3dview"
 
+
 def get_view_urls_by_modelname(modelname):
     view_urls = []
     for i in range(view_num):
@@ -28,7 +29,7 @@ def get_view_urls_by_modelname(modelname):
 
 def get_feature_by_name(modelname, method_name):
     idx = get_idx_by_name(modelname)
-    if modelname == supervised_method_name:
+    if method_name == supervised_method_name:
         return features[idx].tolist()
     else:
         return features_us[idx].tolist()
@@ -56,7 +57,7 @@ def get_model_info_by_name(modelname, method_name):
 
 def get_search_result(modelname, method_name):
     feature = get_feature_by_name(modelname, method_name)
-    idxs, dists = search_by_feature(feature)
+    idxs, dists = search_by_feature(feature, 'wxy', method_name)
     res_names = get_modelnames_by_idx(idxs)
     retrieval_res = {"total_count": 50, "curr_count": 50, "curr_page":1}
     retrieval_models = []
@@ -93,8 +94,11 @@ def get_total_info(modelname, method_name):
     prob_info['class_num'] = 10
     prob_info['probs'] = {}
     prob_info['method'] = method_name
-    prob_info['class_name'] = get_class_name_by_name(modelname)
+    class_idx = np.argmax(np.array(prob))
     class_names = get_all_class_names()
+    prob_info['class_name'] = class_names[class_idx]
+    print('class idx', class_idx)
+    print(prob)
     for i in range(10):
         prob_info['probs'][class_names[i]] = prob[i]
     total_info['probs'] = [prob_info]
