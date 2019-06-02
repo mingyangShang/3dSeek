@@ -1,0 +1,457 @@
+<!DOCTYPE HTML>
+<!--
+	Concept by gettemplates.co
+	Twitter: http://twitter.com/gettemplateco
+	URL: http://gettemplates.co
+-->
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>基于多视图的三维模型检索系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="基于多视图的三维模型检索系统" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="Xiyang Wang" />
+
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+    <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet"> -->
+
+    <link href="http://cdn.bootcss.com/iCheck/1.0.2/skins/all.css" rel="stylesheet">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="../static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="../static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="../static/css/bootstrap.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="../static/css/magnific-popup.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="../static/css/style.css">
+
+	<!-- custom style -->
+	<link rel="stylesheet" href="../static/css/retrieval.css">
+	<link rel="stylesheet" href="../static/css/bootstrap-fix.css">
+	<link href="{{ url_for('static', filename="css/viewer.css") }}" rel="stylesheet" />
+
+
+
+	<!-- Modernizr JS -->
+	<script src="../static/js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	<style type="text/css">
+		#fh5co-header a
+		{
+			color: rgba(255, 255, 255, 1);
+		}
+	</style>
+
+	</head>
+	<body>
+		
+	<div class="fh5co-loader"></div>
+	
+	<div id="page">
+	<nav class="fh5co-nav" role="navigation">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-5 text-left">
+					<div id="fh5co-logo"><a href="index.html">3DViewGraph & HVP</a></div>
+				</div>
+				<div class="col-xs-7 text-right menu-1">
+					<ul>
+						<li><a href="index_wxy.html">主页</a></li>
+						<li class="active"><a href="retrieval_wxy.html">检索系统</a></li>
+						<!-- 
+						<li><a href="demo_eval.html">评估反馈</a></li>
+						<li><a href="performance.html">性能</a></li>
+						<li><a href="reference.html">参考文献</a></li>
+						-->
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</nav>
+
+	<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url(../static/img/img_bg_1.jpg); height: 400px;" data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-left">
+					<div class="display-t" style="height: 400px;">
+						<div class="display-tc animate-box" style="height: 400px;" data-animate-effect="fadeInUp">
+							<h1 class="mb70">基于多视图的三维模型检索系统</h1>
+							<h3 class="mb30" style="color: white;">使用<a href="demo_dataset.html">ModelNet数据集</a></h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div id="fh5co-blog" class="fh5co-bg-section">
+
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<form action="#">
+						<div class="fh5co-post">
+							<div class="row form-group">
+								<div class="col-md-12" id="fileSearchDiv">
+									<label for="query_model">上传三维模型：</label>
+                                    <br/>
+                                    <a hred="#" id="query_model_name"></a>
+									<input type="text" id="query_text" class="form-control" style="float: left; width: 1080px; padding-right: 65px;" placeholder="Enter a phrase">
+                                    <input id="model-file-input" type="file" style="display: none"/>
+                                    <img id="upload_button" height="50px" src="../static/img/upload.png" style="float: left; margin-left: -64px;"/>
+                                    <center style="margin-top: 80px;">
+                                        <input type="radio" id="use_seqviews2seqlabels" name="retrieval_method" checked="true" value="SeqViews2SeqLabels" /><label for="use_seqview2seqlabels" style="margin-right: 20px; font-size: larger;">3DViewGraph</label>
+                                        <input type="radio" id="use_vipgan" name="retrieval_method" value="VIP-GAN" /><label for="use_vipgan" style="margin-right: 20px; font-size: larger;">HVP</label>
+                                    </center>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<center>
+									<!--select id="select_example" onchange="loadDefault()"></select-->
+                                    <input id="vis_button" type="button" value="展示三维模型" class="btn btn-outline btn-lg btn-primary">
+									<input id="submit_button" type="button" value="提交" class="btn btn-outline btn-lg btn-primary">
+                                    <!-- <input id="vis_button" type="button" value="特征曲线" class="btn btn-outline btn-lg btn-primary"> -->
+									<!--input type="button" value="加载示例" onclick="loadDefault()" class="btn btn-outline btn-lg btn-primary"-->
+                                    <p id="query_time" style="color: black; font-size: large;"></p>
+                                    <p id="server_message" style="color: indianred; font-size: large;"></p>
+								</center>
+							</div>
+						</div>
+					</form>
+				</div>
+				
+				<div class="col-md-12 col-sm-6 animate-box model_views" style="display: none;" data-animate-effect="fadeInUp">
+					<form action="#">
+						<div class="fh5co-post">
+                            <center>
+                                <span style="font-weight: bolder;">检索三维模型：</span><br/>
+                                <img id="uploaded_img" style="max-width: 60%; max-height: 350px;" src="" alt="尚未上传查询三维模型"/>
+                            </center>
+						</div>
+                        <div id="text_row1" class="fh5co-post" style="position: relative">
+                            <div style="float: left; width: 250px;">
+                                <center>
+                                    <img class="resultimg1" src="../static/img/work-4.jpg" style="max-height: 150px; max-width: 250px;"/>
+                                </center>
+                            </div>
+                            <div style="margin-left: 270px;">
+                                <span class="image_info_sentence">1</span> <br/>
+                                <span class="image_info_sentence">1</span> <br/>
+                                <span class="image_info_sentence">1</span> <br/>
+                                <span class="image_info_sentence">1</span> <br/>
+                                <span class="image_info_sentence">1</span> <br/>
+                            </div>
+                        </div>
+					</form>
+				</div>
+
+				<div id="model_views_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+						<div class="panel-heading div_hint">模型视图</div>
+						<div id="model_views" class="panel-body text-center"></div>
+					</div>
+					<button id="switch_from_view" type="button" class="next-btn btn btn-default">下一步</button>
+				</div>
+
+
+				<div id="feature_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">特征可视化</div>
+                        <div class="panel-body text-center">
+                          <canvas id="featureChart" style=" :300px !important"></canvas>
+                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
+                        </div>
+                    </div>	
+                    <button id="switch_to_attention" type="button" class="next-btn btn btn-default">下一步</button>				
+				</div>
+
+				<div id="attention_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">注意力可视化</div>
+                        <div class="panel-body text-center">
+                          <canvas id="attentionChart" style=" :300px !important"></canvas>
+                          <div id="max_attn_wrapper" class="col-md-6 animate-box" data-anmiate-effect="fadeInUp">
+                          	<span class="attn-hint">最大权重:</span>
+                          	<span id="max_attn_text" class="attn-value">1.0</span>
+                          	<img id="max_attn_img" class="attn-view" src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001">
+                          </div>
+                          <div id="min_attn_wrapper" class="col-md-6 animate-box" data-anmiate-effect="fadeInUp">
+                          	<span class="attn-hint">最小权重:</span>
+                          	<span id="min_attn_text" class="attn-value">0.0</span>
+                          	<img id="min_attn_img" class="attn-view" src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001">
+                          </div>
+                        </div>
+                    </div>	
+                    <button id="switch_to_classification" type="button" class="next-btn btn btn-default">下一步</button>				
+				</div>
+
+				<div id="midview_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">中心视图重建</div>
+                        <div class="panel-body text-center" id="midview_panel">
+                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
+                        </div>
+                    </div>	
+                    <button id="switch_to_feature_recon" type="button" class="next-btn btn btn-default">下一步</button>				
+				</div>
+
+				<div id="feature_recon_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">上下文视图特征重建</div>
+                        <div class="panel-body text-center">
+                          <canvas id="midFeatureChart" style=" :300px !important"></canvas>
+                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
+                        </div>
+                    </div>	
+                    <button id="switch_to_classification2" type="button" class="next-btn btn btn-default">下一步</button>				
+				</div>
+
+
+
+				<div id="classification_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">分类结果</div>
+                        <div class="panel-body text-center">
+                          <canvas id="classificationChart" style=" :300px !important"></canvas>
+                        </div>
+                    </div>	
+                    <button id="switch_to_retrieval" type="button" class="next-btn btn btn-default">下一步</button>				
+				</div>
+
+				<div id="retrieval_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+					<div class="panel panel-default">
+                        <div class="panel-heading div_hint">检索结果</div>
+                        <div class="panel-body text-center">
+                          	<div id="models-list" class="row-fluid models"></div>
+                  			<div id="models-nav" class="row-fluid text-center">
+                    			<div class="col-md-12">
+                        			<ul class="pagination" id="models-pagination"></ul>
+                    			</div>
+                  			</div>
+                        </div>
+                    </div>	
+                    <button id="switch_to_search" type="button" class="next-btn btn btn-default js-gotop">返回搜索</button>				
+				</div>
+
+				<!-- 模型浏览 -->
+				<div id="viewerModal" class="modal fade">
+	              <div class="modal-dialog">
+	                  <div class="modal-content">
+	                      <div class="modal-body embed-responsive embed-responsive-4by3">
+	                          <div id="viewerIframeOverlay" class="embed-responsive-item">
+	                              <div class="pull-right" id="close-viewer">
+	                                  <button type="button" data-dismiss="modal" class="btn btn-danger">
+	                                      <span aria-hidden="true">×</span>
+	                                      <span class="sr-only">Close</span>
+	                                  </button>
+	                              </div>
+	                              <div class="text-center">
+	                                  <button id="viewerSourceButton" class="btn btn-primary">新窗口查看</button>
+	                              </div>
+	                          </div>
+	                          <iframe id="viewerIframe" class="embed-responsive-item"></iframe>
+	                      </div>
+	                  </div>
+	              </div>
+          		</div>
+
+          		<!-- 模型特征对比 -->
+          		<div id="compareModal" class="modal">
+	                <div class="panel panel-default">
+	                    <div class="panel-heading">
+	                        特征对比
+	                        <span class="close img-circle text-center" id="closeCompareChart">&times</span>
+	                    </div>
+	                    <div class="panel-body">
+	                        <canvas id="compareCanvas"> </canvas>
+	                    </div>
+	                </div>
+            	</div>
+
+            	<!-- Big Image Viewer Modal -->
+		        <div id="bigImgModal" class="modal">
+		            <span class="close img-circle text-center">&times;</span>
+		            <img class="big-img" id="big-img">
+		        </div>
+				<div class="clearfix visible-md-block"></div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	
+	<div id="fh5co-started">
+		<div class="container">
+			<div class="row animate-box">
+				<div class="col-md-10 col-md-offset-1 text-center fh5co-heading">
+					<h2>基于多视图的三维模型检索系统</h2>
+					<p>Studies on Learning Feature Representation of 3D Shapes Based on Multi-view Feature Aggregation</p>
+					<p><button type="submit" class="btn btn-default">In progress</button></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer id="fh5co-footer" role="contentinfo">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-4 fh5co-widget ">
+					<h3>Concept.</h3>
+					<p>Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit. Eos cumque dicta adipisci architecto culpa amet.</p>
+					<p><a href="#">Learn More</a></p>
+				</div>
+				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1 ">
+					<ul class="fh5co-footer-links">
+						<li><a href="#">About</a></li>
+						<li><a href="#">Help</a></li>
+						<li><a href="#">Contact</a></li>
+						<li><a href="#">Terms</a></li>
+						<li><a href="#">Meetups</a></li>
+					</ul>
+				</div>
+
+				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1 ">
+					<ul class="fh5co-footer-links">
+						<li><a href="#">Shop</a></li>
+						<li><a href="#">Privacy</a></li>
+						<li><a href="#">Testimonials</a></li>
+						<li><a href="#">Handbook</a></li>
+						<li><a href="#">Held Desk</a></li>
+					</ul>
+				</div>
+
+				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1 ">
+					<ul class="fh5co-footer-links">
+						<li><a href="#">Find Designers</a></li>
+						<li><a href="#">Find Developers</a></li>
+						<li><a href="#">Teams</a></li>
+						<li><a href="#">Advertise</a></li>
+						<li><a href="#">API</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="row copyright">
+				<div class="col-md-12 text-center">
+					<p>
+						<small class="block">&copy; 2016 Free HTML5. All Rights Reserved.</small> 
+						<small class="block">Designed by <a href="http://gettemplates.co/" target="_blank">GetTemplates.co</a> Demo Images: <a href="http://pixeden.com/" target="_blank">Pixeden</a> &amp; <a href="http://unsplash.com/" target="_blank">Unsplash</a></small>
+					</p>
+					<p>
+						<ul class="fh5co-social-icons">
+							<li><a href="#"><i class="icon-twitter"></i></a></li>
+							<li><a href="#"><i class="icon-facebook"></i></a></li>
+							<li><a href="#"><i class="icon-linkedin"></i></a></li>
+							<li><a href="#"><i class="icon-dribbble"></i></a></li>
+						</ul>
+					</p>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+	</div>
+	
+	<!-- jQuery -->
+	<script src="../static/js/jquery-1.11.1.js"></script>
+	<!-- jQuery Easing -->
+	<script src="../static/js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="../static/js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="../static/js/jquery.waypoints.min.js"></script>
+	<!-- countTo -->
+	<script src="../static/js/jquery.countTo.js"></script>
+	<!-- Magnific Popup -->
+	<script src="../static/js/jquery.magnific-popup.min.js"></script>
+	<script src="../static/js/magnific-popup-options.js"></script>
+	<!-- Stellar -->
+	<script src="../static/js/jquery.stellar.min.js"></script>
+    <!-- Chart -->
+    <script src="../static/js/chart.min.js"></script>
+    <script src="../static/js/chart-ext.js"></script>
+    <!-- page -->
+    <script src="../static/js/jquery.simplePagination.js"></script>
+    <!-- iCheck -->
+    <script src="../static/js/icheck.min.js"></script>
+	<!-- Main -->
+	<script src="../static/js/main.js"></script>
+	<script src="../static/js/retrieval.js"></script>
+
+    <script lang="javascript">
+        big_img_idx = -1;
+        lastQueryType = "text";
+        selecting = false;
+
+        function move_vis_pop(){
+            //console.log("Current scroll: " + window.scrollY);
+            if(window.scrollY < 680)
+            {
+                ll = $(".container").position().left + $(".container").width() + window.scrollX + 370 + 'px';
+                tt = 733 + 'px';
+                $("#vis_popup").css("top", tt);
+                $("#vis_popup").css("left", ll);
+                console.log("Container left = " + $(".container").position().left);
+                console.log("Container width = " + $(".container").width());
+                console.log("Window scroll X = " + window.scrollX);
+                console.log("Pop left calc = " + ll);
+                console.log("Pop left actual = " + $("#vis_popup").position().left);
+            }
+            else if(window.scrollY)
+            {
+                ll = $(".container").position().left + $(".container").width() + window.scrollX + 370 + 'px';
+                tt = window.scrollY + 70 + 'px';
+                $("#vis_popup").css("top", tt);
+                $("#vis_popup").css("left", ll);
+                console.log("Container left = " + $(".container").position().left);
+                console.log("Container width = " + $(".container").width());
+                console.log("Window scroll X = " + window.scrollX);
+                console.log("Pop left calc = " + ll);
+                console.log("Pop left actual = " + $("#vis_popup").position().left);
+            }
+        }
+
+
+        // $(".retrieval_image").bind("click", function () {
+        //     alert("Image click: " + $(this).attr("src"));
+        // });
+        $(document).bind("scroll", move_vis_pop);
+
+        $(document).ready(function () {
+            move_vis_pop();
+        });
+
+    </script>
+
+	</body>
+</html>
+
