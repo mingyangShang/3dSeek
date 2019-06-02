@@ -23,6 +23,16 @@ var author = "wxy";
 var currModelInfo;
 var currMethod;
 
+function hideAll(){
+    $("#model_views_wrapper").hide();
+    $("#feature_wrapper").hide();
+    $("#attention_wrapper").hide();
+    $("#midview_wrapper").hide();
+    $("#feature_recon_wrapper").hide();
+    $("#classification_wrapper").hide();
+    $("#retrieval_wrapper").hide();
+}
+
 (function ($) {
     $(document).ready(function () {
         $("#model-file-input").change(searchByModel);
@@ -39,7 +49,7 @@ var currMethod;
         });
 
         $("#switch_from_view").click(function(event){
-            if(window.searchingMethod == "SeqViews2SeqLabels"){
+            if(window.searchingMethod == "SeqViews2SeqLabels" || window.searchingMethod == "3dview"){
                 $("#feature_wrapper").show();
                 feature_vis("featureChart", window.search_result.features);
             }else{
@@ -74,19 +84,16 @@ var currMethod;
         });
         $("#close-viewer").click(closeModelViewer);
 
-        $("#model_views_wrapper").hide();
-        $("#feature_wrapper").hide();
-        $("#attention_wrapper").hide();
-        $("#midview_wrapper").hide();
-        $("#feature_recon_wrapper").hide();
-        $("#classification_wrapper").hide();
-        $("#retrieval_wrapper").hide();
+        hideAll();
 
+        $("#vis_button").click(function(){
+            var currModel = {"dataset": "modelnet10", "class_name": "unknown", "name": window.model_name.slice(0, -4)}
+            openModelViewer(currModel);
+        });
 
         $("#viewerSourceButton").click(function(){
           //在新窗口中打开
-          console.log("new window");
-          window.location.href = "/viewer?"+"dataset="+currModelInfo.dataset+"&class_name="+currModelInfo.class_name+"&model_name="+currModelInfo.name+"&method="+currMethod+"&author="+author;
+            window.location.href = "/viewer?"+"dataset="+currModelInfo.dataset+"&class_name="+currModelInfo.class_name+"&model_name="+currModelInfo.name+"&method="+currMethod+"&author="+author;
         });
     });
 }(jQuery));
@@ -609,7 +616,9 @@ function search(type, url, file){
     }else if(type == "file"){
         formData.append("file", file);
         formData.append("name", file.name);
+        window.model_name = file.name;
     }
+    hideAll();
     $.ajax({
         // Your server script to process the upload
         url: '/search',
