@@ -20,6 +20,7 @@ var homePageSize = 48, searchPageSize = 48;
 var modelImgsTimer;
 var modelImgsTimerCount = 0;
 var author = "smy";
+window.author = "smy";
 var currModelInfo;
 var currMethod;
 
@@ -909,7 +910,7 @@ function predictNeighFeature(chart_id, neigh_features){
 function refreshAttn(attns){
     attns = {
         "class_names": ["bus", "car"],
-        "attn_weights": [0.4, 0.3],
+        "attn_weights": [[0.4, 0.3], [0.2, 0.5]],
         "max": {
             "attn_weight": 0.4,
             "view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
@@ -919,11 +920,18 @@ function refreshAttn(attns){
             "view_url": "https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001"
         }
     };
-    refreshAttnChart_wxy("attentionChart", attns["attn_weights"]);
-    refreshImg("max_attn_img", attns["max"]["attn_weight"]);
-    refreshImg("min_attn_img", attns["min"]["attn_weight"]);
-    refreshText("max_attn_text");
-    refreshText("min_attn_text");
+    if(window.author == "wxy"){
+        refreshAttnChart_wxy("attentionChart", attns["attn_weights"]);
+        refreshImg("#max_attn_img", attns["max"]["view_url"]);
+        refreshImg("#min_attn_img", attns["min"]["view_url"]);
+        refreshText("#max_attn_text", attns["max"]["attn_weight"]);
+        refreshText("#min_attn_text", attns["min"]["attn_weight"]);
+    }else{
+        refreshAttnChart_smy("attentionChart", attns["class_names"], attns["attn_weights"], function(info){
+            console.log("callback info:", info);
+        }); 
+    }
+    
 }
 
 
