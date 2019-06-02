@@ -46,7 +46,8 @@ def k_d_tree_test():
 
 
 def k_d_tree_dump():
-    X = np.load(r'D:\Workspace\bishe\3dSeek\static\database\smy\features\modelnet10_test_hidden.npy')
+
+    X = np.load(os.path.join(os.getcwd(), 'static/database/smy/features/modelnet10_test_hidden.npy'))
     print(X.shape)
     tree = KDTree(X)
     dist, ind = tree.query(X[0:1], 10)
@@ -54,7 +55,8 @@ def k_d_tree_dump():
     print(ind)
     name_list = [int(i) for i in ind]
     print(name_list)
-    joblib.dump(tree, r'D:\Workspace\bishe\3dSeek\static\database\smy\kd_tree.pkl')
+
+    joblib.dump(tree, os.path.join(os.getcwd(),'static\database\smy\kd_tree.pkl'))
 
 
 if __name__ == '__main__':

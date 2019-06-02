@@ -13,11 +13,25 @@ lastQueryText = "";
 
 vis_fid = [];
 
+
 var setsData, classesData;
 var isHomePage = true;
 var homePageSize = 48, searchPageSize = 48;
 var modelImgsTimer;
 var modelImgsTimerCount = 0;
+var author = "wxy";
+var currModelInfo;
+var currMethod;
+
+function hideAll(){
+    $("#model_views_wrapper").hide();
+    $("#feature_wrapper").hide();
+    $("#attention_wrapper").hide();
+    $("#midview_wrapper").hide();
+    $("#feature_recon_wrapper").hide();
+    $("#classification_wrapper").hide();
+    $("#retrieval_wrapper").hide();
+}
 
 (function ($) {
     $(document).ready(function () {
@@ -35,7 +49,7 @@ var modelImgsTimerCount = 0;
         });
 
         $("#switch_from_view").click(function(event){
-            if(window.searchingMethod == "SeqViews2SeqLabels"){
+            if(window.searchingMethod == "SeqViews2SeqLabels" || window.searchingMethod == "3dview"){
                 $("#feature_wrapper").show();
                 feature_vis("featureChart", window.search_result.features);
             }else{
@@ -70,13 +84,17 @@ var modelImgsTimerCount = 0;
         });
         $("#close-viewer").click(closeModelViewer);
 
-        $("#model_views_wrapper").hide();
-        $("#feature_wrapper").hide();
-        $("#attention_wrapper").hide();
-        $("#midview_wrapper").hide();
-        $("#feature_recon_wrapper").hide();
-        $("#classification_wrapper").hide();
-        $("#retrieval_wrapper").hide();
+        hideAll();
+
+        $("#vis_button").click(function(){
+            var currModel = {"dataset": "modelnet10", "class_name": "unknown", "name": window.model_name.slice(0, -4)}
+            openModelViewer(currModel);
+        });
+
+        $("#viewerSourceButton").click(function(){
+          //在新窗口中打开
+            window.location.href = "/viewer?"+"dataset="+currModelInfo.dataset+"&class_name="+currModelInfo.class_name+"&model_name="+currModelInfo.name+"&method="+currMethod+"&author="+author;
+        });
     });
 }(jQuery));
 
@@ -585,19 +603,22 @@ function searchByModel(){
 function search(type, url, file){
     console.log("search by "+type+",url="+url+",filename="+(file!=null?file.name:"NULL"));
     var method = $("#fileSearchDiv input[type=radio]:checked").val();
-    window.searchingMethod = method;
     console.log("searching method:", method);
-    var author = "wxy";
+    method = "3dview";
+    window.searchingMethod = method;
     var formData = new FormData();
     formData.append("author", author);
     formData.append("type", type);
-    formData.append("method", "3dview");
+    formData.append("method", method);
+    currMethod = method;
     if(type == "url"){
         formData.append("url", url);
     }else if(type == "file"){
         formData.append("file", file);
         formData.append("name", file.name);
+        window.model_name = file.name;
     }
+    hideAll();
     $.ajax({
         // Your server script to process the upload
         url: '/search',
@@ -802,7 +823,8 @@ function openModelViewer(modelInfo){
   if(method == undefined){
       method = "SeqViews2SeqLabels";
   }
-  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+method);
+  currModelInfo = modelInfo;
+  $("#viewerIframe").attr("src", "/viewer?"+"dataset="+modelInfo.dataset+"&class_name="+modelInfo.class_name+"&model_name="+modelInfo.name+"&method="+method+"&author="+author);
 }
 
 //关闭展示模型的窗口i 
@@ -878,5 +900,5 @@ function predictNeighFeature(chart_id, neigh_features){
     for(var i=0;i<neigh_features[0].feature_dim;++i){
         x.push(i + "");
     }
-    refreshCompareFeatureChart(chart_id, x, neigh_features[0], neigh_features[1]);
+    refreshCompareNeighFeatureChart(chart_id, x, neigh_features[0], neigh_features[1]);
 }

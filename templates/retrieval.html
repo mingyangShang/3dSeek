@@ -44,6 +44,8 @@
 	<!-- custom style -->
 	<link rel="stylesheet" href="../static/css/retrieval.css">
 	<link rel="stylesheet" href="../static/css/bootstrap-fix.css">
+	<link href="{{ url_for('static', filename="css/viewer.css") }}" rel="stylesheet" />
+
 
 
 	<!-- Modernizr JS -->
@@ -268,7 +270,7 @@
           		</div>
 
           		<!-- 模型特征对比 -->
-          		<div id="compareModal" class="modal animated bounce infinite">
+          		<div id="compareModal" class="modal">
 	                <div class="panel panel-default">
 	                    <div class="panel-heading">
 	                        特征对比
@@ -281,7 +283,7 @@
             	</div>
 
             	<!-- Big Image Viewer Modal -->
-		        <div id="bigImgModal" class="modal animated bounce infinite">
+		        <div id="bigImgModal" class="modal">
 		            <span class="close img-circle text-center">&times;</span>
 		            <img class="big-img" id="big-img">
 		        </div>
@@ -369,14 +371,6 @@
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 	</div>
-
-    <div id="vis_popup" style="position: absolute; padding: 10px; border: 4px solid rgba(42, 51, 86, 0.9); background-color: white; left: 1000px; top: 500px;">
-        已选样本：
-        <ul id="selected_samples">
-
-        </ul>
-        <center><button id="vis_pop_button" class="btn btn-outline btn-lg btn-primary">绘制</button></center>
-    </div>
 	
 	<!-- jQuery -->
 	<script src="../static/js/jquery-1.11.1.js"></script>
