@@ -46,10 +46,10 @@ def search():
         print('search file', model_name)
         if search_author == 'smy':
             result_json = smy.get_total_info(model_name, search_method)
-            # print(json.dumps(result_json['center_view_recon']))
+            print(json.dumps(result_json['center_view_recon']))
         else:
             result_json = wxy.get_total_info(model_name, search_method)
-            print(json.dumps(result_json['view_recon']))
+            # print(json.dumps(result_json['view_recon']))
     ret_str = json.dumps(result_json)
     # print(json.dumps(result_json['attns']))
     return ret_str

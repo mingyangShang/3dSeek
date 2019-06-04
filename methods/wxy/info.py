@@ -6,7 +6,7 @@ from utils.search_engineer import search_by_feature
 
 base_url = '/static/database/wxy/views/test/'
 view_num = 20
-base_dir = os.path.join(os.getcwd(), 'static/database/wxy')
+base_dir = os.path.join(os.getcwd(), 'static', 'database', 'wxy')
 
 attns = np.load(os.path.join(base_dir, 'features', 'attention_mat_10_test.npy'))
 
