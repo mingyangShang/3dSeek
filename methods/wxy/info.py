@@ -20,6 +20,7 @@ probs_us = np.load(os.path.join(base_dir, 'probs', 'hvp_modelnet10_test_prob.npy
 supervised_method_name = "3DViewGraph"
 
 base_recon_url = '/static/database/wxy/views/test/'
+base_piece_url = '/static/database/wxy/piece/'
 
 def get_view_urls_by_modelname(modelname):
     view_urls = []
@@ -72,8 +73,8 @@ def get_view_recon(modelname):
         meta_info['gen_view_opp'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
         meta_info['tru_view_cur'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
         meta_info['tru_view_opp'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
-        meta_info['piece_i'] = [base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)] * 6
-        meta_info['piece_o'] = [base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)] * 6
+        meta_info['piece_i'] = [base_piece_url + "%s_%03d_a%02d.jpg" % (modelname, i*4 + 1, k) for k in range(6)]
+        meta_info['piece_o'] = [base_piece_url + "%s_%03d_b%02d.jpg" % (modelname, i*4 + 1, k) for k in range(6)]
         view_recon_info.append(meta_info)
     return view_recon_info
 
