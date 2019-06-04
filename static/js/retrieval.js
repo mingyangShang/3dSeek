@@ -757,7 +757,15 @@ function search(type, url, file){
 
 function refreshQueryModelInfo(info){
     showAll();
-    showModel("/static/database/modelnet10/test/toilet_0443.off", $("#queryModelCanvas"));
+    // clear model canvas
+    var c = $("#queryModelCanvas canvas");
+    if(c.length > 0){
+        var cxt = c[0].getContext("2d");
+        cxt.clearRect(0, 0, c[0].width, c[0].height); 
+    }
+    // var cxt=document.getElementById("queryModelCanvas").getContext("2d");
+    // cxt.clearRect(0,0,$("#queryModelCanvas").width,$("#queryModelCanvas").height);  
+    showModel(info.model_url, $("#queryModelCanvas"));
     if(window.controls){
         window.controls.enabled = false;
     }
@@ -978,8 +986,8 @@ function refreshAttn(attns){
         var index = 0;
         refreshImg("#max_attn_img", attns[index]["max"]["view_url"]);
         refreshImg("#min_attn_img", attns[index]["min"]["view_url"]);
-        refreshText("#max_attn_text", attns[index]["max"]["attn_weight"]);
-        refreshText("#min_attn_text", attns[index]["min"]["attn_weight"]);
+        refreshText("#max_attn_text", attns[index]["max"]["attn_weight"].toFixed(2));
+        refreshText("#min_attn_text", attns[index]["min"]["attn_weight"].toFixed(2));
     }
 }
 
