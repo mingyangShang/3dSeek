@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from utils.dataset import get_idx_by_name, get_modelnames_by_idx, get_model_info, get_model_url
+from utils.dataset import get_idx_by_name, get_modelnames_by_idx, get_model_info, get_model_url, get_model_download_url
 from utils.process_file import get_all_class_names, get_class_name_by_name
 from utils.search_engineer import search_by_feature
 
@@ -57,7 +57,7 @@ def get_model_info_by_name(modelname, method_name):
     meta_info = {"dataset": "modelnet", "size": model_info['file_size'], "name": modelname,
                  "class_name": model_info['class_name'], "edge_num": model_info['edge_num'],
                  "model_url": get_model_url(modelname), "view_urls": view_urls, "vertice_num":model_info['vertice_num'],
-                 "feature": feature, "feature_dim": len(feature), "download_url": "null"}
+                 "feature": feature, "feature_dim": len(feature), "download_url": get_model_download_url(modelname)}
     return meta_info
 
 

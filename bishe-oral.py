@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for, send_from_directory, send_file
 from utils.process_file import get_model_name, get_class_name_by_name
-from utils.dataset import get_model_info
+from utils.dataset import get_model_info, get_model_url
 import methods.smy.info as smy
 import methods.wxy.info as wxy
 import json
@@ -12,6 +12,16 @@ app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # db_utils.root_dir = app.root_path
+# app.root_path = os.getcwd()
+root_path = os.getcwd()
+@app.route('/download')
+def download_file():
+    model_name = request.args.get('modelname')
+    # print(root_path, get_model_url(model_name))
+    model_path = os.path.join(root_path, "static", "database", "modelnet10", "test", model_name+".off" )
+    print(model_path)
+    return send_file(model_path, as_attachment=True)
+
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
