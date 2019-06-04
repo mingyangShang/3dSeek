@@ -12,7 +12,7 @@ function showModel(modelPath, container) {
     function init() {
 
         camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.01, 1e10 );
-        camera.position.z = 300;
+        camera.position.z = 100;
 
         controls = new THREE.TrackballControls( camera );
 
