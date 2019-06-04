@@ -36,16 +36,18 @@ def search():
         print('search file', model_name)
         if search_author == 'smy':
             result_json = smy.get_total_info(model_name, search_method)
+            # print(json.dumps(result_json['center_view_recon']))
         else:
             result_json = wxy.get_total_info(model_name, search_method)
     ret_str = json.dumps(result_json)
-    print(json.dumps(result_json['attns']))
+    # print(json.dumps(result_json['attns']))
     return ret_str
 
 
 @app.route('/retrieval.html')
 def retrieval():
     return render_template('retrieval.html')
+
 
 @app.route('/retrieval_wxy.html')
 def retrieval_wxy():
@@ -65,8 +67,6 @@ def model_view():
         model_info = smy.get_model_info_by_name(model_name, search_method)
     else:
         model_info = wxy.get_model_info_by_name(model_name, search_method)
-
-    print(model_info)
 
     return render_template('view-model.html', model=model_info)
 

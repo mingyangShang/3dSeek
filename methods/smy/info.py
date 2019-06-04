@@ -21,6 +21,8 @@ probs_us = np.load(os.path.join(base_dir, 'probs', 'smy_svm_prob.npy'))
 
 supervised_method_name = "SeqViews2SeqLabels"
 
+base_recon_url = '/static/database/smy/views/test/'
+
 
 def get_view_urls_by_modelname(modelname):
     view_urls = []
@@ -95,6 +97,22 @@ def get_attention_info(modelname, method_name):
     return attn_infos
 
 
+def get_view_recon(modelname):
+    view_recon_info = []
+    for i in range(view_num):
+        meta_info = {}
+        neighs = []
+        for ni in [-1, 1]:
+            filename = "%s_%03d.jpg" % (modelname, (ni + view_num + i) % 12)
+            neighs.append(base_url + filename)
+        filename = "%s_%03d.jpg" % (modelname, i)
+        meta_info['gt_center'] = base_url + filename
+        meta_info['neighbours'] = neighs
+        meta_info['pred_center'] = base_recon_url + filename
+        view_recon_info.append(meta_info)
+    return view_recon_info
+
+
 def get_total_info(modelname, method_name):
     total_info = {}
     total_info['views'] = get_view_urls_by_modelname(modelname)
@@ -122,4 +140,6 @@ def get_total_info(modelname, method_name):
     total_info['retrieval'] = get_search_result(modelname, method_name)
     total_info['attns'] = get_attention_info(modelname, '')
     total_info['model_url'] = get_model_url(modelname)
+    if method_name != supervised_method_name:
+        total_info['center_view_recon'] = get_view_recon(modelname)
     return total_info
