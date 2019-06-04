@@ -1,3 +1,5 @@
+var curr_mesh = null;
+var curr_scene = null;
 function showModel(modelPath, container) {
 
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
@@ -25,9 +27,15 @@ function showModel(modelPath, container) {
         controls.dynamicDampingFactor = 0.3;
         window.controls = controls;
         controls.enabled = true;
-
-        scene = new THREE.Scene();
-
+        if(curr_scene === null){
+            console.log("no scene");
+            scene = new THREE.Scene();
+            curr_scene = scene;
+        }else{
+            console.log("has scene");
+            scene = curr_scene;
+        }
+        
         scene.add( camera );
 
         // light
@@ -61,7 +69,16 @@ function showModel(modelPath, container) {
 
             mesh.position.set( - 0.075, 0.005, 0 );
             mesh.scale.multiplyScalar( 0.2 * scalar);
+            if(curr_mesh){
+                console.log("has mesh");
+                scene.remove(curr_mesh);
+            }else{
+                console.log("no mesh");
+            }
+
             scene.add( mesh );
+            curr_mesh = mesh;
+            
         } );
 
         // renderer
