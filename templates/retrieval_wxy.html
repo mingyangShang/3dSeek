@@ -40,10 +40,13 @@
 
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="../static/css/style.css">
+	<link href="{{ url_for('static', filename="css/model-viewer.css") }}" rel="stylesheet" />
+
 
 	<!-- custom style -->
 	<link rel="stylesheet" href="../static/css/retrieval.css">
 	<link rel="stylesheet" href="../static/css/bootstrap-fix.css">
+    <link href="{{ url_for('static', filename="css/controls.css") }}" rel="stylesheet" />
 	<link href="{{ url_for('static', filename="css/viewer.css") }}" rel="stylesheet" />
 
 
@@ -107,7 +110,7 @@
 
 	<div id="fh5co-blog" class="fh5co-bg-section">
 
-
+		<!-- search -->
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
@@ -125,13 +128,14 @@
                                         <input type="radio" id="use_3DViewGraph" name="retrieval_method" checked="true" value="3DViewGraph" /><label for="use_3DViewGraph" style="margin-right: 20px; font-size: larger;">3DViewGraph</label>
                                         <input type="radio" id="use_HVP" name="retrieval_method" value="HVP" /><label for="use_HVP" style="margin-right: 20px; font-size: larger;">HVP</label>
                                     </center>
+                                    </center>
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<center>
 									<!--select id="select_example" onchange="loadDefault()"></select-->
-                                    <input id="vis_button" type="button" value="展示三维模型" class="btn btn-outline btn-lg btn-primary">
+                                    <!-- <input id="vis_button" type="button" value="展示三维模型" class="btn btn-outline btn-lg btn-primary"> -->
 									<input id="submit_button" type="button" value="提交" class="btn btn-outline btn-lg btn-primary">
                                     <!-- <input id="vis_button" type="button" value="特征曲线" class="btn btn-outline btn-lg btn-primary"> -->
 									<!--input type="button" value="加载示例" onclick="loadDefault()" class="btn btn-outline btn-lg btn-primary"-->
@@ -142,8 +146,144 @@
 						</div>
 					</form>
 				</div>
-				
-				<div class="col-md-12 col-sm-6 animate-box model_views" style="display: none;" data-animate-effect="fadeInUp">
+			</div>
+		</div>
+		<!-- search result -->
+			<div class="container-fluid animate-box" id="search-result">
+				<div class="row-fluid animate-box">
+					<!-- query model info -->
+					<div class="col-md-3">
+              			<div class="panel panel-default">
+              				<div class="panel-heading">上传模型信息</div>
+              				<div class="panel-body">
+              					<div class="container-fluid">
+			                      	<div class="row-fluid" id="query-model-viewer">
+			                        	<div class="col-md-12">
+			                          		<div class="panel panel-default">
+			                            		<div class="panel-heading">
+			                            			3D浏览
+			                            			<button id="vis_button" class="btn btn-outline btn-default">新窗口展示</button>
+			                            		</div>
+			                            		<div class="panel-body text-center">
+			                              			<div id="queryModelCanvas" class="grayRadialBackground"></div>
+			                            		</div>
+			                          		</div>
+			                      		</div>
+			                  		</div>
+			                  		<div class="row-fluid" id="query-model-views">
+			                            <div class="col-md-12">
+			                                <div class="panel panel-default">
+			                                    <div class="panel-heading">模型视图</div>
+			                                    <div class="panel-body text-center" id="model_views">
+			                                  
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                        <div class="row-fluid" id="query-model-features">
+			                        	<div class="col-md-12">
+			                        		<div class="panel panel-default">
+			                        			<div class="panel-heading">特征可视化</div>
+			                        			<div class="panel-body text-center">
+			                        				<canvas id="featureChart" ></canvas>
+			                        			</div>
+			                        		</div>
+			                        	</div>
+			                        </div>
+              					</div>
+              				</div>
+              			</div>
+              		</div>
+              		<div class="col-md-9 animate-box">
+              			<ul class="nav nav-tabs" id="result-nav">
+                      		<li id="attn-li" class="active"><a href="#attn-div" data-toggle="tab">注意力</a></li>
+                      		<li id="recon-li"><a href="#recon-div" data-toggle="tab">视图及特征重建</a></li>
+                      		<li><a href="#classification-div" data-toggle="tab">分类</a></li>
+                      		<li><a href="#retrieval-div" data-toggle="tab">检索</a></li>
+                    	</ul>
+                    	<div class="tab-content">
+                    		<div id="attn-div" class="tab-pane fade in active">
+                    			<div class="row">
+                                	<div class="col-md-12">
+		                    			<div id="attention_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+											<div class="panel panel-default">
+						                        <div class="panel-heading div_hint">注意力可视化</div>
+						                        <div class="panel-body text-center">
+						                          <canvas id="attentionChart" style=" :300px !important"></canvas>
+						                          <div id="max_attn_wrapper" class="col-md-6 animate-box" data-anmiate-effect="fadeInUp">
+						                          	<span class="attn-hint">最大权重:</span>
+						                          	<span id="max_attn_text" class="attn-value">1.0</span>
+						                          	<img id="max_attn_img" class="attn-view" src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001">
+						                          </div>
+						                          <div id="min_attn_wrapper" class="col-md-6 animate-box" data-anmiate-effect="fadeInUp">
+						                          	<span class="attn-hint">最小权重:</span>
+						                          	<span id="min_attn_text" class="attn-value">0.0</span>
+						                          	<img id="min_attn_img" class="attn-view" src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001">
+						                          </div>
+						                        </div>
+						                    </div>	
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="recon-div" class="tab-pane fade in">
+                    			<div class="row">
+                                	<div class="col-md-12">
+                                		<div id="midview_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+											<div class="panel panel-default">
+						                        <div class="panel-heading div_hint">中心视图重建</div>
+						                        <div class="panel-body text-center" id="midview_panel">
+						                        </div>
+						                    </div>	
+										</div>
+
+										<div id="feature_recon_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+											<div class="panel panel-default">
+						                        <div class="panel-heading div_hint">上下文视图特征重建</div>
+						                        <div class="panel-body text-center">
+						                          <canvas id="midFeatureChart" style=" :300px !important"></canvas>
+						                        </div>
+						                    </div>	
+										</div>
+                                	</div>
+                                </div>
+                            </div>
+							<div id="classification-div" class="tab-pane fade in">
+                				<div class="row">
+                            		<div class="col-md-12">
+                            			<div id="classification_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+											<div class="panel panel-default">
+						                        <div class="panel-heading div_hint">分类结果</div>
+						                        <div class="panel-body text-center">
+						                          <canvas id="classificationChart" style=" :300px !important"></canvas>
+						                        </div>
+						                    </div>	
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="retrieval-div" class="tab-pane fade in">
+                				<div class="row">
+                            		<div class="col-md-12">
+										<div id="retrieval_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
+											<div class="panel panel-default">
+						                        <div class="panel-heading div_hint">检索结果</div>
+						                        <div class="panel-body text-center">
+						                          	<div id="models-list" class="row-fluid models"></div>
+						                  			<div id="models-nav" class="row-fluid text-center">
+						                    			<div class="col-md-12">
+						                        			<ul class="pagination" id="models-pagination"></ul>
+						                    			</div>
+						                  			</div>
+						                        </div>
+						                    </div>	
+						                </div>
+						            </div>
+						        </div>
+							</div>
+						</div>
+
+				<!-- <div class="col-md-12 col-sm-6 animate-box model_views" style="display: none;" data-animate-effect="fadeInUp">
 					<form action="#">
 						<div class="fh5co-post">
                             <center>
@@ -166,95 +306,16 @@
                             </div>
                         </div>
 					</form>
-				</div>
+				</div> -->
 
-				<div id="model_views_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
-					<div class="panel panel-default">
-						<div class="panel-heading div_hint">模型视图</div>
-						<div id="model_views" class="panel-body text-center"></div>
-					</div>
-					<button id="switch_from_view" type="button" class="next-btn btn btn-default">下一步</button>
-				</div>
-
-
-				<div id="feature_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
-					<div class="panel panel-default">
-                        <div class="panel-heading div_hint">特征可视化</div>
-                        <div class="panel-body text-center">
-                          <canvas id="featureChart" style=" :300px !important"></canvas>
-                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
-                        </div>
-                    </div>	
-                    <button id="switch_to_attention" type="button" class="next-btn btn btn-default">下一步</button>				
-				</div>
-
-				<div id="attention_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
-					<div class="panel panel-default">
-                        <div class="panel-heading div_hint">注意力可视化</div>
-                        <div class="panel-body text-center">
-                          <canvas id="attentionChart" style=" :300px !important"></canvas>
-                          <div id="max_attn_wrapper" class="col-md-6 animate-box" data-anmiate-effect="fadeInUp">
-                          	<span class="attn-hint">最大权重:</span>
-                          	<span id="max_attn_text" class="attn-value">1.0</span>
-                          	<img id="max_attn_img" class="attn-view" src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001">
-                          </div>
-                          <div id="min_attn_wrapper" class="col-md-6 animate-box" data-anmiate-effect="fadeInUp">
-                          	<span class="attn-hint">最小权重:</span>
-                          	<span id="min_attn_text" class="attn-value">0.0</span>
-                          	<img id="min_attn_img" class="attn-view" src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1472516260,3403254135&fm=173&app=49&f=JPEG?w=218&h=146&s=CE3605C35A3A3896EE24C89F03001001">
-                          </div>
-                        </div>
-                    </div>	
-                    <button id="switch_to_classification" type="button" class="next-btn btn btn-default">下一步</button>				
-				</div>
-
-				<div id="midview_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
-					<div class="panel panel-default">
-                        <div class="panel-heading div_hint">中心视图重建</div>
-                        <div class="panel-body text-center" id="midview_panel">
-                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
-                        </div>
-                    </div>	
-                    <button id="switch_to_feature_recon" type="button" class="next-btn btn btn-default">下一步</button>				
-				</div>
-
-				<div id="feature_recon_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
-					<div class="panel panel-default">
-                        <div class="panel-heading div_hint">上下文视图特征重建</div>
-                        <div class="panel-body text-center">
-                          <canvas id="midFeatureChart" style=" :300px !important"></canvas>
-                          <!-- <img src="https://www.w3schools.com/bootstrap/paris.jpg" class="img-thumbnail model-img" alt="Model view" width="304" height="236"><br/> -->
-                        </div>
-                    </div>	
-                    <button id="switch_to_classification2" type="button" class="next-btn btn btn-default">下一步</button>				
-				</div>
+				
 
 
 
-				<div id="classification_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
-					<div class="panel panel-default">
-                        <div class="panel-heading div_hint">分类结果</div>
-                        <div class="panel-body text-center">
-                          <canvas id="classificationChart" style=" :300px !important"></canvas>
-                        </div>
-                    </div>	
-                    <button id="switch_to_retrieval" type="button" class="next-btn btn btn-default">下一步</button>				
-				</div>
+				
 
-				<div id="retrieval_wrapper" class="col-md-12 col-sm-6 animate-box" data-animate-effect="fadeInUp">
-					<div class="panel panel-default">
-                        <div class="panel-heading div_hint">检索结果</div>
-                        <div class="panel-body text-center">
-                          	<div id="models-list" class="row-fluid models"></div>
-                  			<div id="models-nav" class="row-fluid text-center">
-                    			<div class="col-md-12">
-                        			<ul class="pagination" id="models-pagination"></ul>
-                    			</div>
-                  			</div>
-                        </div>
-                    </div>	
-                    <button id="switch_to_search" type="button" class="next-btn btn btn-default js-gotop">返回搜索</button>				
-				</div>
+				
+			</div>
 
 				<!-- 模型浏览 -->
 				<div id="viewerModal" class="modal fade">
@@ -309,8 +370,8 @@
 		<div class="container">
 			<div class="row animate-box">
 				<div class="col-md-10 col-md-offset-1 text-center fh5co-heading">
-					<h2>基于多视图的三维模型检索系统</h2>
-					<p>Studies on Learning Feature Representation of 3D Shapes Based on Multi-view Feature Aggregation</p>
+					<h2>基于序列视图的三维模型检索系统</h2>
+					<p>Studies on Representation Learning of 3D Shapes based on Sequential Views</p>
 					<p><button type="submit" class="btn btn-default">In progress</button></p>
 				</div>
 			</div>
@@ -389,6 +450,13 @@
 	<script src="../static/js/bootstrap.min.js"></script>
 	<!-- Waypoints -->
 	<script src="../static/js/jquery.waypoints.min.js"></script>
+	<script src="{{ url_for('static', filename="js/libs/inflate.min.js") }}"></script>
+	<script src="{{ url_for('static', filename="js/three.js") }}"></script>
+	<script src="{{ url_for('static', filename="js/controls/TrackballControls.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/loaders/OFFLoader.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/loaders/OBJLoader.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/loaders/VTKLoader.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/Detector.js") }}"></script>
 	<!-- countTo -->
 	<script src="../static/js/jquery.countTo.js"></script>
 	<!-- Magnific Popup -->
@@ -406,6 +474,8 @@
 	<!-- Main -->
 	<script src="../static/js/main.js"></script>
 	<script src="../static/js/retrieval.js"></script>
+	<script src="../static/js/viewer.js"></script>
+	<audio controls="controls" style="display: none;"></audio>
 
     <script lang="javascript">
         big_img_idx = -1;
@@ -444,11 +514,11 @@
         // $(".retrieval_image").bind("click", function () {
         //     alert("Image click: " + $(this).attr("src"));
         // });
-        $(document).bind("scroll", move_vis_pop);
+        // $(document).bind("scroll", move_vis_pop);
 
-        $(document).ready(function () {
-            move_vis_pop();
-        });
+        // $(document).ready(function () {
+            // move_vis_pop();
+        // });
 
     </script>
 

@@ -52,7 +52,7 @@ def k_d_tree_test():
 
 def k_d_tree_dump():
 
-    X = np.load(os.path.join(os.getcwd(), 'static/database/wxy/features/hvp_modelnet10_test_prob.npy'))
+    X = np.load(os.path.join(os.getcwd(), 'static/database/smy/features/smy_svm_prob.npy'))
     print(X.shape)
     tree = KDTree(X)
     dist, ind = tree.query(X[0:1], 10)
@@ -61,7 +61,7 @@ def k_d_tree_dump():
     name_list = [int(i) for i in ind]
     print(name_list)
 
-    joblib.dump(tree, os.path.join(os.getcwd(),'static\database\wxy\kd_tree_us.pkl'))
+    joblib.dump(tree, os.path.join(os.getcwd(),'static\database\smy\kd_tree_us.pkl'))
 
 
 if __name__ == '__main__':
