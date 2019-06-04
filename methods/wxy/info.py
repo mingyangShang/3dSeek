@@ -19,6 +19,7 @@ probs_us = np.load(os.path.join(base_dir, 'probs', 'hvp_modelnet10_test_prob.npy
 
 supervised_method_name = "3DViewGraph"
 
+base_recon_url = '/static/database/wxy/views/test/'
 
 def get_view_urls_by_modelname(modelname):
     view_urls = []
@@ -62,6 +63,21 @@ def get_model_info_by_name(modelname, method_name):
     return meta_info
 
 
+def get_view_recon(modelname):
+    view_recon_info = []
+    for i in range(view_num):
+        meta_info = {}
+        filename = "%s_%03d.jpg" % (modelname, i + 1)
+        meta_info['gen_view_cur'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
+        meta_info['gen_view_opp'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
+        meta_info['tru_view_cur'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
+        meta_info['tru_view_opp'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
+        meta_info['piece_i'] = [base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)] * 6
+        meta_info['piece_o'] = [base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)] * 6
+        view_recon_info.append(meta_info)
+    return view_recon_info
+
+
 def get_search_result(modelname, method_name):
     feature = get_feature_by_name(modelname, method_name)
     idxs, dists = search_by_feature(feature, 'wxy', method_name)
@@ -87,6 +103,7 @@ def get_attention_info(modelname, method_name):
     attn_info['max'] = {'attn_weight':attn_info['attn_weights'][ma_idx], 'view_url':ma_url}
     attn_info['min'] = {'attn_weight':attn_info['attn_weights'][mi_idx], 'view_url':mi_url}
     return attn_info
+
 
 def get_total_info(modelname, method_name):
     total_info = {}
@@ -115,4 +132,6 @@ def get_total_info(modelname, method_name):
     total_info['retrieval'] = get_search_result(modelname, method_name)
     total_info['attns'] = get_attention_info(modelname, '')
     total_info['model_url'] = get_model_url(modelname)
+    if method_name != supervised_method_name:
+        total_info['view_recon'] = get_view_recon(modelname)
     return total_info
