@@ -913,7 +913,7 @@ function closeModelViewer(event){
   $("#viewerModal").removeClass("in");
 }
 
-function newViewPair(views){
+function newViewPair(views, viewHints){
   var midview_panel = $("#midview_panel");
   var pairDivRow = document.createElement("div");
   $(pairDivRow).addClass("row");
@@ -921,8 +921,6 @@ function newViewPair(views){
   var pairDiv = document.createElement("div");
   $(pairDiv).addClass("col-md-12");
   $(pairDivRow).append(pairDiv);
-
-  var viewHints = ["前视图  ", "后视图  ", "中心视图(预测)  ", "中心视图(真实)  "];
 
   for(var i in views){
     var viewDiv = document.createElement("div");
@@ -948,15 +946,10 @@ function newViewPair(views){
 // 上下文视图预测中心视图
 function predictCenterView(center_view_preds){
     $("#midview_panel").empty();
-    var viewHints = new Array();
-    if(block_views1 === null && block_views2 === null){
-        viewHints = ["前视图  ", "后视图  ", "中心视图(预测)  ", "中心视图(真实)  "];
-    }else{
-        viewHints = ["前视图  ", "后视图  ", "中心视图(预测)  ", "中心视图(真实)  "];
-    }
+    var viewHints = ["前视图   ", "后视图   ", "中心视图(预测)   ", "中心视图(真实)   "];
     for(var i in center_view_preds){
         var pair = center_view_preds[i];
-        newViewPair([pair["neighbours"], pair["gt_center"], pair["pred_center"]]);
+        newViewPair([pair["neighbours"][0], pair["neighbours"][1], pair["gt_center"], pair["pred_center"]], viewHints);
         $("#midview_panel").append(document.createElement("hr"));
     }
 }
@@ -964,13 +957,15 @@ function predictCenterView(center_view_preds){
 
 function predictViews_wxy(view_infos){
     var container = $("#midview_panel");
-    for(var i in view_info){
+    for(var i in view_infos){
         var pair = view_infos[i];
-        newViewPair([pair["tru_view_cur"], pair["gen_view_cur"], pair["tru_view_opp"], pair["gen_view_opp"]]);
+        newViewPair([pair["tru_view_cur"], pair["gen_view_cur"], pair["tru_view_opp"], pair["gen_view_opp"]],
+            ["当前视图(真实)    ", "当前视图(预测)    ", "对面视图(真实)    ", "对面视图(预测)    "]);
         container.append(document.createElement("hr"));
-        container.append(newBlockViews(pair["piece_i"], ["", "", "", "", "", ""]));
+        container.append(newBlockViews(pair["piece_i"], ["I1    ", "I2    ", "I3    ", "I4    ", "I5    ", "I6    "]));
         container.append(document.createElement("hr"));
-        container.append(newBlockViews(pair["piece_o"], ["", "", "", "", "", ""]));
+        container.append(newBlockViews(pair["piece_o"], ["O1    ", "O2    ", "O3    ", "O4    ", "O5    ", "O6    "]));
+        container.append(document.createElement("hr"));
     }
 }
 
@@ -988,7 +983,7 @@ function newBlockViews(blocks, hints){
 
         var viewImg = document.createElement("img");
         $(viewImg).addClass("img-thumbnail model-img");
-        $(viewImg).attr("src", blcoks[i]);
+        $(viewImg).attr("src", blocks[i]);
         $(viewImg).attr("height", "64px");
         $(viewImg).css("width", "64px");
         
