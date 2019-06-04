@@ -33,5 +33,8 @@ def get_model_info(modelname):
     return model_info
 
 
+def get_model_download_url(modelname):
+    return "/download?modelname="+modelname
+
 def get_model_url(modelname):
     return "/static/database/modelnet10/test/%s.off" % modelname

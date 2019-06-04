@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from utils.dataset import get_idx_by_name, get_modelnames_by_idx, get_model_info, get_model_url
+from utils.dataset import get_idx_by_name, get_modelnames_by_idx, get_model_info, get_model_url, get_model_download_url
 from utils.process_file import get_all_class_names, get_class_name_by_name
 from utils.search_engineer import search_by_feature
 
@@ -8,7 +8,7 @@ base_url = '/static/database/smy/views/test/'
 view_num = 12
 
 
-base_dir = os.path.join(os.getcwd(), 'static/database/smy')
+base_dir = os.path.join(os.getcwd(), 'static', 'database', 'smy')
 
 attns = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_attn.npy'))
 features = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_hidden.npy'))
@@ -22,6 +22,14 @@ probs_us = np.load(os.path.join(base_dir, 'probs', 'smy_svm_prob.npy'))
 supervised_method_name = "SeqViews2SeqLabels"
 
 base_recon_url = '/static/database/smy/views/test/'
+
+context_view_features = np.load(os.path.join(base_dir, 'features', 'context_view_features2.npy'))
+context_view_features_pred = np.load(os.path.join(base_dir, 'features', 'context_view_features_pred2.npy'))
+
+def get_features_by_modelname_and_viewidx(modelname, view_idx):
+    model_idx = get_idx_by_name(modelname)
+    total_idx = model_idx * view_num + view_idx
+    return context_view_features[total_idx], context_view_features_pred[total_idx]
 
 
 def get_view_urls_by_modelname(modelname):
@@ -57,7 +65,7 @@ def get_model_info_by_name(modelname, method_name):
     meta_info = {"dataset": "modelnet", "size": model_info['file_size'], "name": modelname,
                  "class_name": model_info['class_name'], "edge_num": model_info['edge_num'],
                  "model_url": get_model_url(modelname), "view_urls": view_urls, "vertice_num":model_info['vertice_num'],
-                 "feature": feature, "feature_dim": len(feature), "download_url": "null"}
+                 "feature": feature, "feature_dim": len(feature), "download_url": get_model_download_url(modelname)}
     return meta_info
 
 
@@ -105,6 +113,11 @@ def get_view_recon(modelname):
         for ni in [-1, 1]:
             filename = "%s_%03d.jpg" % (modelname, (ni + view_num + i) % 12 + 1)
             neighs.append(base_url + filename)
+        context_view_feature, context_view_feature_pred = get_features_by_modelname_and_viewidx(modelname, i)
+        meta_info['neighbour_features'] = [context_view_feature[0].tolist(), context_view_feature[1].tolist()]
+        meta_info['neighbour_pred_features'] = [context_view_feature_pred[0].tolist(), context_view_feature_pred[1].tolist()]
+        # meta_info['neighbour_features'] = [context_view_feature[0, :10].tolist(), context_view_feature[1,:10].tolist()]
+        # meta_info['neighbour_pred_features'] = [context_view_feature_pred[0,:10].tolist(), context_view_feature_pred[1,:10].tolist()]
         filename = "%s_%03d.jpg" % (modelname, i+1)
         meta_info['gt_center'] = base_url + filename
         meta_info['neighbours'] = neighs
