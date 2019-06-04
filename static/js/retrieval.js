@@ -24,13 +24,10 @@ var currModelInfo;
 var currMethod;
 
 function hideAll(){
-    $("#model_views_wrapper").hide();
-    $("#feature_wrapper").hide();
-    $("#attention_wrapper").hide();
-    $("#midview_wrapper").hide();
-    $("#feature_recon_wrapper").hide();
-    $("#classification_wrapper").hide();
-    $("#retrieval_wrapper").hide();
+    $("#search-result").hide();
+}
+function showAll(){
+    $("#search-result").show();
 }
 
 (function ($) {
@@ -95,6 +92,17 @@ function hideAll(){
         $("#viewerSourceButton").click(function(){
           //在新窗口中打开
             window.location.href = "/viewer?"+"dataset="+currModelInfo.dataset+"&class_name="+currModelInfo.class_name+"&model_name="+currModelInfo.name+"&method="+currMethod+"&author="+window.author;
+        });
+
+        $("#recon-li").hide();
+        $("#queryModelCanvas").mouseenter(function(){
+          if(window.controls){
+            window.controls.enabled = true;
+          }
+        }).mouseout(function(){
+          if(window.controls){
+            window.controls.enabled = false;
+          }
         });
     });
 }(jQuery));
@@ -536,7 +544,7 @@ function newModelDiv(data, is_model=false){
     if(!is_model){
         $(modelDiv).addClass("view-col");
         $(modelImg).attr("src", data.view_url);
-        $(modelImg).attr("height", "236");
+        $(modelImg).attr("height", "100");
         $(modelImg).attr("alt", "view" + (data.view_index+1));
     }else{
         $(modelDiv).addClass("model-col");
@@ -623,7 +631,7 @@ function search(type, url, file){
         formData.append("name", file.name);
         window.model_name = file.name;
     }
-    hideAll();
+    // hideAll();
     $.ajax({
         // Your server script to process the upload
         url: '/search',
@@ -642,7 +650,21 @@ function search(type, url, file){
         success: function(data, status, xhr){
             console.log("search result:", data);
             window.search_result = data;
-            refreshViews(data["views"]);
+            // $("#result-nav .active").removeClass("active");
+            if(window.searchingMethod == "SeqViews2SeqLabels" || window.searchingMethod == "3DViewGraph"){
+                $("#recon-li").hide();
+                $("#recon-li").removeClass("active");
+                $("#attn-li").show();
+                $("#attn-li a").tab("show");
+                // $("#attn-li").addClass("active");
+            }else{
+                $("#recon-li").show();
+                $("#recon-li a").tab("show");
+                $("#attn-li").hide();
+                $("#attn-li").removeClass("active");
+            }
+            refreshQueryModelInfo(data);
+            // refreshViews(data["views"]);
         },
         error: function(data, status, xhr){
           console.log("error");
@@ -732,10 +754,27 @@ function search(type, url, file){
     });
 }
 
+
+function refreshQueryModelInfo(info){
+    showAll();
+    showModel("/static/database/modelnet10/test/toilet_0443.off", $("#queryModelCanvas"));
+    if(window.controls){
+        window.controls.enabled = false;
+    }
+    refreshViews(info["views"]);
+    feature_vis("featureChart", info.features);
+
+    refreshAttn(info.attns);
+    refreshClassProbChart("classificationChart", info.probs);
+    refreshModelsList(info["retrieval"]["models"]);
+    refreshPageNav(window.search_result);
+
+}
+
 // 刷新模型视图显示
 function refreshViews(data){
     var views_div = $("#model_views");
-    $("#model_views_wrapper").show();
+    // $("#model_views_wrapper").show();
     views_div.empty();
     for(i in data.imgs){
         views_div.append(newModelDiv(data.imgs[i], is_model=false));
@@ -744,7 +783,6 @@ function refreshViews(data){
             $("#bigImgModal").css("display", "block");
             $("#big-img").attr("src", $(event.target).attr("src"));
     });
-    // $("#model_views .model-col").hover(hoverInModel, hoverOutModel);
     $("#model_views").removeClass("loading");
 }
 
@@ -798,8 +836,8 @@ function refreshPageNav(pageInfo){
 }
 
 function hoverInModel(event){
-    console.log("hoverin");
     views = $(this).data("info").view_urls;
+
     //鼠标进入时轮流播放不同视角下的截图
     modelImgsTimer = window.setInterval(function(){
         modelImgsTimerCount += 1;
