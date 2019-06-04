@@ -758,11 +758,11 @@ function search(type, url, file){
 function refreshQueryModelInfo(info){
     showAll();
     // clear model canvas
-    var c = $("#queryModelCanvas canvas");
-    if(c.length > 0){
-        var cxt = c[0].getContext("2d");
-        cxt.clearRect(0, 0, c[0].width, c[0].height); 
-    }
+    // var c = $("#queryModelCanvas canvas");
+    // if(c.length > 0){
+    //     var cxt = c[0].getContext("2d");
+    //     cxt.clearRect(0, 0, c[0].width, c[0].height); 
+    // }
     // var cxt=document.getElementById("queryModelCanvas").getContext("2d");
     // cxt.clearRect(0,0,$("#queryModelCanvas").width,$("#queryModelCanvas").height);  
     showModel(info.model_url, $("#queryModelCanvas"));
