@@ -59,7 +59,7 @@ def model_view():
     if search_author is None:
         search_author = 'wxy'
     if search_method is None:
-        search_method = '3dview'
+        search_method = '3DViewGraph'
     model_name = request.args.get('model_name')
     if search_author == 'smy':
         model_info = smy.get_model_info_by_name(model_name, search_method)

@@ -13,11 +13,11 @@ base_dir = os.path.join(os.getcwd(), 'static/database/smy')
 attns = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_attn.npy'))
 features = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_hidden.npy'))
 # need to be change
-features_us = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_hidden.npy'))
+features_us = np.load(os.path.join(base_dir, 'features', 'smy_svm_prob.npy'))
 
 probs = np.load(os.path.join(base_dir, 'probs', 'modelnet10_test_probs.npy'))
 # need to be change
-probs_us = np.load(os.path.join(base_dir, 'probs', 'modelnet10_test_probs.npy'))
+probs_us = np.load(os.path.join(base_dir, 'probs', 'smy_svm_prob.npy'))
 
 supervised_method_name = "SeqViews2SeqLabels"
 
@@ -63,19 +63,12 @@ def get_search_result(modelname, method_name):
     feature = get_feature_by_name(modelname, method_name)
     idxs, dists = search_by_feature(feature, 'smy', method_name)
     res_names = get_modelnames_by_idx(idxs)
-    retrieval_res = {"total_count": 50, "curr_count": 50, "curr_page":1}
+    retrieval_res = {"total_count": 48, "curr_count": 48, "curr_page":1}
     retrieval_models = []
-    for i in range(len(res_names)):
+    for i in range(1, len(res_names)-1):
         name = res_names[i]
         meta_info = get_model_info_by_name(name, method_name)
         meta_info['dist'] = dists[i]
-        # model_info = get_model_info(name)
-        # views = get_view_urls_by_modelname(name)
-        # view_urls = [v['view_url'] for v in views['imgs']]
-        # meta_info = {"dataset":"modelnet", "size":model_info['file_size'], "name":name,
-        #              "class_name":model_info['class_name'], "edge_num":model_info['edge_num'],
-        #              "model_url":get_model_url(name), "view_urls":view_urls,
-        #              "dist":dists[i], "feature":feature, "feature_dim":len(feature), "download_url":"null"}
         retrieval_models.append(meta_info)
     retrieval_res['models'] = retrieval_models
     return retrieval_res
@@ -128,4 +121,5 @@ def get_total_info(modelname, method_name):
 
     total_info['retrieval'] = get_search_result(modelname, method_name)
     total_info['attns'] = get_attention_info(modelname, '')
+    total_info['model_url'] = get_model_url(modelname)
     return total_info
