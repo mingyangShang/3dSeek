@@ -51,7 +51,11 @@ function showAll(){
                 feature_vis("featureChart", window.search_result.features);
             }else{
                $("#midview_wrapper").show();
-               predictCenterView(window.search_result.center_view_recon);
+               if(window.author == "smy"){
+                    predictCenterView(window.search_result.center_view_recon);
+               }else{
+                    predictView_wxy(window.searchingMethod.view_recon);
+               }
             }
         });
         $("#switch_to_attention").click(function(event){
@@ -778,7 +782,12 @@ function refreshQueryModelInfo(info){
     refreshModelsList(info["retrieval"]["models"]);
     refreshPageNav(window.search_result);
 
-    predictCenterView(window.search_result.center_view_recon);
+    if(window.author == "smy"){
+        predictCenterView(window.search_result.center_view_recon);
+    }else{
+        predictViews_wxy(window.search_result.view_recon);
+    }
+    
 }
 
 // 刷新模型视图显示
@@ -904,7 +913,7 @@ function closeModelViewer(event){
   $("#viewerModal").removeClass("in");
 }
 
-function newViewPair(neigh_views, gt_center_view, pred_center_view){
+function newViewPair(views){
   var midview_panel = $("#midview_panel");
   var pairDivRow = document.createElement("div");
   $(pairDivRow).addClass("row");
@@ -913,12 +922,6 @@ function newViewPair(neigh_views, gt_center_view, pred_center_view){
   $(pairDiv).addClass("col-md-12");
   $(pairDivRow).append(pairDiv);
 
-  var views = [];
-  for(var i in neigh_views){
-    views[i] = neigh_views[i];
-  }
-  views.push(pred_center_view);
-  views.push(gt_center_view);
   var viewHints = ["前视图  ", "后视图  ", "中心视图(预测)  ", "中心视图(真实)  "];
 
   for(var i in views){
@@ -945,11 +948,61 @@ function newViewPair(neigh_views, gt_center_view, pred_center_view){
 // 上下文视图预测中心视图
 function predictCenterView(center_view_preds){
     $("#midview_panel").empty();
+    var viewHints = new Array();
+    if(block_views1 === null && block_views2 === null){
+        viewHints = ["前视图  ", "后视图  ", "中心视图(预测)  ", "中心视图(真实)  "];
+    }else{
+        viewHints = ["前视图  ", "后视图  ", "中心视图(预测)  ", "中心视图(真实)  "];
+    }
     for(var i in center_view_preds){
         var pair = center_view_preds[i];
-        newViewPair(pair["neighbours"], pair["gt_center"], pair["pred_center"]);
+        newViewPair([pair["neighbours"], pair["gt_center"], pair["pred_center"]]);
         $("#midview_panel").append(document.createElement("hr"));
     }
+}
+
+
+function predictViews_wxy(view_infos){
+    var container = $("#midview_panel");
+    for(var i in view_info){
+        var pair = view_infos[i];
+        newViewPair([pair["tru_view_cur"], pair["gen_view_cur"], pair["tru_view_opp"], pair["gen_view_opp"]]);
+        container.append(document.createElement("hr"));
+        container.append(newBlockViews(pair["piece_i"], ["", "", "", "", "", ""]));
+        container.append(document.createElement("hr"));
+        container.append(newBlockViews(pair["piece_o"], ["", "", "", "", "", ""]));
+    }
+}
+
+// 视图小块展示
+function newBlockViews(blocks, hints){
+    var pairDivRow = document.createElement("div");
+    $(pairDivRow).addClass("row");
+    var pairDiv = document.createElement("div");
+    $(pairDiv).addClass("col-md-12");
+    $(pairDivRow).append(pairDiv);
+
+    for(var i in blocks){
+        var viewDiv = document.createElement("div");
+        $(viewDiv).addClass("col-md-2 center");
+
+        var viewImg = document.createElement("img");
+        $(viewImg).addClass("img-thumbnail model-img");
+        $(viewImg).attr("src", blcoks[i]);
+        $(viewImg).attr("height", "64px");
+        $(viewImg).css("width", "64px");
+        
+
+        var viewHint = document.createElement("span");
+        $(viewHint).addClass("view-hint");
+        $(viewHint).text(hints[i]);
+
+        $(viewDiv).append(viewHint);
+        $(viewDiv).append(viewImg);
+
+        $(pairDiv).append(viewDiv);
+    }
+    return pairDivRow;
 }
 
 // 上下文视图特征重建
