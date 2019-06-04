@@ -39,6 +39,7 @@ def search():
             # print(json.dumps(result_json['center_view_recon']))
         else:
             result_json = wxy.get_total_info(model_name, search_method)
+            print(json.dumps(result_json['view_recon']))
     ret_str = json.dumps(result_json)
     # print(json.dumps(result_json['attns']))
     return ret_str
