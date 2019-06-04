@@ -10,7 +10,7 @@ function showModel(modelPath, container) {
     function init() {
 
         camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.01, 1e10 );
-        camera.position.z = 200;
+        camera.position.z = 300;
 
         controls = new THREE.TrackballControls( camera );
 
@@ -67,7 +67,7 @@ function showModel(modelPath, container) {
         // renderer
         renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
-		renderer.setSize($("#canvas").width(), Math.max(150, $("#canvas").height()-60));
+		renderer.setSize(container.width(), Math.max(150, container.height()-60));
         container.append( renderer.domElement );
 
         window.addEventListener( 'resize', onWindowResize, false );
