@@ -103,9 +103,9 @@ def get_view_recon(modelname):
         meta_info = {}
         neighs = []
         for ni in [-1, 1]:
-            filename = "%s_%03d.jpg" % (modelname, (ni + view_num + i) % 12)
+            filename = "%s_%03d.jpg" % (modelname, (ni + view_num + i) % 12 + 1)
             neighs.append(base_url + filename)
-        filename = "%s_%03d.jpg" % (modelname, i)
+        filename = "%s_%03d.jpg" % (modelname, i+1)
         meta_info['gt_center'] = base_url + filename
         meta_info['neighbours'] = neighs
         meta_info['pred_center'] = base_recon_url + filename

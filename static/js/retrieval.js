@@ -777,6 +777,7 @@ function refreshQueryModelInfo(info){
     refreshModelsList(info["retrieval"]["models"]);
     refreshPageNav(window.search_result);
 
+    predictCenterView(window.search_result.center_view_recon);
 }
 
 // 刷新模型视图显示
@@ -917,7 +918,7 @@ function newViewPair(neigh_views, gt_center_view, pred_center_view){
   }
   views.push(pred_center_view);
   views.push(gt_center_view);
-  var viewHints = ["前视图", "后视图", "中心视图(预测)", "中心视图(真实)"]
+  var viewHints = ["前视图  ", "后视图  ", "中心视图(预测)  ", "中心视图(真实)  "];
 
   for(var i in views){
     var viewDiv = document.createElement("div");
@@ -925,14 +926,16 @@ function newViewPair(neigh_views, gt_center_view, pred_center_view){
         var viewImg = document.createElement("img");
         $(viewImg).addClass("img-thumbnail model-img");
         $(viewImg).attr("src", views[i]);
-        $(viewImg).attr("height", "236");
-        $(viewImg).css("width", "100%");
-        $(viewDiv).append(viewImg);
+        $(viewImg).attr("height", "64px");
+        $(viewImg).css("width", "64px");
+        
 
         var viewHint = document.createElement("span");
         $(viewHint).addClass("view-hint");
         $(viewHint).text(viewHints[i]);
+
         $(viewDiv).append(viewHint);
+        $(viewDiv).append(viewImg);
 
     $(pairDiv).append(viewDiv);
   }
@@ -940,6 +943,7 @@ function newViewPair(neigh_views, gt_center_view, pred_center_view){
 
 // 上下文视图预测中心视图
 function predictCenterView(center_view_preds){
+    $("#midview_panel").empty();
     for(var i in center_view_preds){
         var pair = center_view_preds[i];
         newViewPair(pair["neighbours"], pair["gt_center"], pair["pred_center"]);
