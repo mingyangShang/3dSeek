@@ -765,6 +765,7 @@ function refreshQueryModelInfo(info){
     // }
     // var cxt=document.getElementById("queryModelCanvas").getContext("2d");
     // cxt.clearRect(0,0,$("#queryModelCanvas").width,$("#queryModelCanvas").height);  
+    $("#queryModelCanvas").empty();
     showModel(info.model_url, $("#queryModelCanvas"));
     if(window.controls){
         window.controls.enabled = false;

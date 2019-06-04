@@ -33,8 +33,12 @@ function showModel(modelPath, container) {
             curr_scene = scene;
         }else{
             console.log("has scene");
-            scene = curr_scene;
+            scene = new THREE.Scene();     
         }
+        // while(scene.children.length > 0){
+        //     scene.remove(scene.children[0]);
+        // }
+        scene.remove.apply(scene, scene.children);
         
         scene.add( camera );
 
@@ -68,17 +72,8 @@ function showModel(modelPath, container) {
             var mesh = new THREE.Mesh( geometry, material );
 
             mesh.position.set( - 0.075, 0.005, 0 );
-            mesh.scale.multiplyScalar( 0.2 * scalar);
-            if(curr_mesh){
-                console.log("has mesh");
-                scene.remove(curr_mesh);
-            }else{
-                console.log("no mesh");
-            }
-
             scene.add( mesh );
-            curr_mesh = mesh;
-            
+            curr_mesh = mesh;    
         } );
 
         // renderer
