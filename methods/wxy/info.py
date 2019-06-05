@@ -14,12 +14,13 @@ features = np.load(os.path.join(base_dir, 'features', 'fc_feature_mat_10_test.np
 probs = np.load(os.path.join(base_dir, 'probs', 'fc_feature_mat_10_test_prob.npy'))
 
 # need to be change
-features_us = np.load(os.path.join(base_dir, 'features', 'hvp_modelnet10_test_prob.npy'))
+# features_us = np.load(os.path.join(base_dir, 'features', 'hvp_modelnet10_test_prob.npy'))
+features_us = np.load(os.path.join(base_dir, 'features', 'hvp_features_256_test.npy'))
 probs_us = np.load(os.path.join(base_dir, 'probs', 'hvp_modelnet10_test_prob.npy'))
 
 supervised_method_name = "3DViewGraph"
 
-base_recon_url = '/static/database/wxy/views/test/'
+base_recon_url = '/static/database/wxy/view_recon/'
 base_piece_url = '/static/database/wxy/piece/'
 
 def get_view_urls_by_modelname(modelname):
@@ -68,11 +69,11 @@ def get_view_recon(modelname):
     view_recon_info = []
     for i in range(view_num):
         meta_info = {}
-        filename = "%s_%03d.jpg" % (modelname, i + 1)
-        meta_info['gen_view_cur'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
-        meta_info['gen_view_opp'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
-        meta_info['tru_view_cur'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
-        meta_info['tru_view_opp'] = base_recon_url + "%s_%03d.jpg" % (modelname, i + 1)
+        model_idx = get_idx_by_name(modelname)
+        meta_info['gen_view_cur'] = base_recon_url + "model_%05d_img_%02d_ab_0_cur_gen.jpg" % (model_idx, i)
+        meta_info['gen_view_opp'] = base_recon_url + "model_%05d_img_%02d_ab_0_opp_gen.jpg" % (model_idx, i)
+        meta_info['tru_view_cur'] = base_recon_url + "model_%05d_img_%02d_ab_0_cur_tru.jpg" % (model_idx, i)
+        meta_info['tru_view_opp'] = base_recon_url + "model_%05d_img_%02d_ab_0_opp_tru.jpg" % (model_idx, i)
         meta_info['piece_i'] = [base_piece_url + "%s_%03d_a%02d.jpg" % (modelname, i*4 + 1, k) for k in range(6)]
         meta_info['piece_o'] = [base_piece_url + "%s_%03d_b%02d.jpg" % (modelname, i*4 + 1, k) for k in range(6)]
         view_recon_info.append(meta_info)
