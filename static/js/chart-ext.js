@@ -124,14 +124,14 @@ function refreshCompareFeatureChart(id, labels , data1, data2){
 
 function refreshClassProbChart(id, probs){
     var data = new Array();
-    data["labels"] = Object.keys(probs[0]["probs"]);
+    data["labels"] = Object.keys(probs[0]["probs"]).sort();
     data["datasets"] =  new Array();
     var colors = ["#428bca", "#F95959"];
     for(var i in probs){
         var method_prob = probs[i];
         var scores = new Array();
-        for(var class_name in method_prob["probs"]){
-            scores.push(method_prob["probs"][class_name]);
+        for(var j in data["labels"]){
+            scores.push(method_prob["probs"][data["labels"][j]]);
         }
         data["datasets"].push({
             label: method_prob["method"],
@@ -173,7 +173,7 @@ function refreshAttnChart_wxy(id, attns){
             "labels": labels,
             "datasets": [
                 {
-                    label: "3dview",
+                    label: "ViewAttention",
                     data: attns,
                     borderWidth: 1,
                     backgroundColor: "#428bca",
@@ -264,7 +264,7 @@ function refreshAttnChart_smy(id, class_names, attns, legendClickCallback){
 }
 
 
-function refreshCompareNeighFeatureChart(id, labels, feature1, feature2){
+function refreshCompareNeighFeatureChart(id, labels, features_gt, features_pred){
     var radius = [];
     for(var i=0;i<labels.length;++i){
         radius.push(0);
@@ -279,28 +279,28 @@ function refreshCompareNeighFeatureChart(id, labels, feature1, feature2){
                     fill: false,
                     backgroundColor: "#428bca",
                     borderColor: "#428bca",
-                    data: feature1["gt_feature"],
+                    data: features_gt[0],
                     pointRadius: radius,
                 }, {
                     label: "前视图预测特征",
                     fill: false,
                     backgroundColor: "#F95959",
                     borderColor: "#F95959",
-                    data: feature1["pred_feature"],
+                    data: features_pred[0],
                     pointRadius: radius,
                 }, {
                     label: "后视图真实特征",
                     fill: false,
                     backgroundColor: "#FF7C98",
                     borderColor: "#FF7C98",
-                    data: feature2["gt_feature"],
+                    data: features_gt[1],
                     pointRadius: radius,
                 }, {
                     label: "后视图预测特征",
                     fill: false,
                     backgroundColor: "#a4dfdf",
                     borderColor: "#a4dfdf",
-                    data: feature2["pred_feature"],
+                    data: features_pred[1],
                     pointRadius: radius,
                 }]
             },
