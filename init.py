@@ -25,7 +25,7 @@ def dump_all():
     k_d_tree_dump(smy.features, os.path.join(os.getcwd(), 'static/database/smy/kd_tree.pkl'))
 
     k_d_tree_dump(wxy.features_us, os.path.join(os.getcwd(), 'static/database/wxy/kd_tree_us.pkl'))
-    k_d_tree_dump(smy.features_us, os.path.join(os.getcwd(), 'static/database/smy/kd_tree_us.pkl'))
+    k_d_tree_dump(smy.features_search, os.path.join(os.getcwd(), 'static/database/smy/kd_tree_us.pkl'))
 
 
 if __name__ == '__main__':

@@ -13,7 +13,8 @@ base_dir = os.path.join(os.getcwd(), 'static', 'database', 'smy')
 attns = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_attn.npy'))
 features = np.load(os.path.join(base_dir, 'features', 'modelnet10_test_hidden.npy'))
 # need to be change
-features_us = np.load(os.path.join(base_dir, 'features', 'smy_svm_prob.npy'))
+features_us = np.load(os.path.join(base_dir, 'features', 'vip_shape_features_test.npy'))
+features_search = np.load(os.path.join(base_dir, 'features', 'smy_svm_prob.npy'))
 
 probs = np.load(os.path.join(base_dir, 'probs', 'modelnet10_test_probs.npy'))
 # need to be change
@@ -49,6 +50,14 @@ def get_feature_by_name(modelname, method_name):
         return features_us[idx].tolist()
 
 
+def get_search_feature_by_name(modelname, method_name):
+    idx = get_idx_by_name(modelname)
+    if method_name == supervised_method_name:
+        return features[idx].tolist()
+    else:
+        return features_search[idx].tolist()
+
+
 def get_prob_by_name(modelname, method_name):
     idx = get_idx_by_name(modelname)
     if method_name == supervised_method_name:
@@ -70,7 +79,8 @@ def get_model_info_by_name(modelname, method_name):
 
 
 def get_search_result(modelname, method_name):
-    feature = get_feature_by_name(modelname, method_name)
+    feature = get_search_feature_by_name(modelname, method_name)
+    print('-------->', len(feature))
     idxs, dists = search_by_feature(feature, 'smy', method_name)
     res_names = get_modelnames_by_idx(idxs)
     retrieval_res = {"total_count": 48, "curr_count": 48, "curr_page":1}
