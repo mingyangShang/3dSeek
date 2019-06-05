@@ -67,7 +67,7 @@ def get_model_info_by_name(modelname, method_name):
 
 def get_view_recon(modelname):
     view_recon_info = []
-    for i in range(view_num):
+    for i in range(6):
         meta_info = {}
         model_idx = get_idx_by_name(modelname)
         meta_info['gen_view_cur'] = base_recon_url + "model_%05d_img_%02d_ab_0_cur_gen.jpg" % (model_idx, i)

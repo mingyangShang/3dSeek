@@ -107,7 +107,7 @@ def get_attention_info(modelname, method_name):
 
 def get_view_recon(modelname):
     view_recon_info = []
-    for i in range(view_num):
+    for i in range(6):
         meta_info = {}
         neighs = []
         for ni in [-1, 1]:
