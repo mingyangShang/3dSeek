@@ -1,4 +1,4 @@
-examples = ["football game", "man riding bike", "red shirt", "dog catching balls", "two men", "busy street", "sand", "water"];
+﻿examples = ["football game", "man riding bike", "red shirt", "dog catching balls", "two men", "busy street", "sand", "water"];
 current_page = 1;
 server = "http://166.111.80.36:8889/";
 current_method = "cmst";
@@ -618,21 +618,21 @@ function refreshAttn(attns){
         refreshAttnChart_wxy("attentionChart", attns["attn_weights"]);
         refreshImg("#max_attn_img", attns["max"]["view_url"]);
         refreshImg("#min_attn_img", attns["min"]["view_url"]);
-        refreshText("#max_attn_text", attns["max"]["attn_weight"].toFixed(2));
-        refreshText("#min_attn_text", attns["min"]["attn_weight"].toFixed(2));
+        refreshText("#max_attn_text", attns["max"]["attn_weight"].toFixed(3));
+        refreshText("#min_attn_text", attns["min"]["attn_weight"].toFixed(3));
     }else{
         refreshAttnChart_smy("attentionChart", attns[0]["class_names"], attns, function(index){
             console.log("callback index:", index);
             refreshImg("#max_attn_img", attns[index]["max"]["view_url"]);
             refreshImg("#min_attn_img", attns[index]["min"]["view_url"]);
-            refreshText("#max_attn_text", attns[index]["max"]["attn_weight"].toFixed(2));
-            refreshText("#min_attn_text", attns[index]["min"]["attn_weight"].toFixed(2));
+            refreshText("#max_attn_text", attns[index]["max"]["attn_weight"].toFixed(3));
+            refreshText("#min_attn_text", attns[index]["min"]["attn_weight"].toFixed(3));
         }); 
         var index = 0;
         refreshImg("#max_attn_img", attns[index]["max"]["view_url"]);
         refreshImg("#min_attn_img", attns[index]["min"]["view_url"]);
-        refreshText("#max_attn_text", attns[index]["max"]["attn_weight"].toFixed(2));
-        refreshText("#min_attn_text", attns[index]["min"]["attn_weight"].toFixed(2));
+        refreshText("#max_attn_text", attns[index]["max"]["attn_weight"].toFixed(3));
+        refreshText("#min_attn_text", attns[index]["min"]["attn_weight"].toFixed(3));
     }
 }
 
