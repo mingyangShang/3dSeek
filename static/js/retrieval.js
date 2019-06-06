@@ -540,7 +540,7 @@ function predictCenterView(center_view_preds){
     var viewHints = ["前视图   ", "后视图   ", "中心视图(预测)   ", "中心视图(真实)   "];
     for(var i in center_view_preds){
         var pair = center_view_preds[i];
-        newViewPair([pair["neighbours"][0], pair["neighbours"][1], pair["gt_center"], pair["pred_center"]], viewHints);
+        newViewPair([pair["neighbours"][0], pair["neighbours"][1], pair["pred_center"], pair["gt_center"]], viewHints);
         $("#midview_panel").append(document.createElement("hr"));
     }
 }

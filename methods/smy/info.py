@@ -22,7 +22,7 @@ probs_us = np.load(os.path.join(base_dir, 'probs', 'smy_svm_prob.npy'))
 
 supervised_method_name = "SeqViews2SeqLabels"
 
-base_recon_url = '/static/database/smy/views/test/'
+base_recon_url = '/static/database/smy/views_g/'
 
 context_view_features = np.load(os.path.join(base_dir, 'features', 'context_view_features2.npy'))
 context_view_features_pred = np.load(os.path.join(base_dir, 'features', 'context_view_features_pred2.npy'))
@@ -117,7 +117,7 @@ def get_attention_info(modelname, method_name):
 
 def get_view_recon(modelname):
     view_recon_info = []
-    for i in range(6):
+    for i in range(5):
         meta_info = {}
         neighs = []
         for ni in [-1, 1]:
